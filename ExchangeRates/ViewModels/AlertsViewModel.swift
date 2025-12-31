@@ -59,7 +59,7 @@ class AlertsViewModel: ObservableObject {
                 let hasPermission = await notificationService.requestPermission()
                 if !hasPermission {
                     await MainActor.run {
-                        errorMessage = "נדרשת הרשאה להתראות כדי לבדוק התראות. אנא אפשר התראות בהגדרות."
+                        errorMessage = String(localized: "notification_permission_required", defaultValue: "Notification permission is required to check alerts. Please enable notifications in Settings.")
                         isLoading = false
                     }
                     return
@@ -95,7 +95,7 @@ class AlertsViewModel: ObservableObject {
             }
         } catch {
             await MainActor.run {
-                errorMessage = "שגיאה בבדיקת התראות: \(error.localizedDescription)"
+                errorMessage = String(format: String(localized: "error_checking_alerts", defaultValue: "Error checking alerts: %@"), error.localizedDescription)
                 isLoading = false
                 print("❌ [AlertsViewModel] Error checking alerts: \(error)")
             }

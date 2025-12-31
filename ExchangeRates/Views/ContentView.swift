@@ -25,7 +25,7 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    Text("שערי מטבעות")
+                    Text(String(localized: "exchange_rates_title"))
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.primary)
                         .onTapGesture {
@@ -48,7 +48,7 @@ struct ContentView: View {
                 // Content
                 if let errorMessage = viewModel.errorMessage, !viewModel.isLoading {
                     VStack {
-                        Text("Error")
+                        Text(String(localized: "error"))
                             .font(.headline)
                         Text(errorMessage)
                             .font(.caption)

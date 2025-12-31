@@ -35,7 +35,7 @@ struct CurrencyConverterView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.primary)
                     
-                    Text("שער: \(viewModel.exchangeRate.formattedRate)")
+                    Text(String(format: String(localized: "rate_label", defaultValue: "Rate: %@"), viewModel.exchangeRate.formattedRate))
                         .font(.system(size: 16))
                         .foregroundColor(.secondary)
                 }
@@ -111,7 +111,7 @@ struct CurrencyConverterView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("ממיר מטבע")
+                Text(String(localized: "currency_converter"))
                     .font(.headline)
             }
         }

@@ -14,9 +14,9 @@ enum AlertCondition: Codable, Equatable {
     var displayName: String {
         switch self {
         case .above:
-            return "מעל"
+            return String(localized: "above", defaultValue: "Above")
         case .below:
-            return "מתחת"
+            return String(localized: "below", defaultValue: "Below")
         }
     }
     

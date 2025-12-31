@@ -10,8 +10,10 @@ import Combine
 
 @main
 struct ExchangeRatesApp: App {
+    @ObservedObject private var languageManager = LanguageManager.shared
     @State private var colorScheme: ColorScheme? = ColorSchemeManager.shared.getColorScheme().colorScheme
     @State private var showLaunchScreen = true
+    @State private var currentLocale: Locale = LanguageManager.shared.currentLocale
     
     init() {
         // Initialize notification service early to set up delegate
@@ -28,13 +30,19 @@ struct ExchangeRatesApp: App {
                 if showLaunchScreen {
                     LaunchScreenView()
                         .preferredColorScheme(colorScheme)
+                        .environment(\.locale, currentLocale)
                         .transition(.opacity)
                         .zIndex(1)
                 } else {
                     ContentView()
                         .preferredColorScheme(colorScheme)
+                        .environment(\.locale, currentLocale)
                         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ColorSchemeChanged"))) { _ in
                             colorScheme = ColorSchemeManager.shared.getColorScheme().colorScheme
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("LanguageChanged"))) { _ in
+                            // Update locale when language changes
+                            currentLocale = LanguageManager.shared.currentLocale
                         }
                 }
             }

@@ -38,7 +38,7 @@ struct LaunchScreenView: View {
             
             // App title - on top layer
             VStack(spacing: 16) {
-                Text("שערי מטבעות")
+                Text(String(localized: "exchange_rates_title"))
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(.primary)
                     .opacity(titleOpacity)

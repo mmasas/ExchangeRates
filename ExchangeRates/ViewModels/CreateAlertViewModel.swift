@@ -10,8 +10,17 @@ import SwiftUI
 import Combine
 
 enum ConditionType: String, CaseIterable {
-    case above = "מעל"
-    case below = "מתחת"
+    case above = "above"
+    case below = "below"
+    
+    var localizedDisplayName: String {
+        switch self {
+        case .above:
+            return String(localized: "above", defaultValue: "Above")
+        case .below:
+            return String(localized: "below", defaultValue: "Below")
+        }
+    }
 }
 
 class CreateAlertViewModel: ObservableObject {
@@ -78,7 +87,7 @@ class CreateAlertViewModel: ObservableObject {
         }
         
         guard let targetValueDecimal = Decimal(string: targetValue) else {
-            errorMessage = "ערך יעד לא תקין"
+            errorMessage = String(localized: "invalid_target_value", defaultValue: "Invalid target value")
             return false
         }
         
@@ -127,27 +136,27 @@ class CreateAlertViewModel: ObservableObject {
         errorMessage = nil
         
         guard !baseCurrency.isEmpty else {
-            errorMessage = "נא לבחור מטבע בסיס"
+            errorMessage = String(localized: "please_select_base_currency", defaultValue: "Please select a base currency")
             return false
         }
         
         guard !targetCurrency.isEmpty else {
-            errorMessage = "נא לבחור מטבע יעד"
+            errorMessage = String(localized: "please_select_target_currency", defaultValue: "Please select a target currency")
             return false
         }
         
         guard baseCurrency != targetCurrency else {
-            errorMessage = "מטבע בסיס ומטבע יעד חייבים להיות שונים"
+            errorMessage = String(localized: "base_and_target_must_differ", defaultValue: "Base currency and target currency must be different")
             return false
         }
         
         guard !targetValue.isEmpty else {
-            errorMessage = "נא להזין ערך יעד"
+            errorMessage = String(localized: "please_enter_target_value", defaultValue: "Please enter a target value")
             return false
         }
         
         guard let value = Decimal(string: targetValue), value > 0 else {
-            errorMessage = "ערך יעד חייב להיות מספר חיובי"
+            errorMessage = String(localized: "target_value_must_be_positive", defaultValue: "Target value must be a positive number")
             return false
         }
         

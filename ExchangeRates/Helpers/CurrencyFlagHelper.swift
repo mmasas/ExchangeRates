@@ -55,10 +55,10 @@ struct CurrencyFlagHelper {
     static func countryName(for currencyCode: String) -> String {
         // Check special mappings first
         let specialCountryNames: [String: String] = [
-            "EUR": "אירופה",
-            "XAF": "מרכז אפריקה",
-            "XOF": "מערב אפריקה",
-            "XPF": "פולינזיה הצרפתית"
+            "EUR": String(localized: "europe", defaultValue: "Europe"),
+            "XAF": String(localized: "central_africa", defaultValue: "Central Africa"),
+            "XOF": String(localized: "west_africa", defaultValue: "West Africa"),
+            "XPF": String(localized: "french_polynesia", defaultValue: "French Polynesia")
         ]
         
         if let specialName = specialCountryNames[currencyCode] {
@@ -68,8 +68,8 @@ struct CurrencyFlagHelper {
         // Convert currency code to country code
         let countryCode = String(currencyCode.prefix(2))
         
-        // Get country name from locale
-        let locale = Locale(identifier: "he_IL")
+        // Get country name from locale using LanguageManager
+        let locale = LanguageManager.shared.currentLocale
         if let countryName = locale.localizedString(forRegionCode: countryCode) {
             return countryName
         }

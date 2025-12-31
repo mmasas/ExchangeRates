@@ -21,8 +21,8 @@ struct CreateAlertView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("מטבע בסיס", selection: $viewModel.baseCurrency) {
-                        Text("בחר מטבע").tag("")
+                    Picker(String(localized: "base_currency"), selection: $viewModel.baseCurrency) {
+                        Text(String(localized: "select_currency")).tag("")
                         ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
                             Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
                                 .tag(code)
@@ -37,7 +37,7 @@ struct CreateAlertView: View {
                                 Spacer()
                                 Image(systemName: "arrow.up.arrow.down")
                                     .font(.system(size: 16, weight: .medium))
-                                Text("הפוך סדר")
+                                Text(String(localized: "swap_order"))
                                     .font(.system(size: 16))
                                 Spacer()
                             }
@@ -45,8 +45,8 @@ struct CreateAlertView: View {
                         }
                     }
                     
-                    Picker("מטבע יעד", selection: $viewModel.targetCurrency) {
-                        Text("בחר מטבע").tag("")
+                    Picker(String(localized: "target_currency"), selection: $viewModel.targetCurrency) {
+                        Text(String(localized: "select_currency")).tag("")
                         ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
                             Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
                                 .tag(code)
@@ -55,7 +55,7 @@ struct CreateAlertView: View {
                     
                     if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
                         HStack {
-                            Text("שער נוכחי")
+                            Text(String(localized: "current_rate"))
                                 .foregroundColor(.secondary)
                             Spacer()
                             if viewModel.isLoadingRate {
@@ -72,7 +72,7 @@ struct CreateAlertView: View {
                         }
                     }
                 } header: {
-                    Text("זוג מטבעות")
+                    Text(String(localized: "currency_pair"))
                 } footer: {
                     if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
                         if let rate = viewModel.currentRate {
@@ -84,14 +84,14 @@ struct CreateAlertView: View {
                 }
                 
                 Section {
-                    Picker("תנאי", selection: $viewModel.conditionType) {
+                    Picker(String(localized: "condition"), selection: $viewModel.conditionType) {
                         ForEach(ConditionType.allCases, id: \.self) { type in
-                            Text(type.rawValue).tag(type)
+                            Text(type.localizedDisplayName).tag(type)
                         }
                     }
                     
                     HStack {
-                        Text("ערך יעד")
+                        Text(String(localized: "target_value"))
                         Spacer()
                         TextField("0.0000", text: $viewModel.targetValue)
                             .keyboardType(.decimalPad)
@@ -99,22 +99,22 @@ struct CreateAlertView: View {
                             .frame(width: 120)
                     }
                 } header: {
-                    Text("תנאי התראה")
+                    Text(String(localized: "alert_condition"))
                 }
                 
                 Section {
-                    Toggle("הפעל התראה", isOn: $viewModel.isEnabled)
+                    Toggle(String(localized: "enable_alert"), isOn: $viewModel.isEnabled)
                     
-                    Picker("איפוס אוטומטי", selection: $viewModel.autoResetHours) {
-                        Text("ללא איפוס אוטומטי").tag(nil as Int?)
-                        Text("אחרי 1 שעה").tag(1 as Int?)
-                        Text("אחרי 6 שעות").tag(6 as Int?)
-                        Text("אחרי 12 שעות").tag(12 as Int?)
-                        Text("אחרי 24 שעות").tag(24 as Int?)
-                        Text("אחרי 48 שעות").tag(48 as Int?)
+                    Picker(String(localized: "auto_reset"), selection: $viewModel.autoResetHours) {
+                        Text(String(localized: "no_auto_reset")).tag(nil as Int?)
+                        Text(String(format: String(localized: "after_hours", defaultValue: "After %lld hours"), 1)).tag(1 as Int?)
+                        Text(String(format: String(localized: "after_hours", defaultValue: "After %lld hours"), 6)).tag(6 as Int?)
+                        Text(String(format: String(localized: "after_hours", defaultValue: "After %lld hours"), 12)).tag(12 as Int?)
+                        Text(String(format: String(localized: "after_hours", defaultValue: "After %lld hours"), 24)).tag(24 as Int?)
+                        Text(String(format: String(localized: "after_hours", defaultValue: "After %lld hours"), 48)).tag(48 as Int?)
                     }
                 } header: {
-                    Text("הגדרות נוספות")
+                    Text(String(localized: "additional_settings"))
                 }
                 
                 if let error = viewModel.errorMessage {
@@ -125,18 +125,18 @@ struct CreateAlertView: View {
                     }
                 }
             }
-            .navigationTitle(viewModel.editingAlert != nil ? "ערוך התראה" : "התראה חדשה")
+            .navigationTitle(viewModel.editingAlert != nil ? String(localized: "edit_alert") : String(localized: "new_alert"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("ביטול") {
+                    Button(String(localized: "cancel")) {
                         dismiss()
                         onDismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("שמור") {
+                    Button(String(localized: "save")) {
                         if viewModel.saveAlert() {
                             dismiss()
                             onDismiss()

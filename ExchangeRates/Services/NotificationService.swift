@@ -71,7 +71,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
             }
             
             let content = UNMutableNotificationContent()
-            content.title = "התראה על שער מטבע"
+            content.title = String(localized: "currency_alert_notification_title", defaultValue: "Currency Rate Alert")
             content.body = createNotificationBody(for: alert, currentRate: currentRate)
             content.sound = .default
             content.badge = 1
@@ -124,7 +124,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         let formattedTarget = String(format: "%.4f", targetValue)
         let formattedCurrent = String(format: "%.4f", currentRate)
         
-        return "\(pair) חצה את הערך \(conditionText) \(formattedTarget). השער הנוכחי: \(formattedCurrent)"
+        return String(format: String(localized: "notification_body", defaultValue: "%@ crossed the value %@ %@. Current rate: %@"), pair, conditionText, formattedTarget, formattedCurrent)
     }
     
     /// Checks current notification authorization status

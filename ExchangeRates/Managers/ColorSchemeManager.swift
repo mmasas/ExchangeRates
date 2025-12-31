@@ -16,11 +16,11 @@ enum ColorSchemeOption: String, CaseIterable {
     var displayName: String {
         switch self {
         case .system:
-            return "מערכת"
+            return String(localized: "system", defaultValue: "System")
         case .light:
-            return "בהיר"
+            return String(localized: "light", defaultValue: "Light")
         case .dark:
-            return "כהה"
+            return String(localized: "dark", defaultValue: "Dark")
         }
     }
     

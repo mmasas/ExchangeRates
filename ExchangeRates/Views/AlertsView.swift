@@ -20,10 +20,10 @@ struct AlertsView: View {
                         Image(systemName: "bell.slash")
                             .font(.system(size: 48))
                             .foregroundColor(.secondary)
-                        Text("אין התראות מוגדרות")
+                        Text(String(localized: "no_alerts_configured"))
                             .font(.headline)
                             .foregroundColor(.primary)
-                        Text("הוסף התראה חדשה כדי להתחיל")
+                        Text(String(localized: "add_alert_to_start"))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -46,7 +46,7 @@ struct AlertsView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("התראות שערי מטבע")
+        .navigationTitle(String(localized: "alerts_title"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -94,8 +94,8 @@ struct AlertsView: View {
             // Clear badge when viewing alerts
             NotificationService.shared.clearBadge()
         }
-        .alert("שגיאה", isPresented: .constant(viewModel.errorMessage != nil)) {
-            Button("אישור", role: .cancel) {
+        .alert(String(localized: "error"), isPresented: .constant(viewModel.errorMessage != nil)) {
+            Button(String(localized: "ok"), role: .cancel) {
                 viewModel.errorMessage = nil
             }
         } message: {
@@ -187,7 +187,7 @@ struct AlertRow: View {
                             Button {
                                 onReset()
                             } label: {
-                                Text("איפוס")
+                                Text(String(localized: "reset"))
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(.white)
                                     .padding(.horizontal, 10)
@@ -204,7 +204,7 @@ struct AlertRow: View {
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.clockwise")
                                 .font(.system(size: 10))
-                            Text("איפוס אוטומטי: \(autoReset) שעות")
+                            Text(String(format: String(localized: "auto_reset_after_hours", defaultValue: "Auto reset: %lld hours"), autoReset))
                                 .font(.system(size: 11))
                         }
                         .foregroundColor(.secondary)
@@ -222,13 +222,13 @@ struct AlertRow: View {
             Button(role: .destructive) {
                 onDelete()
             } label: {
-                Label("מחק", systemImage: "trash")
+                Label(String(localized: "delete"), systemImage: "trash")
             }
             
             Button {
                 onEdit()
             } label: {
-                Label("ערוך", systemImage: "pencil")
+                Label(String(localized: "edit"), systemImage: "pencil")
             }
             .tint(.blue)
         }
@@ -237,9 +237,9 @@ struct AlertRow: View {
     private var conditionText: String {
         switch alert.condition {
         case .above:
-            return "מעל ל־"
+            return String(localized: "above", defaultValue: "Above")
         case .below:
-            return "מתחת ל־"
+            return String(localized: "below", defaultValue: "Below")
         }
     }
     
@@ -251,7 +251,7 @@ struct AlertRow: View {
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy, HH:mm"
-        formatter.locale = Locale(identifier: "he_IL")
+        formatter.locale = LanguageManager.shared.currentLocale
         return formatter.string(from: date)
     }
 }
@@ -278,11 +278,11 @@ struct StatusBadge: View {
     private var statusText: String {
         switch status {
         case .active:
-            return "פעיל"
+            return String(localized: "active", defaultValue: "Active")
         case .triggered:
-            return "הופעל"
+            return String(localized: "triggered", defaultValue: "Triggered")
         case .paused:
-            return "מושהה"
+            return String(localized: "paused", defaultValue: "Paused")
         }
     }
     

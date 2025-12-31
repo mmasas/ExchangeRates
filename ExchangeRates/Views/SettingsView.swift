@@ -18,9 +18,21 @@ struct SettingsView: View {
     
     var body: some View {
         List {
+            // Language section
+            Section {
+                Picker(String(localized: "language"), selection: $viewModel.language) {
+                    ForEach(AppLanguage.allCases, id: \.self) { language in
+                        Text(language.displayName).tag(language)
+                    }
+                }
+                .pickerStyle(.menu)
+            } header: {
+                Text(String(localized: "language"))
+            }
+            
             // Home Currency section
             Section {
-                Picker("מטבע בית", selection: $viewModel.homeCurrency) {
+                Picker(String(localized: "home_currency"), selection: $viewModel.homeCurrency) {
                     ForEach(viewModel.allCurrenciesForHomePicker, id: \.self) { code in
                         Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
                             .tag(code)
@@ -28,9 +40,9 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.menu)
             } header: {
-                Text("מטבע בית")
+                Text(String(localized: "home_currency"))
             } footer: {
-                Text("כל שערי המטבעות יוצגו ביחס למטבע הבית שנבחר")
+                Text(String(localized: "home_currency_footer"))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -45,8 +57,8 @@ struct SettingsView: View {
                     }
                     .padding()
                 } else {
-                    Picker("הוסף מטבע", selection: $viewModel.selectedCurrency) {
-                        Text("בחר מטבע").tag("")
+                    Picker(String(localized: "add_currency"), selection: $viewModel.selectedCurrency) {
+                        Text(String(localized: "select_currency")).tag("")
                         ForEach(viewModel.availableCurrencies, id: \.self) { code in
                             Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
                                 .tag(code)
@@ -60,7 +72,7 @@ struct SettingsView: View {
                         } label: {
                             HStack {
                                 Spacer()
-                                Text("הוסף")
+                                Text(String(localized: "add"))
                                     .font(.system(size: 16, weight: .semibold))
                                 Spacer()
                             }
@@ -75,7 +87,7 @@ struct SettingsView: View {
                         .font(.caption)
                 }
             } header: {
-                Text("הוסף מטבע חדש")
+                Text(String(localized: "add_new_currency"))
             }
             
             // Current custom currencies section
@@ -97,7 +109,7 @@ struct SettingsView: View {
                     }
                     .onDelete(perform: viewModel.removeCurrency)
                 } header: {
-                    Text("מטבעות מותאמים אישית")
+                    Text(String(localized: "custom_currencies"))
                 }
             }
             
@@ -108,7 +120,7 @@ struct SettingsView: View {
                         Image(systemName: "bell.fill")
                             .foregroundColor(.blue)
                             .frame(width: 24)
-                        Text("התראות שערי מטבע")
+                        Text(String(localized: "alerts_title"))
                             .layoutPriority(1)
                         Spacer(minLength: 8)
                         if viewModel.activeAlertsCount > 0 {
@@ -123,19 +135,19 @@ struct SettingsView: View {
                     }
                 }
             } header: {
-                Text("התראות")
+                Text(String(localized: "alerts"))
             }
             
             // Color scheme section
             Section {
-                Picker("ערכת נושא", selection: $viewModel.colorScheme) {
+                Picker(String(localized: "color_scheme"), selection: $viewModel.colorScheme) {
                     ForEach(ColorSchemeOption.allCases, id: \.self) { option in
                         Text(option.displayName).tag(option)
                     }
                 }
                 .pickerStyle(.menu)
             } header: {
-                Text("ערכת נושא")
+                Text(String(localized: "color_scheme"))
             }
             
             // Reset currency order section
@@ -145,17 +157,24 @@ struct SettingsView: View {
                 } label: {
                     HStack {
                         Spacer()
-                        Text("איפוס סדר מטבעות")
+                        Text(String(localized: "reset_currency_order"))
                             .font(.system(size: 16, weight: .semibold))
                         Spacer()
                     }
                 }
             }
         }
-        .navigationTitle("הגדרות")
+        .navigationTitle(String(localized: "settings"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.loadData()
+        }
+        .alert(String(localized: "language_change_restart_required", defaultValue: "Language Changed"), isPresented: $viewModel.showLanguageChangeAlert) {
+            Button(String(localized: "ok"), role: .cancel) {
+                viewModel.showLanguageChangeAlert = false
+            }
+        } message: {
+            Text(String(localized: "language_change_message", defaultValue: "Please close and reopen the app for the language change to take full effect."))
         }
     }
 }
@@ -182,6 +201,19 @@ class SettingsViewModel: ObservableObject {
             )
         }
     }
+    @Published var language: AppLanguage {
+        didSet {
+            // Only show alert if language actually changed (not during initial load)
+            if oldValue != language && !isInitialLoad {
+                LanguageManager.shared.setLanguage(language)
+                showLanguageChangeAlert = true
+            } else if oldValue != language {
+                LanguageManager.shared.setLanguage(language)
+            }
+        }
+    }
+    @Published var showLanguageChangeAlert: Bool = false
+    private var isInitialLoad: Bool = true
     
     private let currencyManager = CustomCurrencyManager.shared
     private let colorSchemeManager = ColorSchemeManager.shared
@@ -199,6 +231,7 @@ class SettingsViewModel: ObservableObject {
         self.existingCurrencyCodes = existingCurrencyCodes
         self.colorScheme = ColorSchemeManager.shared.getColorScheme()
         self.homeCurrency = HomeCurrencyManager.shared.getHomeCurrency()
+        self.language = LanguageManager.shared.getLanguage()
     }
     
     func loadData() {
@@ -206,7 +239,12 @@ class SettingsViewModel: ObservableObject {
         updateAvailableCurrencies()
         colorScheme = colorSchemeManager.getColorScheme()
         homeCurrency = homeCurrencyManager.getHomeCurrency()
+        language = LanguageManager.shared.getLanguage()
         updateActiveAlertsCount()
+        // Mark initial load as complete after a short delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.isInitialLoad = false
+        }
     }
     
     private func updateActiveAlertsCount() {
@@ -246,7 +284,7 @@ class SettingsViewModel: ObservableObject {
                 )
                 
             } catch {
-                errorMessage = "נכשל בטעינת שער המרה: \(error.localizedDescription)"
+                errorMessage = String(format: String(localized: "failed_to_load_exchange_rate", defaultValue: "Failed to load exchange rate: %@"), String(describing: error.localizedDescription))
             }
             
             isLoading = false
