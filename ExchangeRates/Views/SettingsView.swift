@@ -104,11 +104,13 @@ struct SettingsView: View {
             // Currency Alerts section
             Section {
                 NavigationLink(value: "alerts") {
-                    HStack {
+                    HStack(spacing: 12) {
                         Image(systemName: "bell.fill")
                             .foregroundColor(.blue)
+                            .frame(width: 24)
                         Text("התראות שערי מטבע")
-                        Spacer()
+                            .layoutPriority(1)
+                        Spacer(minLength: 8)
                         if viewModel.activeAlertsCount > 0 {
                             Text("\(viewModel.activeAlertsCount)")
                                 .font(.caption)
@@ -134,6 +136,20 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
             } header: {
                 Text("ערכת נושא")
+            }
+            
+            // Reset currency order section
+            Section {
+                Button {
+                    viewModel.resetCurrencyOrder()
+                } label: {
+                    HStack {
+                        Spacer()
+                        Text("איפוס סדר מטבעות")
+                            .font(.system(size: 16, weight: .semibold))
+                        Spacer()
+                    }
+                }
             }
         }
         .navigationTitle("הגדרות")
@@ -171,13 +187,12 @@ class SettingsViewModel: ObservableObject {
     private let colorSchemeManager = ColorSchemeManager.shared
     private let alertManager = CurrencyAlertManager.shared
     private let homeCurrencyManager = HomeCurrencyManager.shared
+    private let orderManager = CurrencyOrderManager.shared
     private let existingCurrencyCodes: [String]
     
     // All currencies sorted for home currency picker (main currencies first)
     var allCurrenciesForHomePicker: [String] {
-        let allLocaleCurrencies = Locale.commonISOCurrencyCodes
-        let allCurrencies = Array(Set(MainCurrenciesHelper.mainCurrencies + allLocaleCurrencies))
-        return MainCurrenciesHelper.sortCurrencies(allCurrencies)
+        MainCurrenciesHelper.getAllCurrenciesForPicker()
     }
     
     init(existingCurrencyCodes: [String] = []) {
@@ -201,8 +216,8 @@ class SettingsViewModel: ObservableObject {
     private func updateAvailableCurrencies() {
         // Exclude home currency, existing main currencies, and already-added custom currencies
         let homeCurrency = homeCurrencyManager.getHomeCurrency()
-        let excluded = Set(customCurrencies + existingCurrencyCodes + [homeCurrency])
-        availableCurrencies = currencyManager.getAvailableCurrencyCodes(excluding: Array(excluded))
+        let excluded = customCurrencies + existingCurrencyCodes + [homeCurrency]
+        availableCurrencies = currencyManager.getAvailableCurrenciesForAdding(excluding: excluded)
     }
     
     func addSelectedCurrency() {
@@ -256,6 +271,17 @@ class SettingsViewModel: ObservableObject {
                 userInfo: ["currencyCode": code]
             )
         }
+    }
+    
+    func resetCurrencyOrder() {
+        // Reset the order using the manager which handles combining, sorting, and resetting
+        orderManager.resetToDefaultOrderWithCurrentCurrencies(existingCurrencyCodes: existingCurrencyCodes)
+        
+        // Notify ExchangeRatesViewModel to refresh the view
+        NotificationCenter.default.post(
+            name: NSNotification.Name("CurrencyOrderReset"),
+            object: nil
+        )
     }
 }
 

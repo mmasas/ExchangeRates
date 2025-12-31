@@ -77,5 +77,19 @@ struct CurrencyFlagHelper {
         // Fallback to currency code if country name not found
         return currencyCode
     }
+    
+    /// Get formatted currency symbol for a given currency code
+    /// Returns the currency symbol (e.g., $, €, ₪) or the currency code as fallback
+    static func currencySymbol(for currencyCode: String) -> String {
+        let locale = Locale(identifier: "en_US")
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        if let currencySymbol = formatter.currencySymbol {
+            return currencySymbol
+        }
+        // Fallback to currency code if symbol not found
+        return currencyCode
+    }
 }
 

@@ -29,6 +29,22 @@ struct CreateAlertView: View {
                         }
                     }
                     
+                    if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
+                        Button(action: {
+                            viewModel.swapCurrencies()
+                        }) {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "arrow.up.arrow.down")
+                                    .font(.system(size: 16, weight: .medium))
+                                Text("הפוך סדר")
+                                    .font(.system(size: 16))
+                                Spacer()
+                            }
+                            .foregroundColor(.blue)
+                        }
+                    }
+                    
                     Picker("מטבע יעד", selection: $viewModel.targetCurrency) {
                         Text("בחר מטבע").tag("")
                         ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in

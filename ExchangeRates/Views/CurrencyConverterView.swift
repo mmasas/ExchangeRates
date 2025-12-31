@@ -20,18 +20,7 @@ struct CurrencyConverterView: View {
     }
     
     private var homeCurrencySymbol: String {
-        let locale = Locale(identifier: "en_US")
-        if let symbol = locale.localizedString(forCurrencyCode: viewModel.homeCurrencyCode) {
-            // Try to get the actual symbol
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.currencyCode = viewModel.homeCurrencyCode
-            if let currencySymbol = formatter.currencySymbol {
-                return currencySymbol
-            }
-        }
-        // Fallback to currency code
-        return viewModel.homeCurrencyCode
+        CurrencyFlagHelper.currencySymbol(for: viewModel.homeCurrencyCode)
     }
     
     var body: some View {

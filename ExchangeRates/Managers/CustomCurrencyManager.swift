@@ -46,5 +46,14 @@ class CustomCurrencyManager {
             !existingSet.contains(code) && !customSet.contains(code)
         }.sorted()
     }
+    
+    /// Get available currencies for adding, properly sorted
+    /// Excludes home currency, existing main currencies, and already-added custom currencies
+    /// Returns currencies sorted using MainCurrenciesHelper
+    func getAvailableCurrenciesForAdding(excluding excludedCodes: [String]) -> [String] {
+        let excludedSet = Set(excludedCodes)
+        let availableCodes = Locale.commonISOCurrencyCodes.filter { !excludedSet.contains($0) }
+        return MainCurrenciesHelper.sortCurrencies(availableCodes)
+    }
 }
 

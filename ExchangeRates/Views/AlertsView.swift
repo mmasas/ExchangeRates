@@ -114,67 +114,110 @@ struct AlertRow: View {
     let onDelete: () -> Void
     
     var body: some View {
-        HStack(spacing: 12) {
-            // Flags
-            HStack(spacing: 4) {
-                Text(CurrencyFlagHelper.flag(for: alert.baseCurrency))
-                    .font(.system(size: 28))
-                Text(CurrencyFlagHelper.flag(for: alert.targetCurrency))
-                    .font(.system(size: 28))
-            }
-            
-            // Currency info and condition
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
-                    Text(alert.currencyPair)
-                        .font(.system(size: 16, weight: .semibold))
+        VStack(alignment: .leading, spacing: 12) {
+            // Top row: Currency pair with flags + Toggle
+            HStack(alignment: .center) {
+                // Flags and currency codes
+                HStack(spacing: 8) {
+                    // Base currency
+                    HStack(spacing: 4) {
+                        Text(CurrencyFlagHelper.flag(for: alert.baseCurrency))
+                            .font(.system(size: 24))
+                        Text(alert.baseCurrency)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.primary)
+                    }
                     
-                    Text(statusText)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(statusColor)
-                }
-                
-                HStack(spacing: 4) {
-                    Text(conditionText)
-                        .font(.system(size: 13))
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.secondary)
                     
-                    Text(formatValue(alert.targetValue))
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.primary)
-                }
-                
-                if alert.status == .triggered, let triggeredAt = alert.triggeredAt {
-                    HStack(spacing: 8) {
-                        Text("הופעל: \(formatDate(triggeredAt))")
-                            .font(.system(size: 11))
-                            .foregroundColor(.orange)
-                        
-                        Button("איפוס") {
-                            onReset()
-                        }
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.blue)
+                    // Target currency
+                    HStack(spacing: 4) {
+                        Text(CurrencyFlagHelper.flag(for: alert.targetCurrency))
+                            .font(.system(size: 24))
+                        Text(alert.targetCurrency)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.primary)
                     }
                 }
                 
-                if let autoReset = alert.autoResetAfterHours {
-                    Text("איפוס אוטומטי: \(autoReset) שעות")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary)
-                }
+                Spacer()
+                
+                // Toggle
+                Toggle("", isOn: Binding(
+                    get: { alert.isEnabled },
+                    set: { _ in onToggle() }
+                ))
+                .labelsHidden()
+                .tint(.green)
             }
             
-            Spacer()
+            // Divider
+            Rectangle()
+                .fill(Color.secondary.opacity(0.2))
+                .frame(height: 1)
             
-            // Toggle
-            Toggle("", isOn: Binding(
-                get: { alert.isEnabled },
-                set: { _ in onToggle() }
-            ))
-            .labelsHidden()
+            // Bottom section: Condition + Status
+            HStack(alignment: .top) {
+                // Condition info
+                VStack(alignment: .leading, spacing: 6) {
+                    // Condition with value
+                    HStack(spacing: 6) {
+                        Text(conditionText)
+                            .font(.system(size: 14))
+                            .foregroundColor(.secondary)
+                        
+                        Text(formatValue(alert.targetValue))
+                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .foregroundColor(.primary)
+                    }
+                    
+                    // Triggered info
+                    if alert.status == .triggered, let triggeredAt = alert.triggeredAt {
+                        HStack(spacing: 12) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "bell.fill")
+                                    .font(.system(size: 11))
+                                Text(formatDate(triggeredAt))
+                                    .font(.system(size: 12))
+                            }
+                            .foregroundColor(.orange)
+                            
+                            Button {
+                                onReset()
+                            } label: {
+                                Text("איפוס")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 4)
+                                    .background(Color.blue)
+                                    .clipShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    
+                    // Auto reset info
+                    if let autoReset = alert.autoResetAfterHours {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 10))
+                            Text("איפוס אוטומטי: \(autoReset) שעות")
+                                .font(.system(size: 11))
+                        }
+                        .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                // Status badge
+                StatusBadge(status: alert.status)
+            }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 12)
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive) {
                 onDelete()
@@ -187,11 +230,53 @@ struct AlertRow: View {
             } label: {
                 Label("ערוך", systemImage: "pencil")
             }
+            .tint(.blue)
         }
     }
     
+    private var conditionText: String {
+        switch alert.condition {
+        case .above:
+            return "מעל ל־"
+        case .below:
+            return "מתחת ל־"
+        }
+    }
+    
+    private func formatValue(_ value: Decimal) -> String {
+        let doubleValue = Double(truncating: value as NSDecimalNumber)
+        return String(format: "%.4f", doubleValue)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy, HH:mm"
+        formatter.locale = Locale(identifier: "he_IL")
+        return formatter.string(from: date)
+    }
+}
+
+struct StatusBadge: View {
+    let status: AlertStatus
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            Circle()
+                .fill(statusColor)
+                .frame(width: 8, height: 8)
+            
+            Text(statusText)
+                .font(.system(size: 12, weight: .medium))
+        }
+        .foregroundColor(statusColor)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .background(statusColor.opacity(0.12))
+        .clipShape(Capsule())
+    }
+    
     private var statusText: String {
-        switch alert.status {
+        switch status {
         case .active:
             return "פעיל"
         case .triggered:
@@ -202,7 +287,7 @@ struct AlertRow: View {
     }
     
     private var statusColor: Color {
-        switch alert.status {
+        switch status {
         case .active:
             return .green
         case .triggered:
@@ -210,23 +295,6 @@ struct AlertRow: View {
         case .paused:
             return .gray
         }
-    }
-    
-    private var conditionText: String {
-        return alert.condition.displayName
-    }
-    
-    private func formatValue(_ value: Decimal) -> String {
-        let doubleValue = Double(truncating: value as NSDecimalNumber)
-        return String(format: "%.4f", doubleValue)
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        formatter.locale = Locale(identifier: "he_IL")
-        return formatter.string(from: date)
     }
 }
 

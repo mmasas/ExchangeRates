@@ -81,6 +81,18 @@ class ExchangeRatesViewModel: ObservableObject {
             self.loadExchangeRates()
             self.loadCustomExchangeRates()
         }
+        
+        // Listen for currency order reset
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("CurrencyOrderReset"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            print("🔄 [ExchangeRatesViewModel] Currency order reset, refreshing view")
+            // Force view update by triggering a published property change
+            self.objectWillChange.send()
+        }
     }
     
     func loadExchangeRates() {

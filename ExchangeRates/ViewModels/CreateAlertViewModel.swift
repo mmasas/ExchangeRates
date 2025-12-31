@@ -159,27 +159,8 @@ class CreateAlertViewModel: ObservableObject {
     }
     
     private func computeAvailableCurrencies() -> [String] {
-        // Main currencies (14 main currencies) - shown first
-        let mainCurrencies = MainCurrenciesHelper.mainCurrencies
-        
-        // Custom currencies added by user
         let customCurrencies = CustomCurrencyManager.shared.getCustomCurrencies()
-        
-        // All other currencies from Locale
-        let allLocaleCurrencies = Locale.commonISOCurrencyCodes
-        
-        // Combine all and remove duplicates
-        let allCurrenciesSet = Set(mainCurrencies + customCurrencies + allLocaleCurrencies)
-        
-        // Separate into main, custom, and others
-        let mainSet = Set(mainCurrencies)
-        let customSet = Set(customCurrencies)
-        let othersSet = allCurrenciesSet.subtracting(mainSet).subtracting(customSet)
-        
-        // Return: main currencies first (in order), then custom, then others (sorted)
-        return mainCurrencies.filter { allCurrenciesSet.contains($0) } +
-               customCurrencies.sorted() +
-               Array(othersSet).sorted()
+        return MainCurrenciesHelper.getAllCurrenciesIncludingCustom(customCurrencies: customCurrencies)
     }
     
     func loadCurrentRate() {
@@ -208,6 +189,31 @@ class CreateAlertViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func swapCurrencies() {
+        guard !baseCurrency.isEmpty && !targetCurrency.isEmpty && baseCurrency != targetCurrency else {
+            return
+        }
+        
+        // Swap currencies
+        let tempCurrency = baseCurrency
+        baseCurrency = targetCurrency
+        targetCurrency = tempCurrency
+        
+        // Invert the current rate
+        if let rate = currentRate, rate > 0 {
+            currentRate = 1.0 / rate
+        }
+        
+        // Invert the target value
+        if let targetValueDecimal = Decimal(string: targetValue), targetValueDecimal > 0 {
+            let invertedValue = Decimal(1) / targetValueDecimal
+            targetValue = String(describing: invertedValue)
+        }
+        
+        // Swap condition type (above ↔ below)
+        conditionType = conditionType == .above ? .below : .above
     }
 }
 

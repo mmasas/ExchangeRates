@@ -50,6 +50,20 @@ class CurrencyOrderManager {
         saveOrder(currencies)
     }
     
+    /// Reset order to default with current currencies (existing + custom)
+    /// Combines existing currency codes with custom currencies, sorts them, and resets the order
+    func resetToDefaultOrderWithCurrentCurrencies(existingCurrencyCodes: [String]) {
+        // Get all current currencies (main + custom)
+        let customCurrencies = CustomCurrencyManager.shared.getCustomCurrencies()
+        let allCurrencies = existingCurrencyCodes + customCurrencies
+        
+        // Sort them using MainCurrenciesHelper to get default order (main currencies first, then alphabetical)
+        let sortedCurrencies = MainCurrenciesHelper.sortCurrencies(allCurrencies)
+        
+        // Reset the order
+        resetToDefaultOrder(with: sortedCurrencies)
+    }
+    
     /// Add a currency to the end of the order
     func addCurrency(_ code: String) {
         var order = getOrderedCurrencies()
