@@ -1,0 +1,53 @@
+//
+//  MainCurrenciesHelper.swift
+//  ExchangeRates
+//
+//  Created by Moshe Masas on 30/12/2025.
+//
+
+import Foundation
+
+class MainCurrenciesHelper {
+    /// The 14 main currencies that should appear first in all pickers
+    static let mainCurrencies: [String] = [
+        "USD", // דולר אמריקאי 🇺🇸
+        "EUR", // אירו 🇪🇺
+        "JPY", // ין יפני 🇯🇵
+        "GBP", // לירה שטרלינג 🇬🇧
+        "CNY", // יואן סיני 🇨🇳
+        "AUD", // דולר אוסטרלי 🇦🇺
+        "CAD", // דולר קנדי 🇨🇦
+        "CHF", // פרנק שווייצרי 🇨🇭
+        "KRW", // וון דרום־קוריאני 🇰🇷
+        "ILS", // שקל חדש 🇮🇱
+        "CZK", // קורונה צ'כית 🇨🇿
+        "PLN", // זלוטי פולני 🇵🇱
+        "THB", // באט תאילנדי 🇹🇭
+        "AED"  // דירהם איחוד האמירויות 🇦🇪
+    ]
+    
+    /// Check if a currency is a main currency
+    static func isMainCurrency(_ code: String) -> Bool {
+        return mainCurrencies.contains(code)
+    }
+    
+    /// Sort currencies with main currencies first, then others alphabetically
+    static func sortCurrencies(_ currencies: [String]) -> [String] {
+        let mainSet = Set(mainCurrencies)
+        let currencySet = Set(currencies)
+        
+        // Separate into main and others
+        let main = mainCurrencies.filter { currencySet.contains($0) }
+        let others = currencies.filter { !mainSet.contains($0) }.sorted()
+        
+        return main + others
+    }
+    
+    /// Get all currencies sorted (main first, then all others from Locale)
+    static func getAllCurrenciesSorted() -> [String] {
+        let allLocaleCurrencies = Locale.commonISOCurrencyCodes
+        let allCurrencies = Array(Set(mainCurrencies + allLocaleCurrencies))
+        return sortCurrencies(allCurrencies)
+    }
+}
+
