@@ -25,15 +25,18 @@ struct LaunchScreenView: View {
             
             // Currency symbols orbiting around center
             ForEach(0..<symbolCount, id: \.self) { index in
+                let radius: CGFloat = index == 0 ? 160 : 130 // Shekel symbol needs more distance
+                let angleOffset: Double = index == 0 ? -0.3 : 0 // Shekel symbol shifted upward
+                let baseAngle = Double(index) * 2 * .pi / Double(symbolCount)
+                let angle = rotationAngle + baseAngle + angleOffset
+                let xOffset = cos(angle) * radius
+                let yOffset = sin(angle) * radius
                 Text(currencySymbols[index])
                     .font(.system(size: 32, weight: .medium))
                     .foregroundColor(.primary)
                     .opacity(symbolOpacities[index])
                     .scaleEffect(symbolScales[index])
-                    .offset(
-                        x: cos(rotationAngle + Double(index) * 2 * .pi / Double(symbolCount)) * 130,
-                        y: sin(rotationAngle + Double(index) * 2 * .pi / Double(symbolCount)) * 130
-                    )
+                    .offset(x: xOffset, y: yOffset)
             }
             
             // App title - on top layer

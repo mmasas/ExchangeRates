@@ -63,6 +63,18 @@
             "state" : "translated",
             "value" : "מעל ל־"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por encima"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Au-dessus"
+          }
         }
       }
     },
@@ -79,6 +91,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "פעיל"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actif"
           }
         }
       }
@@ -97,6 +121,18 @@
             "state" : "translated",
             "value" : "הוסף"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter"
+          }
         }
       }
     },
@@ -113,6 +149,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הוסף התראה חדשה כדי להתחיל"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade una nueva alerta para comenzar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez une nouvelle alerte pour commencer"
           }
         }
       }
@@ -131,6 +179,18 @@
             "state" : "translated",
             "value" : "הוסף מטבע"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir Moneda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une Devise"
+          }
         }
       }
     },
@@ -147,6 +207,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הוסף מטבע חדש"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir Nueva Moneda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une Nouvelle Devise"
           }
         }
       }
@@ -165,6 +237,18 @@
             "state" : "translated",
             "value" : "הגדרות נוספות"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración Adicional"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres Supplémentaires"
+          }
         }
       }
     },
@@ -181,6 +265,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אחרי %lld שעות"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Después de %lld horas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Après %lld heures"
           }
         }
       }
@@ -199,6 +295,18 @@
             "state" : "translated",
             "value" : "תנאי התראה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condición de Alerta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condition d'Alerte"
+          }
         }
       }
     },
@@ -215,6 +323,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "התראות"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alertas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alertes"
           }
         }
       }
@@ -233,6 +353,18 @@
             "state" : "translated",
             "value" : "התראות שערי מטבע"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alertas de Tipo de Cambio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alertes de Taux de Change"
+          }
         }
       }
     },
@@ -249,6 +381,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "איפוס אוטומטי"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reinicio Automático"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialisation Automatique"
           }
         }
       }
@@ -267,6 +411,18 @@
             "state" : "translated",
             "value" : "איפוס אוטומטי: %lld שעות"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reinicio automático: %lld horas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialisation automatique : %lld heures"
+          }
         }
       }
     },
@@ -283,6 +439,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מטבע בסיס ומטבע יעד חייבים להיות שונים"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La moneda base y la moneda objetivo deben ser diferentes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La devise de base et la devise cible doivent être différentes"
           }
         }
       }
@@ -301,6 +469,18 @@
             "state" : "translated",
             "value" : "מטבע בסיס"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moneda Base"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devise de Base"
+          }
         }
       }
     },
@@ -317,6 +497,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מתחת ל־"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por debajo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En dessous"
           }
         }
       }
@@ -335,6 +527,18 @@
             "state" : "translated",
             "value" : "ביטול"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
         }
       }
     },
@@ -351,6 +555,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מרכז אפריקה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "África Central"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afrique Centrale"
           }
         }
       }
@@ -369,6 +585,18 @@
             "state" : "translated",
             "value" : "ערכת נושא"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esquema de Color"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schéma de Couleurs"
+          }
         }
       }
     },
@@ -385,6 +613,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "תנאי"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condición"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condition"
           }
         }
       }
@@ -403,6 +643,18 @@
             "state" : "translated",
             "value" : "התראה על שער מטבע"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alerta de Tipo de Cambio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alerte de Taux de Change"
+          }
         }
       }
     },
@@ -419,6 +671,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ממיר מטבע"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convertidor de Moneda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convertisseur de Devises"
           }
         }
       }
@@ -437,6 +701,18 @@
             "state" : "translated",
             "value" : "זוג מטבעות"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par de Monedas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paire de Devises"
+          }
         }
       }
     },
@@ -453,6 +729,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שער נוכחי"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de Cambio Actual"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taux Actuel"
           }
         }
       }
@@ -471,6 +759,18 @@
             "state" : "translated",
             "value" : "מטבעות מותאמים אישית"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monedas Personalizadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devises Personnalisées"
+          }
         }
       }
     },
@@ -487,6 +787,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כהה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oscuro"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sombre"
           }
         }
       }
@@ -505,6 +817,18 @@
             "state" : "translated",
             "value" : "מחק"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer"
+          }
         }
       }
     },
@@ -521,6 +845,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ערוך"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier"
           }
         }
       }
@@ -539,6 +875,18 @@
             "state" : "translated",
             "value" : "ערוך התראה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar Alerta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier l'Alerte"
+          }
         }
       }
     },
@@ -555,6 +903,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הפעל התראה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar Alerta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer l'Alerte"
           }
         }
       }
@@ -573,6 +933,18 @@
             "state" : "translated",
             "value" : "אנגלית"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inglés"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anglais"
+          }
         }
       }
     },
@@ -589,6 +961,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שגיאה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur"
           }
         }
       }
@@ -607,6 +991,18 @@
             "state" : "translated",
             "value" : "שגיאה בבדיקת התראות: %@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al verificar alertas: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erreur lors de la vérification des alertes : %@"
+          }
         }
       }
     },
@@ -623,6 +1019,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אירופה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Europa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Europe"
           }
         }
       }
@@ -641,6 +1049,18 @@
             "state" : "translated",
             "value" : "שערי מטבעות"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipos de Cambio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taux de Change"
+          }
         }
       }
     },
@@ -657,6 +1077,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "נכשל בטעינת שער המרה: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al cargar el tipo de cambio: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec du chargement du taux de change : %@"
           }
         }
       }
@@ -675,6 +1107,18 @@
             "state" : "translated",
             "value" : "פולינזיה הצרפתית"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polinesia Francesa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polynésie Française"
+          }
         }
       }
     },
@@ -691,6 +1135,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "עברית"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hebreo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hébreu"
+          }
+        }
+      }
+    },
+    "spanish" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spanish"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ספרדית"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Español"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espagnol"
+          }
+        }
+      }
+    },
+    "french" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "French"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צרפתית"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Francés"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Français"
           }
         }
       }
@@ -709,6 +1223,18 @@
             "state" : "translated",
             "value" : "מטבע בית"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moneda Principal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devise Principale"
+          }
         }
       }
     },
@@ -725,6 +1251,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "כל שערי המטבעות יוצגו ביחס למטבע הבית שנבחר"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los tipos de cambio se mostrarán en relación con la moneda principal seleccionada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les taux de change seront affichés par rapport à la devise principale sélectionnée"
           }
         }
       }
@@ -743,6 +1281,18 @@
             "state" : "translated",
             "value" : "ערך יעד לא תקין"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor objetivo no válido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valeur cible invalide"
+          }
         }
       }
     },
@@ -759,6 +1309,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שפה"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue"
           }
         }
       }
@@ -777,6 +1339,18 @@
             "state" : "translated",
             "value" : "מערכת"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Système"
+          }
         }
       }
     },
@@ -793,6 +1367,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "בהיר"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claro"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clair"
           }
         }
       }
@@ -811,6 +1397,18 @@
             "state" : "translated",
             "value" : "התראה חדשה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva Alerta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouvelle Alerte"
+          }
         }
       }
     },
@@ -827,6 +1425,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אין התראות מוגדרות"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay alertas configuradas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune alerte configurée"
           }
         }
       }
@@ -845,6 +1455,18 @@
             "state" : "translated",
             "value" : "ללא איפוס אוטומטי"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin Reinicio Automático"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas de Réinitialisation Automatique"
+          }
         }
       }
     },
@@ -861,6 +1483,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ חצה את הערך %@ %@. השער הנוכחי: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cruzó el valor %@ %@. Tipo de cambio actual: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ a franchi la valeur %@ %@. Taux actuel : %@"
           }
         }
       }
@@ -879,6 +1513,18 @@
             "state" : "translated",
             "value" : "נדרשת הרשאה להתראות כדי לבדוק התראות. אנא אפשר התראות בהגדרות."
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere permiso de notificaciones para verificar alertas. Por favor, habilita las notificaciones en Configuración."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'autorisation de notification est requise pour vérifier les alertes. Veuillez activer les notifications dans les Paramètres."
+          }
         }
       }
     },
@@ -895,6 +1541,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אישור"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
@@ -913,6 +1571,18 @@
             "state" : "translated",
             "value" : "מושהה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En pause"
+          }
         }
       }
     },
@@ -929,6 +1599,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "נא להזין ערך יעד"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, ingresa un valor objetivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez entrer une valeur cible"
           }
         }
       }
@@ -947,6 +1629,18 @@
             "state" : "translated",
             "value" : "נא לבחור מטבע בסיס"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, selecciona una moneda base"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez sélectionner une devise de base"
+          }
         }
       }
     },
@@ -963,6 +1657,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "נא לבחור מטבע יעד"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, selecciona una moneda objetivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez sélectionner une devise cible"
           }
         }
       }
@@ -981,6 +1687,18 @@
             "state" : "translated",
             "value" : "שער: %@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de cambio: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taux : %@"
+          }
         }
       }
     },
@@ -997,6 +1715,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "איפוס"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
           }
         }
       }
@@ -1015,6 +1745,18 @@
             "state" : "translated",
             "value" : "איפוס סדר מטבעות"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reiniciar Orden de Monedas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser l'Ordre des Devises"
+          }
         }
       }
     },
@@ -1031,6 +1773,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "שמור"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
           }
         }
       }
@@ -1049,6 +1803,18 @@
             "state" : "translated",
             "value" : "בחר מטבע"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccionar Moneda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sélectionner une Devise"
+          }
         }
       }
     },
@@ -1065,6 +1831,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הגדרות"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configuración"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres"
           }
         }
       }
@@ -1083,6 +1861,18 @@
             "state" : "translated",
             "value" : "הפוך סדר"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intercambiar Orden"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inverser l'Ordre"
+          }
         }
       }
     },
@@ -1099,6 +1889,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "מערכת"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sistema"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Système"
           }
         }
       }
@@ -1117,6 +1919,18 @@
             "state" : "translated",
             "value" : "מטבע יעד"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moneda Objetivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devise Cible"
+          }
         }
       }
     },
@@ -1133,6 +1947,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ערך יעד"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valor Objetivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valeur Cible"
           }
         }
       }
@@ -1151,6 +1977,18 @@
             "state" : "translated",
             "value" : "ערך יעד חייב להיות מספר חיובי"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El valor objetivo debe ser un número positivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La valeur cible doit être un nombre positif"
+          }
         }
       }
     },
@@ -1167,6 +2005,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "הופעל"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déclenché"
           }
         }
       }
@@ -1185,6 +2035,18 @@
             "state" : "translated",
             "value" : "מערב אפריקה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "África Occidental"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afrique de l'Ouest"
+          }
         }
       }
     },
@@ -1202,6 +2064,18 @@
             "state" : "translated",
             "value" : "השפה שונתה"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma Cambiado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue Modifiée"
+          }
         }
       }
     },
@@ -1218,6 +2092,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "אנא סגור ופתח מחדש את האפליקציה כדי שהשינוי בשפה ייכנס לתוקף מלא."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, cierra y vuelve a abrir la aplicación para que el cambio de idioma surta efecto completo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veuillez fermer et rouvrir l'application pour que le changement de langue prenne pleinement effet."
           }
         }
       }

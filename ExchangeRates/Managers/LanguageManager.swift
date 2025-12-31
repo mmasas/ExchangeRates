@@ -13,15 +13,25 @@ enum AppLanguage: String, CaseIterable {
     case system = "system"
     case hebrew = "he"
     case english = "en"
+    case spanish = "es"
+    case french = "fr"
     
     var displayName: String {
         switch self {
         case .system:
             return String(localized: "language_system", defaultValue: "System")
         case .hebrew:
-            return String(localized: "hebrew", defaultValue: "Hebrew")
+            // Return Hebrew name in Hebrew
+            return "עברית"
         case .english:
-            return String(localized: "english", defaultValue: "English")
+            // Return English name in English
+            return "English"
+        case .spanish:
+            // Return Spanish name in Spanish
+            return "Español"
+        case .french:
+            // Return French name in French
+            return "Français"
         }
     }
     
@@ -33,6 +43,10 @@ enum AppLanguage: String, CaseIterable {
             return Locale(identifier: "he_IL")
         case .english:
             return Locale(identifier: "en_US")
+        case .spanish:
+            return Locale(identifier: "es_ES")
+        case .french:
+            return Locale(identifier: "fr_FR")
         }
     }
     
@@ -43,6 +57,10 @@ enum AppLanguage: String, CaseIterable {
             let deviceLang = Locale.preferredLanguages.first ?? "en"
             if deviceLang.hasPrefix("he") {
                 return "he"
+            } else if deviceLang.hasPrefix("es") {
+                return "es"
+            } else if deviceLang.hasPrefix("fr") {
+                return "fr"
             } else {
                 return "en"
             }
@@ -50,6 +68,10 @@ enum AppLanguage: String, CaseIterable {
             return "he"
         case .english:
             return "en"
+        case .spanish:
+            return "es"
+        case .french:
+            return "fr"
         }
     }
 }
