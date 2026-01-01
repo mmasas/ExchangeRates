@@ -13,15 +13,32 @@ struct ContentView: View {
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
+    @State private var activeAlertsCount: Int = 0
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
             VStack(spacing: 0) {
                 // Custom header with title and gear icon aligned
                 HStack {
-                    // Invisible spacer to balance the gear icon on the right
-                    Color.clear
-                        .frame(width: 44, height: 44)
+                    NavigationLink(value: "alerts") {
+                        ZStack {
+                            Image(systemName: "bell.fill")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 20))
+                            
+                            if activeAlertsCount > 0 {
+                                Text("\(activeAlertsCount)")
+                                    .font(.system(size: 11, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 5)
+                                    .padding(.vertical, 2)
+                                    .background(Color.red)
+                                    .clipShape(Capsule())
+                                    .offset(x: 10, y: -10)
+                            }
+                        }
+                    }
+                    .frame(width: 44, height: 44)
                     
                     Spacer()
                     
@@ -105,7 +122,14 @@ struct ContentView: View {
                     EmptyView()
                 }
             }
+            .onAppear {
+                updateActiveAlertsCount()
+            }
         }
+    }
+    
+    private func updateActiveAlertsCount() {
+        activeAlertsCount = CurrencyAlertManager.shared.getActiveAlerts().count
     }
     
     private func handleTitleTap() {
@@ -138,6 +162,9 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+
+
 
 
 
