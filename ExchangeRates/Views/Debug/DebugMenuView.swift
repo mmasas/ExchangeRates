@@ -14,10 +14,9 @@ struct DebugMenuView: View {
                 Label("View Logs", systemImage: "doc.text")
             }
             
-            // Future: Add more debug options here
-            // NavigationLink(destination: DataInspectorView()) {
-            //     Label("View Stored Data", systemImage: "tray.full")
-            // }
+            NavigationLink(destination: DataInspectorView()) {
+                Label("View Stored Data", systemImage: "tray.full")
+            }
         }
         .navigationTitle("Debug Menu")
         .navigationBarTitleDisplayMode(.inline)

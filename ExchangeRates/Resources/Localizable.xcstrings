@@ -50,7 +50,13 @@
         }
       }
     },
+    "%@ copied to clipboard" : {
+
+    },
     "%lld" : {
+
+    },
+    "%lld." : {
 
     },
     "→" : {
@@ -148,6 +154,9 @@
           }
         }
       }
+    },
+    "Add Currency" : {
+
     },
     "add_alert_to_start" : {
       "extractionState" : "manual",
@@ -294,6 +303,9 @@
         }
       }
     },
+    "Alert JSON" : {
+
+    },
     "alert_condition" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -382,6 +394,9 @@
       }
     },
     "All" : {
+
+    },
+    "App Settings" : {
 
     },
     "auto_reset" : {
@@ -558,6 +573,9 @@
         }
       }
     },
+    "Cancel" : {
+
+    },
     "central_africa" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -588,6 +606,9 @@
       }
     },
     "Clear" : {
+
+    },
+    "Color Scheme" : {
 
     },
     "color_scheme" : {
@@ -648,7 +669,28 @@
         }
       }
     },
+    "Copied!" : {
+
+    },
     "Copy" : {
+
+    },
+    "Copy All" : {
+
+    },
+    "Copy All Data" : {
+
+    },
+    "Currency Alerts (%lld)" : {
+
+    },
+    "Currency Code" : {
+
+    },
+    "Currency Order" : {
+
+    },
+    "Currency Order (%lld)" : {
 
     },
     "currency_alert_notification_title" : {
@@ -766,6 +808,12 @@
           }
         }
       }
+    },
+    "Custom Currencies" : {
+
+    },
+    "Custom Currencies (%lld)" : {
+
     },
     "custom_currencies" : {
       "extractionState" : "manual",
@@ -886,6 +934,12 @@
         }
       }
     },
+    "Edit %@" : {
+
+    },
+    "Edit the JSON representation of the alert. Make sure it's valid JSON." : {
+
+    },
     "edit_alert" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -973,6 +1027,12 @@
         }
       }
     },
+    "Enter 3-letter ISO currency codes" : {
+
+    },
+    "Enter a 3-letter ISO currency code (e.g., USD, EUR, ILS)" : {
+
+    },
     "error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1001,6 +1061,9 @@
           }
         }
       }
+    },
+    "Error" : {
+
     },
     "error_checking_alerts" : {
       "extractionState" : "manual",
@@ -1266,6 +1329,12 @@
         }
       }
     },
+    "Home Currency" : {
+
+    },
+    "Home Currency Code" : {
+
+    },
     "home_currency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1381,6 +1450,9 @@
           }
         }
       }
+    },
+    "Language" : {
+
     },
     "language_change_message" : {
       "extractionState" : "manual",
@@ -1532,6 +1604,15 @@
           }
         }
       }
+    },
+    "No alerts" : {
+
+    },
+    "No currency order" : {
+
+    },
+    "No custom currencies" : {
+
     },
     "No logs available" : {
 
@@ -1710,6 +1791,12 @@
         }
       }
     },
+    "OK" : {
+
+    },
+    "Order of currencies as they appear in the app" : {
+
+    },
     "paused" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1855,6 +1942,9 @@
         }
       }
     },
+    "Refresh" : {
+
+    },
     "reset" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1941,6 +2031,9 @@
           }
         }
       }
+    },
+    "Save" : {
+
     },
     "select_currency" : {
       "extractionState" : "manual",
@@ -2086,6 +2179,9 @@
           }
         }
       }
+    },
+    "Stored Data" : {
+
     },
     "swap_order" : {
       "extractionState" : "manual",
@@ -2262,6 +2358,9 @@
       }
     },
     "View Logs" : {
+
+    },
+    "View Stored Data" : {
 
     },
     "view_historical_rate" : {

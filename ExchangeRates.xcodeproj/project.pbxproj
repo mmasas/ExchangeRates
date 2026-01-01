@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		A0EFA7E32EFF07CB006C582B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		A0EFA7E32EFF07CB006C582B /* Exceptions for "ExchangeRates" folder in "ExchangeRates" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +24,7 @@
 		A0EFA7E22EFF07CB006C582A /* ExchangeRates */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				A0EFA7E32EFF07CB006C582B /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+				A0EFA7E32EFF07CB006C582B /* Exceptions for "ExchangeRates" folder in "ExchangeRates" target */,
 			);
 			path = ExchangeRates;
 			sourceTree = "<group>";
