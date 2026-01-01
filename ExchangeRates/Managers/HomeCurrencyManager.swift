@@ -33,7 +33,7 @@ class HomeCurrencyManager {
                 object: nil,
                 userInfo: ["oldCurrency": oldCurrency, "newCurrency": code]
             )
-            print("🔄 [HomeCurrencyManager] Home currency changed from \(oldCurrency) to \(code)")
+            LogManager.shared.log("Home currency changed from \(oldCurrency) to \(code)", level: .info, source: "HomeCurrencyManager")
         }
     }
 }

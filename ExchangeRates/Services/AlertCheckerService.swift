@@ -20,7 +20,7 @@ class AlertCheckerService {
         let activeAlerts = alertManager.getActiveAlerts()
         var triggeredAlerts: [CurrencyAlert] = []
         
-        print("🔍 [AlertCheckerService] Checking \(activeAlerts.count) active alerts")
+        LogManager.shared.log("Checking \(activeAlerts.count) active alerts", level: .info, source: "AlertCheckerService")
         
         // Check each alert
         for alert in activeAlerts {
@@ -34,7 +34,7 @@ class AlertCheckerService {
                 let rate = currentRate.currentExchangeRate
                 let targetValue = Double(truncating: alert.targetValue as NSDecimalNumber)
                 
-                print("📊 [AlertCheckerService] Alert \(alert.currencyPair): current=\(rate), target=\(targetValue), condition=\(alert.condition.displayName)")
+                LogManager.shared.log("Alert \(alert.currencyPair): current=\(rate), target=\(targetValue), condition=\(alert.condition.displayName)", level: .info, source: "AlertCheckerService")
                 
                 // Check if alert condition is satisfied
                 if alert.condition.isSatisfied(by: rate) {
@@ -43,12 +43,12 @@ class AlertCheckerService {
                     triggeredAlert.markAsTriggered()
                     alertManager.updateAlert(triggeredAlert)
                     triggeredAlerts.append(triggeredAlert)
-                    print("✅ [AlertCheckerService] Alert TRIGGERED: \(alert.currencyPair)")
+                    LogManager.shared.log("Alert TRIGGERED: \(alert.currencyPair)", level: .success, source: "AlertCheckerService")
                 } else {
-                    print("ℹ️ [AlertCheckerService] Alert not triggered: \(alert.currencyPair)")
+                    LogManager.shared.log("Alert not triggered: \(alert.currencyPair)", level: .info, source: "AlertCheckerService")
                 }
             } catch {
-                print("⚠️ [AlertCheckerService] Failed to check alert \(alert.id): \(error.localizedDescription)")
+                LogManager.shared.log("Failed to check alert \(alert.id): \(error.localizedDescription)", level: .warning, source: "AlertCheckerService")
                 // Continue checking other alerts even if one fails
             }
         }
@@ -56,7 +56,7 @@ class AlertCheckerService {
         // Check for auto-reset
         await checkAutoReset()
         
-        print("🔔 [AlertCheckerService] Total triggered: \(triggeredAlerts.count)")
+        LogManager.shared.log("Total triggered: \(triggeredAlerts.count)", level: .info, source: "AlertCheckerService")
         return triggeredAlerts
     }
     
@@ -88,7 +88,7 @@ class AlertCheckerService {
                 var resetAlert = alert
                 resetAlert.reset()
                 alertManager.updateAlert(resetAlert)
-                print("✅ [AlertCheckerService] Auto-reset alert \(alert.id) after \(autoResetHours) hours")
+                LogManager.shared.log("Auto-reset alert \(alert.id) after \(autoResetHours) hours", level: .success, source: "AlertCheckerService")
             }
         }
     }

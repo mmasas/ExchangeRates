@@ -75,7 +75,7 @@ class ExchangeRatesViewModel: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             guard let self = self else { return }
-            print("🔄 [ExchangeRatesViewModel] Home currency changed, resetting order and reloading all rates")
+            LogManager.shared.log("Home currency changed, resetting order and reloading all rates", level: .info, source: "ExchangeRatesViewModel")
             // Reset order to main currencies order when home currency changes
             self.orderManager.resetToDefaultOrder(with: MainCurrenciesHelper.mainCurrencies)
             self.loadExchangeRates()
@@ -89,7 +89,7 @@ class ExchangeRatesViewModel: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             guard let self = self else { return }
-            print("🔄 [ExchangeRatesViewModel] Currency order reset, refreshing view")
+            LogManager.shared.log("Currency order reset, refreshing view", level: .info, source: "ExchangeRatesViewModel")
             // Force view update by triggering a published property change
             self.objectWillChange.send()
         }
@@ -112,7 +112,7 @@ class ExchangeRatesViewModel: ObservableObject {
     @MainActor
     func loadExchangeRatesAsync() async {
         let isInitialLoad = exchangeRates.isEmpty
-        print("🔄 [ExchangeRatesViewModel] Starting load - isInitialLoad: \(isInitialLoad), current rates count: \(exchangeRates.count)")
+        LogManager.shared.log("Starting load - isInitialLoad: \(isInitialLoad), current rates count: \(exchangeRates.count)", level: .info, source: "ExchangeRatesViewModel")
         
         isLoading = isInitialLoad
         errorMessage = nil
@@ -121,7 +121,7 @@ class ExchangeRatesViewModel: ObservableObject {
         let homeCurrency = homeCurrencyManager.getHomeCurrency()
         let mainCurrencies = MainCurrenciesHelper.mainCurrencies
         
-        print("🌐 [ExchangeRatesViewModel] Loading main currencies relative to home currency: \(homeCurrency)")
+        LogManager.shared.log("Loading main currencies relative to home currency: \(homeCurrency)", level: .info, source: "ExchangeRatesViewModel")
         
         var ratesDict: [String: ExchangeRate] = [:]
         
@@ -138,15 +138,15 @@ class ExchangeRatesViewModel: ObservableObject {
                         lastUpdate: ISO8601DateFormatter().string(from: Date())
                     )
                     ratesDict[code] = homeCurrencyRate
-                    print("✅ [ExchangeRatesViewModel] Added home currency \(homeCurrency) with rate 1.0")
+                    LogManager.shared.log("Added home currency \(homeCurrency) with rate 1.0", level: .success, source: "ExchangeRatesViewModel")
                 } else {
                     do {
                         // Fetch rate relative to home currency
                         let rate = try await CustomCurrencyService.shared.fetchExchangeRate(for: code, target: homeCurrency)
                         ratesDict[code] = rate
-                        print("✅ [ExchangeRatesViewModel] Loaded rate for \(code) relative to \(homeCurrency): \(rate.currentExchangeRate)")
+                        LogManager.shared.log("Loaded rate for \(code) relative to \(homeCurrency): \(rate.currentExchangeRate)", level: .success, source: "ExchangeRatesViewModel")
                     } catch {
-                        print("❌ [ExchangeRatesViewModel] Failed to load rate for \(code): \(error.localizedDescription)")
+                        LogManager.shared.log("Failed to load rate for \(code): \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
                         // Continue loading other currencies even if one fails
                     }
                 }
@@ -166,7 +166,7 @@ class ExchangeRatesViewModel: ObservableObject {
             }
             
             isLoading = false
-            print("✅ [ExchangeRatesViewModel] Load completed successfully, loaded \(rates.count) main currencies, mainCurrenciesLoaded=true")
+            LogManager.shared.log("Load completed successfully, loaded \(rates.count) main currencies, mainCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
             
             // Sync order only after BOTH main and custom currencies are loaded
             syncOrderIfReady()
@@ -176,13 +176,13 @@ class ExchangeRatesViewModel: ObservableObject {
         } catch {
             // Don't show error if task was cancelled (user-initiated)
             if let urlError = error as? URLError, urlError.code == .cancelled {
-                print("⚠️ [ExchangeRatesViewModel] Request was cancelled (this is normal for pull-to-refresh)")
+                LogManager.shared.log("Request was cancelled (this is normal for pull-to-refresh)", level: .warning, source: "ExchangeRatesViewModel")
                 isLoading = false
                 return
             }
             
-            print("❌ [ExchangeRatesViewModel] Error: \(error.localizedDescription)")
-            print("❌ [ExchangeRatesViewModel] Error details: \(error)")
+            LogManager.shared.log("Error: \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
+            LogManager.shared.log("Error details: \(error)", level: .error, source: "ExchangeRatesViewModel")
             errorMessage = "Failed to load exchange rates: \(error.localizedDescription)"
             isLoading = false
         }
@@ -190,7 +190,7 @@ class ExchangeRatesViewModel: ObservableObject {
     
     @MainActor
     func loadCustomExchangeRatesAsync() async {
-        print("🔄 [ExchangeRatesViewModel] Loading custom exchange rates")
+        LogManager.shared.log("Loading custom exchange rates", level: .info, source: "ExchangeRatesViewModel")
         
         isLoadingCustom = true
         
@@ -200,7 +200,7 @@ class ExchangeRatesViewModel: ObservableObject {
             customExchangeRates = []
             customCurrenciesLoaded = true
             isLoadingCustom = false
-            print("✅ [ExchangeRatesViewModel] No custom currencies to load, customCurrenciesLoaded=true")
+            LogManager.shared.log("No custom currencies to load, customCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
             // Sync order only after BOTH main and custom currencies are loaded
             syncOrderIfReady()
             return
@@ -219,9 +219,9 @@ class ExchangeRatesViewModel: ObservableObject {
                 // Fetch rate relative to home currency
                 let rate = try await CustomCurrencyService.shared.fetchExchangeRate(for: code, target: homeCurrency)
                 rates.append(rate)
-                print("✅ [ExchangeRatesViewModel] Loaded custom rate for \(code) relative to \(homeCurrency)")
+                LogManager.shared.log("Loaded custom rate for \(code) relative to \(homeCurrency)", level: .success, source: "ExchangeRatesViewModel")
             } catch {
-                print("❌ [ExchangeRatesViewModel] Failed to load rate for \(code): \(error.localizedDescription)")
+                LogManager.shared.log("Failed to load rate for \(code): \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
                 // Continue loading other currencies even if one fails
             }
         }
@@ -229,7 +229,7 @@ class ExchangeRatesViewModel: ObservableObject {
         customExchangeRates = rates
         customCurrenciesLoaded = true
         isLoadingCustom = false
-        print("✅ [ExchangeRatesViewModel] Loaded \(rates.count) custom exchange rates, customCurrenciesLoaded=true")
+        LogManager.shared.log("Loaded \(rates.count) custom exchange rates, customCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
         
         // Sync order only after BOTH main and custom currencies are loaded
         syncOrderIfReady()
@@ -274,18 +274,18 @@ class ExchangeRatesViewModel: ObservableObject {
     private func syncOrderIfReady() {
         // Only sync when both main and custom currencies are loaded
         guard mainCurrenciesLoaded && customCurrenciesLoaded else {
-            print("⏳ [ExchangeRatesViewModel] syncOrderIfReady: waiting for both loads to complete (main=\(mainCurrenciesLoaded), custom=\(customCurrenciesLoaded))")
+            LogManager.shared.log("syncOrderIfReady: waiting for both loads to complete (main=\(mainCurrenciesLoaded), custom=\(customCurrenciesLoaded))", level: .info, source: "ExchangeRatesViewModel")
             return
         }
         
         let allCurrencyCodes = (exchangeRates + customExchangeRates).map { $0.key }
         // Only sync if we have currencies loaded, otherwise preserve existing order
         guard !allCurrencyCodes.isEmpty else {
-            print("⚠️ [ExchangeRatesViewModel] syncOrderIfReady: no currencies loaded, skipping sync")
+            LogManager.shared.log("syncOrderIfReady: no currencies loaded, skipping sync", level: .warning, source: "ExchangeRatesViewModel")
             return
         }
         
-        print("✅ [ExchangeRatesViewModel] syncOrderIfReady: both loads complete, syncing order with \(allCurrencyCodes.count) currencies")
+        LogManager.shared.log("syncOrderIfReady: both loads complete, syncing order with \(allCurrencyCodes.count) currencies", level: .success, source: "ExchangeRatesViewModel")
         orderManager.syncOrder(with: allCurrencyCodes)
     }
     
@@ -300,15 +300,15 @@ class ExchangeRatesViewModel: ObservableObject {
                 let triggeredAlerts = try await AlertCheckerService.shared.checkAlerts()
                 
                 if !triggeredAlerts.isEmpty {
-                    print("🔔 [ExchangeRatesViewModel] \(triggeredAlerts.count) alerts triggered on app launch")
+                    LogManager.shared.log("\(triggeredAlerts.count) alerts triggered on app launch", level: .info, source: "ExchangeRatesViewModel")
                     
                     // Check notification permission
                     let status = await NotificationService.shared.getAuthorizationStatus()
                     if status != .authorized {
-                        print("⚠️ [ExchangeRatesViewModel] Notifications not authorized, requesting permission...")
+                        LogManager.shared.log("Notifications not authorized, requesting permission...", level: .warning, source: "ExchangeRatesViewModel")
                         let granted = await NotificationService.shared.requestPermission()
                         if !granted {
-                            print("❌ [ExchangeRatesViewModel] Notification permission denied")
+                            LogManager.shared.log("Notification permission denied", level: .error, source: "ExchangeRatesViewModel")
                             return
                         }
                     }
@@ -320,7 +320,7 @@ class ExchangeRatesViewModel: ObservableObject {
                             target: alert.targetCurrency
                         )
                         
-                        print("📱 [ExchangeRatesViewModel] Sending notification for \(alert.currencyPair)")
+                        LogManager.shared.log("Sending notification for \(alert.currencyPair)", level: .info, source: "ExchangeRatesViewModel")
                         NotificationService.shared.scheduleNotification(
                             for: alert,
                             currentRate: currentRate.currentExchangeRate
@@ -328,7 +328,7 @@ class ExchangeRatesViewModel: ObservableObject {
                     }
                 }
             } catch {
-                print("⚠️ [ExchangeRatesViewModel] Failed to check alerts: \(error.localizedDescription)")
+                LogManager.shared.log("Failed to check alerts: \(error.localizedDescription)", level: .warning, source: "ExchangeRatesViewModel")
             }
         }
     }

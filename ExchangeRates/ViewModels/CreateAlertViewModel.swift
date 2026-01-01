@@ -194,7 +194,7 @@ class CreateAlertViewModel: ObservableObject {
                 await MainActor.run {
                     currentRate = nil
                     isLoadingRate = false
-                    print("⚠️ [CreateAlertViewModel] Failed to load current rate: \(error.localizedDescription)")
+                    LogManager.shared.log("Failed to load current rate: \(error.localizedDescription)", level: .warning, source: "CreateAlertViewModel")
                 }
             }
         }

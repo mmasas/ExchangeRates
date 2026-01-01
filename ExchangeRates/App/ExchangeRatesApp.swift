@@ -19,9 +19,8 @@ struct ExchangeRatesApp: App {
         // Initialize notification service early to set up delegate
         _ = NotificationService.shared
         
-        // Register background task on app launch
+        // Register background task on app launch (must be done before app finishes launching)
         BackgroundTaskManager.shared.registerBackgroundTask()
-        BackgroundTaskManager.shared.scheduleBackgroundCheck()
     }
     
     var body: some Scene {
@@ -56,7 +55,44 @@ struct ExchangeRatesApp: App {
                 
                 // Clear badge when app opens
                 NotificationService.shared.clearBadge()
+                
+                // Schedule background check after app has appeared
+                // This runs on MainActor and checks availability before scheduling
+                scheduleBackgroundTaskIfAvailable()
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
+                // Reschedule background task when app enters background
+                scheduleBackgroundTaskIfAvailable()
+            }
+        }
+    }
+    
+    /// Schedules background task only if background refresh is available
+    @MainActor
+    private func scheduleBackgroundTaskIfAvailable() {
+        let status = BackgroundTaskManager.shared.getBackgroundRefreshStatus()
+        
+        switch status {
+        case .available:
+            BackgroundTaskManager.shared.scheduleBackgroundCheck()
+        case .denied:
+            LogManager.shared.log(
+                "Background refresh is disabled by user. Alerts will only be checked when app is open.",
+                level: .warning,
+                source: "ExchangeRatesApp"
+            )
+        case .restricted:
+            LogManager.shared.log(
+                "Background refresh is restricted on this device.",
+                level: .warning,
+                source: "ExchangeRatesApp"
+            )
+        case .unknown:
+            LogManager.shared.log(
+                "Background refresh status is unknown.",
+                level: .warning,
+                source: "ExchangeRatesApp"
+            )
         }
     }
 }

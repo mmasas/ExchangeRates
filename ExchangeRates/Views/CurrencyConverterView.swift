@@ -10,6 +10,7 @@ import SwiftUI
 struct CurrencyConverterView: View {
     @StateObject private var viewModel: CurrencyConverterViewModel
     @FocusState private var focusedField: Field?
+    @State private var showHistoricalRate = false
     
     enum Field {
         case home, foreign
@@ -63,6 +64,8 @@ struct CurrencyConverterView: View {
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(.primary)
                                 .focused($focusedField, equals: .home)
+                                .environment(\.layoutDirection, .leftToRight)
+                                .multilineTextAlignment(.leading)
                         }
                         .padding()
                         .background(Color(.systemBackground))
@@ -94,6 +97,8 @@ struct CurrencyConverterView: View {
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundColor(.primary)
                                 .focused($focusedField, equals: .foreign)
+                                .environment(\.layoutDirection, .leftToRight)
+                                .multilineTextAlignment(.leading)
                         }
                         .padding()
                         .background(Color(.systemBackground))
@@ -103,9 +108,26 @@ struct CurrencyConverterView: View {
                 }
                 .padding(.horizontal, 16)
                 
-                Spacer()
+                // Historical rate button
+                Button {
+                    focusedField = nil // Dismiss keyboard first
+                    showHistoricalRate = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.system(size: 16))
+                        Text(String(localized: "view_historical_rate", defaultValue: "View Historical Rate"))
+                            .font(.system(size: 16))
+                    }
+                    .foregroundColor(.blue)
+                }
+                .padding(.top, 32)
             }
             .padding(.vertical, 16)
+        }
+        .scrollDismissesKeyboard(.never)
+        .onTapGesture {
+            focusedField = nil
         }
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.inline)
@@ -114,10 +136,28 @@ struct CurrencyConverterView: View {
                 Text(String(localized: "currency_converter"))
                     .font(.headline)
             }
+            
+            // Done button above keyboard
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button(String(localized: "ok")) {
+                    focusedField = nil
+                }
+            }
+        }
+        .sheet(isPresented: $showHistoricalRate) {
+            NavigationStack {
+                HistoricalRateView(
+                    baseCurrency: viewModel.exchangeRate.key,
+                    targetCurrency: viewModel.homeCurrencyCode
+                )
+            }
         }
         .onAppear {
             // Auto-focus on the home currency field when view appears
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // Note: In simulator, keyboard may not appear automatically - use Cmd+K to toggle
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
                 focusedField = .home
             }
         }

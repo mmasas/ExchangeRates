@@ -96,6 +96,7 @@ struct CreateAlertView: View {
                         TextField("0.0000", text: $viewModel.targetValue)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
+                            .environment(\.layoutDirection, .leftToRight)
                             .frame(width: 120)
                     }
                 } header: {

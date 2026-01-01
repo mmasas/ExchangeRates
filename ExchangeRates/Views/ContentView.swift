@@ -12,10 +12,10 @@ struct ContentView: View {
     @StateObject private var viewModel = ExchangeRatesViewModel()
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
-    @State private var isCheckingAlerts = false
+    @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             VStack(spacing: 0) {
                 // Custom header with title and gear icon aligned
                 HStack {
@@ -86,9 +86,9 @@ struct ContentView: View {
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
                     .refreshable {
-                        print("🔄 [ContentView] Pull to refresh triggered")
+                        LogManager.shared.log("Pull to refresh triggered", level: .info, source: "ContentView")
                         await viewModel.refreshAllRates()
-                        print("✅ [ContentView] Pull to refresh completed")
+                        LogManager.shared.log("Pull to refresh completed", level: .success, source: "ContentView")
                     }
                 }
             }
@@ -99,6 +99,8 @@ struct ContentView: View {
                     SettingsView(existingCurrencyCodes: viewModel.exchangeRates.map { $0.key })
                 case "alerts":
                     AlertsView()
+                case "debug":
+                    DebugMenuView()
                 default:
                     EmptyView()
                 }
@@ -119,45 +121,16 @@ struct ContentView: View {
         
         lastTapTime = now
         
-        // Triple tap detected
+        // Triple tap detected - navigate to debug menu
         if tapCount >= 3 {
             tapCount = 0
-            performSecretAlertCheck()
-        }
-    }
-    
-    private func performSecretAlertCheck() {
-        guard !isCheckingAlerts else { return }
-        
-        isCheckingAlerts = true
-        
-        // Haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-        
-        Task {
-            do {
-                let triggeredAlerts = try await AlertCheckerService.shared.checkAlerts()
-                
-                await MainActor.run {
-                    isCheckingAlerts = false
-                    
-                    // Haptic feedback for result
-                    let resultGenerator = UINotificationFeedbackGenerator()
-                    if triggeredAlerts.isEmpty {
-                        resultGenerator.notificationOccurred(.success)
-                    } else {
-                        resultGenerator.notificationOccurred(.warning)
-                    }
-                    
-                    print("🔔 [ContentView] Secret check completed. Triggered \(triggeredAlerts.count) alerts")
-                }
-            } catch {
-                await MainActor.run {
-                    isCheckingAlerts = false
-                    print("❌ [ContentView] Secret check failed: \(error)")
-                }
-            }
+            
+            // Haptic feedback
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            
+            // Navigate to debug menu
+            navigationPath.append("debug")
         }
     }
 }
@@ -165,3 +138,7 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+
+
+

@@ -68,7 +68,7 @@ class AlertsViewModel: ObservableObject {
             
             let triggeredAlerts = try await alertChecker.checkAlerts()
             
-            print("🔔 [AlertsViewModel] Found \(triggeredAlerts.count) triggered alerts")
+            LogManager.shared.log("Found \(triggeredAlerts.count) triggered alerts", level: .info, source: "AlertsViewModel")
             
             // Send notifications for triggered alerts
             for alert in triggeredAlerts {
@@ -76,7 +76,7 @@ class AlertsViewModel: ObservableObject {
                     base: alert.baseCurrency,
                     target: alert.targetCurrency
                 )
-                print("📱 [AlertsViewModel] Sending notification for \(alert.currencyPair) at rate \(currentRate.currentExchangeRate)")
+                LogManager.shared.log("Sending notification for \(alert.currencyPair) at rate \(currentRate.currentExchangeRate)", level: .info, source: "AlertsViewModel")
                 notificationService.scheduleNotification(
                     for: alert,
                     currentRate: currentRate.currentExchangeRate
@@ -88,16 +88,16 @@ class AlertsViewModel: ObservableObject {
                 isLoading = false
                 if !triggeredAlerts.isEmpty {
                     errorMessage = nil // Success - alerts triggered
-                    print("✅ [AlertsViewModel] Successfully checked alerts, \(triggeredAlerts.count) triggered")
+                    LogManager.shared.log("Successfully checked alerts, \(triggeredAlerts.count) triggered", level: .success, source: "AlertsViewModel")
                 } else {
-                    print("ℹ️ [AlertsViewModel] No alerts triggered")
+                    LogManager.shared.log("No alerts triggered", level: .info, source: "AlertsViewModel")
                 }
             }
         } catch {
             await MainActor.run {
                 errorMessage = String(format: String(localized: "error_checking_alerts", defaultValue: "Error checking alerts: %@"), error.localizedDescription)
                 isLoading = false
-                print("❌ [AlertsViewModel] Error checking alerts: \(error)")
+                LogManager.shared.log("Error checking alerts: \(error)", level: .error, source: "AlertsViewModel")
             }
         }
     }

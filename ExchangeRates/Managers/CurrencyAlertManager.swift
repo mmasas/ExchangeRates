@@ -24,7 +24,7 @@ class CurrencyAlertManager {
             let decoder = JSONDecoder()
             return try decoder.decode([CurrencyAlert].self, from: data)
         } catch {
-            print("❌ [CurrencyAlertManager] Failed to decode alerts: \(error)")
+            LogManager.shared.log("Failed to decode alerts: \(error)", level: .error, source: "CurrencyAlertManager")
             return []
         }
     }
@@ -61,7 +61,7 @@ class CurrencyAlertManager {
             let data = try encoder.encode(alerts)
             userDefaults.set(data, forKey: alertsKey)
         } catch {
-            print("❌ [CurrencyAlertManager] Failed to encode alerts: \(error)")
+            LogManager.shared.log("Failed to encode alerts: \(error)", level: .error, source: "CurrencyAlertManager")
         }
     }
 }

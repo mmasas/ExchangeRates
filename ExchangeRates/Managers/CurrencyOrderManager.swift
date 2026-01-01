@@ -23,11 +23,11 @@ class CurrencyOrderManager {
     /// Save the order of currency codes
     func saveOrder(_ currencies: [String]) {
         userDefaults.set(currencies, forKey: currencyOrderKey)
-        print("💾 [CurrencyOrderManager] Saved order (first 5): \(Array(currencies.prefix(5))), total count: \(currencies.count)")
+        LogManager.shared.log("Saved order (first 5): \(Array(currencies.prefix(5))), total count: \(currencies.count)", level: .info, source: "CurrencyOrderManager")
         // Verify the save was successful
         let saved = userDefaults.stringArray(forKey: currencyOrderKey) ?? []
         if saved != currencies {
-            print("⚠️ [CurrencyOrderManager] WARNING: Saved order doesn't match what we tried to save!")
+            LogManager.shared.log("WARNING: Saved order doesn't match what we tried to save!", level: .warning, source: "CurrencyOrderManager")
         }
     }
     
@@ -36,17 +36,17 @@ class CurrencyOrderManager {
     func initializeOrder(with currencies: [String]) {
         let existingOrder = getOrderedCurrencies()
         if !existingOrder.isEmpty {
-            print("⚠️ [CurrencyOrderManager] initializeOrder called but order already exists (first 5): \(Array(existingOrder.prefix(5))), skipping initialization")
+            LogManager.shared.log("initializeOrder called but order already exists (first 5): \(Array(existingOrder.prefix(5))), skipping initialization", level: .warning, source: "CurrencyOrderManager")
             return
         }
-        print("🆕 [CurrencyOrderManager] Initializing order for first time with \(currencies.count) currencies")
+        LogManager.shared.log("Initializing order for first time with \(currencies.count) currencies", level: .info, source: "CurrencyOrderManager")
         // First time setup - preserve the order as provided (main currencies first)
         saveOrder(currencies)
     }
     
     /// Reset order to use main currencies in their defined order
     func resetToDefaultOrder(with currencies: [String]) {
-        print("🔄 [CurrencyOrderManager] Resetting order to default with \(currencies.count) currencies")
+        LogManager.shared.log("Resetting order to default with \(currencies.count) currencies", level: .info, source: "CurrencyOrderManager")
         saveOrder(currencies)
     }
     
@@ -82,7 +82,7 @@ class CurrencyOrderManager {
     
     /// Update the order by moving a currency from one position to another
     func moveCurrency(from source: IndexSet, to destination: Int, currentOrder: [String]) {
-        print("🔀 [CurrencyOrderManager] moveCurrency called - from: \(source), to: \(destination), currentOrder: \(currentOrder)")
+        LogManager.shared.log("moveCurrency called - from: \(source), to: \(destination), currentOrder: \(currentOrder)", level: .info, source: "CurrencyOrderManager")
         
         var order = currentOrder
         
@@ -114,7 +114,7 @@ class CurrencyOrderManager {
             order.insert(item, at: adjustedDestination + offset)
         }
         
-        print("💾 [CurrencyOrderManager] New order after move: \(order)")
+        LogManager.shared.log("New order after move: \(order)", level: .info, source: "CurrencyOrderManager")
         saveOrder(order)
     }
     
@@ -126,12 +126,12 @@ class CurrencyOrderManager {
         let availableSet = Set(availableCurrencies)
         let currentOrderSet = Set(currentOrder)
         
-        print("🔄 [CurrencyOrderManager] syncOrder called - current saved order (first 5): \(Array(currentOrder.prefix(5))), available count: \(availableCurrencies.count)")
+        LogManager.shared.log("syncOrder called - current saved order (first 5): \(Array(currentOrder.prefix(5))), available count: \(availableCurrencies.count)", level: .info, source: "CurrencyOrderManager")
         
         // If the saved order already contains exactly the same currencies (same set),
         // don't modify the order at all - it's already correct
         if currentOrderSet == availableSet {
-            print("✅ [CurrencyOrderManager] Saved order matches available currencies exactly, no sync needed")
+            LogManager.shared.log("Saved order matches available currencies exactly, no sync needed", level: .success, source: "CurrencyOrderManager")
             return
         }
         
@@ -145,10 +145,10 @@ class CurrencyOrderManager {
         
         // Only save if the order actually changed
         if syncedOrder != currentOrder {
-            print("📝 [CurrencyOrderManager] Order changed - old (first 3): \(Array(currentOrder.prefix(3))), new (first 3): \(Array(syncedOrder.prefix(3)))")
+            LogManager.shared.log("Order changed - old (first 3): \(Array(currentOrder.prefix(3))), new (first 3): \(Array(syncedOrder.prefix(3)))", level: .info, source: "CurrencyOrderManager")
             saveOrder(syncedOrder)
         } else {
-            print("✅ [CurrencyOrderManager] Order unchanged after sync, no need to save")
+            LogManager.shared.log("Order unchanged after sync, no need to save", level: .success, source: "CurrencyOrderManager")
         }
     }
     

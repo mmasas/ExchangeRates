@@ -71,4 +71,46 @@ class CustomCurrencyService {
         
         return exchangeRate
     }
+    
+    func fetchHistoricalRate(for currencyCode: String, target: String, date: Date) async throws -> ExchangeRate {
+        // Format date as yyyy-MM-dd
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        
+        guard let url = URL(string: "https://hexarate.paikama.co/api/rates/\(currencyCode)/\(target)/\(dateString)") else {
+            throw URLError(.badURL)
+        }
+        
+        // Use Task.detached to ensure request completes even if parent task is cancelled
+        let requestUrl = url
+        let (data, response) = try await Task.detached(priority: .userInitiated) {
+            var request = URLRequest(url: requestUrl)
+            request.cachePolicy = .reloadIgnoringLocalCacheData
+            request.timeoutInterval = 30
+            return try await URLSession.shared.data(for: request)
+        }.value
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let decoder = JSONDecoder()
+        let hexarateResponse = try decoder.decode(HexarateResponse.self, from: data)
+        
+        // Convert hexarate response to ExchangeRate format
+        let exchangeRate = ExchangeRate(
+            key: currencyCode,
+            currentExchangeRate: hexarateResponse.data.mid,
+            currentChange: 0.0, // No change tracking for historical rates
+            unit: hexarateResponse.data.unit,
+            lastUpdate: hexarateResponse.data.timestamp
+        )
+        
+        return exchangeRate
+    }
 }

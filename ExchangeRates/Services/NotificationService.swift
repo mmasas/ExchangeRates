@@ -30,7 +30,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
     ) {
         // Show banner, play sound, and update badge even when app is in foreground
         completionHandler([.banner, .sound, .badge])
-        print("📱 [NotificationService] Showing notification in foreground: \(notification.request.content.body)")
+        LogManager.shared.log("Showing notification in foreground: \(notification.request.content.body)", level: .info, source: "NotificationService")
     }
     
     /// Handle notification tap
@@ -39,7 +39,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        print("📱 [NotificationService] User tapped notification: \(response.notification.request.identifier)")
+        LogManager.shared.log("User tapped notification: \(response.notification.request.identifier)", level: .info, source: "NotificationService")
         completionHandler()
     }
     
@@ -49,7 +49,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
             let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
             return granted
         } catch {
-            print("❌ [NotificationService] Failed to request permission: \(error)")
+            LogManager.shared.log("Failed to request permission: \(error)", level: .error, source: "NotificationService")
             return false
         }
     }
@@ -61,11 +61,11 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
             let status = await getAuthorizationStatus()
             
             if status != .authorized {
-                print("⚠️ [NotificationService] Not authorized to send notifications. Status: \(status.rawValue)")
+                LogManager.shared.log("Not authorized to send notifications. Status: \(status.rawValue)", level: .warning, source: "NotificationService")
                 // Try to request permission
                 let granted = await requestPermission()
                 if !granted {
-                    print("❌ [NotificationService] Permission denied, cannot send notification")
+                    LogManager.shared.log("Permission denied, cannot send notification", level: .error, source: "NotificationService")
                     return
                 }
             }
@@ -87,10 +87,10 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
             
             do {
                 try await center.add(request)
-                print("✅ [NotificationService] Notification scheduled for alert \(alert.id)")
-                print("📱 [NotificationService] Notification content: \(content.body)")
+                LogManager.shared.log("Notification scheduled for alert \(alert.id)", level: .success, source: "NotificationService")
+                LogManager.shared.log("Notification content: \(content.body)", level: .info, source: "NotificationService")
             } catch {
-                print("❌ [NotificationService] Failed to schedule notification: \(error)")
+                LogManager.shared.log("Failed to schedule notification: \(error)", level: .error, source: "NotificationService")
             }
         }
     }
@@ -105,7 +105,7 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
     func clearBadge() {
         Task { @MainActor in
             UNUserNotificationCenter.current().setBadgeCount(0)
-            print("✅ [NotificationService] Badge cleared")
+            LogManager.shared.log("Badge cleared", level: .success, source: "NotificationService")
         }
     }
     
