@@ -126,66 +126,52 @@ class ExchangeRatesViewModel: ObservableObject {
         var ratesDict: [String: ExchangeRate] = [:]
         
         // Load all main currencies relative to home currency (maintaining order)
-        do {
-            for code in mainCurrencies {
-                if code == homeCurrency {
-                    // Home currency with rate 1.0
-                    let homeCurrencyRate = ExchangeRate(
-                        key: homeCurrency,
-                        currentExchangeRate: 1.0,
-                        currentChange: 0.0,
-                        unit: 1,
-                        lastUpdate: ISO8601DateFormatter().string(from: Date())
-                    )
-                    ratesDict[code] = homeCurrencyRate
-                    LogManager.shared.log("Added home currency \(homeCurrency) with rate 1.0", level: .success, source: "ExchangeRatesViewModel")
-                } else {
-                    do {
-                        // Fetch rate relative to home currency
-                        let rate = try await CustomCurrencyService.shared.fetchExchangeRate(for: code, target: homeCurrency)
-                        ratesDict[code] = rate
-                        LogManager.shared.log("Loaded rate for \(code) relative to \(homeCurrency): \(rate.currentExchangeRate)", level: .success, source: "ExchangeRatesViewModel")
-                    } catch {
-                        LogManager.shared.log("Failed to load rate for \(code): \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
-                        // Continue loading other currencies even if one fails
-                    }
+        for code in mainCurrencies {
+            if code == homeCurrency {
+                // Home currency with rate 1.0
+                let homeCurrencyRate = ExchangeRate(
+                    key: homeCurrency,
+                    currentExchangeRate: 1.0,
+                    currentChange: 0.0,
+                    unit: 1,
+                    lastUpdate: ISO8601DateFormatter().string(from: Date())
+                )
+                ratesDict[code] = homeCurrencyRate
+                LogManager.shared.log("Added home currency \(homeCurrency) with rate 1.0", level: .success, source: "ExchangeRatesViewModel")
+            } else {
+                do {
+                    // Fetch rate relative to home currency
+                    let rate = try await CustomCurrencyService.shared.fetchExchangeRate(for: code, target: homeCurrency)
+                    ratesDict[code] = rate
+                    LogManager.shared.log("Loaded rate for \(code) relative to \(homeCurrency): \(rate.currentExchangeRate)", level: .success, source: "ExchangeRatesViewModel")
+                } catch {
+                    LogManager.shared.log("Failed to load rate for \(code): \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
+                    // Continue loading other currencies even if one fails
                 }
             }
-            
-            // Build rates array in the exact order of mainCurrencies
-            let rates = mainCurrencies.compactMap { ratesDict[$0] }
-            exchangeRates = rates
-            mainCurrenciesLoaded = true
-            
-            // Initialize or reset order to maintain main currencies order
-            let currencyCodes = mainCurrencies
-            let existingOrder = orderManager.getOrderedCurrencies()
-            if existingOrder.isEmpty {
-                // First time setup - initialize with main currencies in their defined order
-                orderManager.initializeOrder(with: currencyCodes)
-            }
-            
-            isLoading = false
-            LogManager.shared.log("Load completed successfully, loaded \(rates.count) main currencies, mainCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
-            
-            // Sync order only after BOTH main and custom currencies are loaded
-            syncOrderIfReady()
-            
-            // Check alerts after rates are loaded
-            checkAlertsIfReady()
-        } catch {
-            // Don't show error if task was cancelled (user-initiated)
-            if let urlError = error as? URLError, urlError.code == .cancelled {
-                LogManager.shared.log("Request was cancelled (this is normal for pull-to-refresh)", level: .warning, source: "ExchangeRatesViewModel")
-                isLoading = false
-                return
-            }
-            
-            LogManager.shared.log("Error: \(error.localizedDescription)", level: .error, source: "ExchangeRatesViewModel")
-            LogManager.shared.log("Error details: \(error)", level: .error, source: "ExchangeRatesViewModel")
-            errorMessage = "Failed to load exchange rates: \(error.localizedDescription)"
-            isLoading = false
         }
+        
+        // Build rates array in the exact order of mainCurrencies
+        let rates = mainCurrencies.compactMap { ratesDict[$0] }
+        exchangeRates = rates
+        mainCurrenciesLoaded = true
+        
+        // Initialize or reset order to maintain main currencies order
+        let currencyCodes = mainCurrencies
+        let existingOrder = orderManager.getOrderedCurrencies()
+        if existingOrder.isEmpty {
+            // First time setup - initialize with main currencies in their defined order
+            orderManager.initializeOrder(with: currencyCodes)
+        }
+        
+        isLoading = false
+        LogManager.shared.log("Load completed successfully, loaded \(rates.count) main currencies, mainCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
+        
+        // Sync order only after BOTH main and custom currencies are loaded
+        syncOrderIfReady()
+        
+        // Check alerts after rates are loaded
+        checkAlertsIfReady()
     }
     
     @MainActor

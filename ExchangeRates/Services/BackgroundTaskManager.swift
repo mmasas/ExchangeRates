@@ -147,7 +147,7 @@ class BackgroundTaskManager {
                 level: .error,
                 source: "BackgroundTaskManager"
             )
-        @unknown default:
+        default:
             LogManager.shared.log(
                 "Unknown background task scheduler error: \(error.localizedDescription)",
                 level: .error,

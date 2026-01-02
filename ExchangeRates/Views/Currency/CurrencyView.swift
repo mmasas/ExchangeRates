@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CurrencyView.swift
 //  ExchangeRates
 //
 //  Created by Moshe Masas on 26/12/2025.
@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-struct ContentView: View {
+struct CurrencyView: View {
     @StateObject private var viewModel = ExchangeRatesViewModel()
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
@@ -17,52 +17,8 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            VStack(spacing: 0) {
-                // Custom header with title and gear icon aligned
-                HStack {
-                    NavigationLink(value: "alerts") {
-                        ZStack {
-                            Image(systemName: "bell.fill")
-                                .foregroundColor(.primary)
-                                .font(.system(size: 20))
-                            
-                            if activeAlertsCount > 0 {
-                                Text("\(activeAlertsCount)")
-                                    .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 5)
-                                    .padding(.vertical, 2)
-                                    .background(Color.red)
-                                    .clipShape(Capsule())
-                                    .offset(x: 10, y: -10)
-                            }
-                        }
-                    }
-                    .frame(width: 44, height: 44)
-                    
-                    Spacer()
-                    
-                    Text(String(localized: "exchange_rates_title"))
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.primary)
-                        .onTapGesture {
-                            handleTitleTap()
-                        }
-                    
-                    Spacer()
-                    
-                    NavigationLink(value: "settings") {
-                        Image(systemName: "gearshape.fill")
-                            .foregroundColor(.primary)
-                            .font(.system(size: 20))
-                    }
-                    .frame(width: 44, height: 44)
-                }
-                .padding(.top, 8)
-                .padding(.bottom, 16)
-                .padding(.horizontal, 16)
-                
-                // Content
+            ZStack(alignment: .top) {
+                // Content - starts behind the header, scrolls underneath it
                 if let errorMessage = viewModel.errorMessage, !viewModel.isLoading {
                     VStack {
                         Text(String(localized: "error"))
@@ -74,6 +30,7 @@ struct ContentView: View {
                             .padding()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.top, 60)
                 } else {
                     List {
                         if viewModel.isLoading && viewModel.allExchangeRates.isEmpty {
@@ -102,12 +59,63 @@ struct ContentView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
+                    .contentMargins(.top, 72, for: .scrollContent)
                     .refreshable {
-                        LogManager.shared.log("Pull to refresh triggered", level: .info, source: "ContentView")
+                        LogManager.shared.log("Pull to refresh triggered", level: .info, source: "CurrencyView")
                         await viewModel.refreshAllRates()
-                        LogManager.shared.log("Pull to refresh completed", level: .success, source: "ContentView")
+                        LogManager.shared.log("Pull to refresh completed", level: .success, source: "CurrencyView")
                     }
                 }
+                
+                // Custom header with blur effect (like tab bar)
+                VStack(spacing: 0) {
+                    HStack {
+                        NavigationLink(value: "alerts") {
+                            ZStack {
+                                Image(systemName: "bell.fill")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 20))
+                                
+                                if activeAlertsCount > 0 {
+                                    Text("\(activeAlertsCount)")
+                                        .font(.system(size: 11, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 5)
+                                        .padding(.vertical, 2)
+                                        .background(Color.red)
+                                        .clipShape(Capsule())
+                                        .offset(x: 10, y: -10)
+                                }
+                            }
+                        }
+                        .frame(width: 44, height: 44)
+                        
+                        Spacer()
+                        
+                        Text(String(localized: "exchange_rates_title"))
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.primary)
+                            .onTapGesture {
+                                handleTitleTap()
+                            }
+                        
+                        Spacer()
+                        
+                        NavigationLink(value: "settings") {
+                            Image(systemName: "gearshape.fill")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 20))
+                        }
+                        .frame(width: 44, height: 44)
+                    }
+                    .padding(.top, 8)
+                    .padding(.bottom, 12)
+                    .padding(.horizontal, 16)
+                    
+                    // Divider()
+                }
+                .frame(maxWidth: .infinity)
+                .background(.ultraThinMaterial)
             }
             .background(Color(.systemGroupedBackground))
             .navigationDestination(for: String.self) { destination in
@@ -160,12 +168,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    CurrencyView()
 }
-
-
-
-
-
-
 

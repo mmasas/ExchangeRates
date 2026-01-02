@@ -22,7 +22,7 @@ struct DataItemEditView: View {
         NavigationStack {
             Form {
                 switch item {
-                case .homeCurrency(let value):
+                case .homeCurrency:
                     Section {
                         TextField("Home Currency Code", text: $stringValue)
                             .textInputAutocapitalization(.characters)
@@ -31,7 +31,7 @@ struct DataItemEditView: View {
                         Text("Enter a 3-letter ISO currency code (e.g., USD, EUR, ILS)")
                     }
                     
-                case .colorScheme(let value):
+                case .colorScheme:
                     Section {
                         Picker("Color Scheme", selection: $stringValue) {
                             ForEach(ColorSchemeOption.allCases, id: \.rawValue) { option in
@@ -40,7 +40,7 @@ struct DataItemEditView: View {
                         }
                     }
                     
-                case .language(let value):
+                case .language:
                     Section {
                         Picker("Language", selection: $stringValue) {
                             ForEach(AppLanguage.allCases, id: \.rawValue) { lang in
@@ -49,7 +49,7 @@ struct DataItemEditView: View {
                         }
                     }
                     
-                case .alert(let alert):
+                case .alert:
                     Section {
                         TextEditor(text: $jsonValue)
                             .font(.system(.body, design: .monospaced))
@@ -60,7 +60,7 @@ struct DataItemEditView: View {
                         Text("Edit the JSON representation of the alert. Make sure it's valid JSON.")
                     }
                     
-                case .customCurrencies(let currencies):
+                case .customCurrencies:
                     Section {
                         ForEach(Array(arrayValue.enumerated()), id: \.offset) { index, currency in
                             HStack {
@@ -96,7 +96,7 @@ struct DataItemEditView: View {
                         Text("Enter 3-letter ISO currency codes")
                     }
                     
-                case .currencyOrder(let order):
+                case .currencyOrder:
                     Section {
                         ForEach(Array(arrayValue.enumerated()), id: \.offset) { index, currency in
                             HStack {

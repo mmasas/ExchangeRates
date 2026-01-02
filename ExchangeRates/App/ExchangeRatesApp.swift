@@ -33,7 +33,7 @@ struct ExchangeRatesApp: App {
                         .transition(.opacity)
                         .zIndex(1)
                 } else {
-                    ContentView()
+                    MainTabView()
                         .preferredColorScheme(colorScheme)
                         .environment(\.locale, currentLocale)
                         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ColorSchemeChanged"))) { _ in

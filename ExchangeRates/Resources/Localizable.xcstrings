@@ -681,6 +681,39 @@
     "Copy All Data" : {
 
     },
+    "crypto_tab" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Crypto"
+          }
+        }
+      }
+    },
+    "crypto_title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Crypto"
+          }
+        }
+      }
+    },
+    "currencies_tab" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Currencies"
+          }
+        }
+      }
+    },
     "Currency Alerts (%lld)" : {
 
     },
