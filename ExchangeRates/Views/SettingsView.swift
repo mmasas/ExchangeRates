@@ -113,31 +113,6 @@ struct SettingsView: View {
                 }
             }
             
-            // Currency Alerts section
-            Section {
-                NavigationLink(value: "alerts") {
-                    HStack(spacing: 12) {
-                        Image(systemName: "bell.fill")
-                            .foregroundColor(.blue)
-                            .frame(width: 24)
-                        Text(String(localized: "alerts_title"))
-                            .layoutPriority(1)
-                        Spacer(minLength: 8)
-                        if viewModel.activeAlertsCount > 0 {
-                            Text("\(viewModel.activeAlertsCount)")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Color.secondary.opacity(0.2))
-                                .clipShape(Capsule())
-                        }
-                    }
-                }
-            } header: {
-                Text(String(localized: "alerts"))
-            }
-            
             // Color scheme section
             Section {
                 Picker(String(localized: "color_scheme"), selection: $viewModel.colorScheme) {
@@ -185,7 +160,6 @@ class SettingsViewModel: ObservableObject {
     @Published var selectedCurrency: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
-    @Published var activeAlertsCount: Int = 0
     @Published var homeCurrency: String {
         didSet {
             HomeCurrencyManager.shared.setHomeCurrency(homeCurrency)
@@ -217,7 +191,6 @@ class SettingsViewModel: ObservableObject {
     
     private let currencyManager = CustomCurrencyManager.shared
     private let colorSchemeManager = ColorSchemeManager.shared
-    private let alertManager = CurrencyAlertManager.shared
     private let homeCurrencyManager = HomeCurrencyManager.shared
     private let orderManager = CurrencyOrderManager.shared
     private let existingCurrencyCodes: [String]
@@ -240,15 +213,10 @@ class SettingsViewModel: ObservableObject {
         colorScheme = colorSchemeManager.getColorScheme()
         homeCurrency = homeCurrencyManager.getHomeCurrency()
         language = LanguageManager.shared.getLanguage()
-        updateActiveAlertsCount()
         // Mark initial load as complete after a short delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.isInitialLoad = false
         }
-    }
-    
-    private func updateActiveAlertsCount() {
-        activeAlertsCount = alertManager.getActiveAlerts().count
     }
     
     private func updateAvailableCurrencies() {

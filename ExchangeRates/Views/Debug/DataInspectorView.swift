@@ -190,6 +190,7 @@ struct DataInspectorView: View {
                     saveItem(updatedItem)
                     loadData()
                 }
+                .presentationDragIndicator(.visible)
             }
         }
         .alert("Copied!", isPresented: $showingCopyConfirmation) {

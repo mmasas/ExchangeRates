@@ -25,14 +25,30 @@ struct MainTabView: View {
             CurrencyView()
                 .tabItem {
                     Image(systemName: "dollarsign.circle.fill")
-                    Text(String(localized: "currencies_tab", defaultValue: "Currencies"))
+                    Text(String(localized: "currencies_tab"))
                 }
             
             CryptoView()
                 .tabItem {
                     Image(systemName: "bitcoinsign.circle.fill")
-                    Text(String(localized: "crypto_tab", defaultValue: "Crypto"))
+                    Text(String(localized: "crypto_tab"))
                 }
+            
+            NavigationStack {
+                AlertsView()
+            }
+            .tabItem {
+                Image(systemName: "bell.fill")
+                Text(String(localized: "alerts_tab"))
+            }
+            
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem {
+                Image(systemName: "gearshape.fill")
+                Text(String(localized: "settings_tab"))
+            }
         }
         .tint(.blue)
     }

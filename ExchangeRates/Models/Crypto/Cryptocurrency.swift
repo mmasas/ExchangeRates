@@ -7,6 +7,11 @@
 
 import Foundation
 
+/// Sparkline data from CoinGecko API
+struct SparklineIn7d: Codable {
+    let price: [Double]
+}
+
 struct Cryptocurrency: Codable, Identifiable {
     let id: String                          // "bitcoin"
     let symbol: String                      // "btc"
@@ -15,6 +20,7 @@ struct Cryptocurrency: Codable, Identifiable {
     let currentPrice: Double                // 87805.0
     let priceChangePercentage24h: Double?   // +2.1%
     let lastUpdated: String?
+    let sparklineIn7d: SparklineIn7d?       // 7-day price sparkline
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -24,6 +30,12 @@ struct Cryptocurrency: Codable, Identifiable {
         case currentPrice = "current_price"
         case priceChangePercentage24h = "price_change_percentage_24h"
         case lastUpdated = "last_updated"
+        case sparklineIn7d = "sparkline_in_7d"
+    }
+    
+    /// Get sparkline prices array
+    var sparklinePrices: [Double]? {
+        sparklineIn7d?.price
     }
     
     // Formatted price with dollar sign
@@ -37,7 +49,7 @@ struct Cryptocurrency: Codable, Identifiable {
     
     // Formatted percentage change with sign
     var formattedChange: String {
-        guard let change = priceChangePercentage24h else { return "N/A" }
+        guard let change = priceChangePercentage24h else { return String(localized: "not_available") }
         let sign = change >= 0 ? "+" : ""
         return String(format: "%@%.1f%%", sign, change)
     }

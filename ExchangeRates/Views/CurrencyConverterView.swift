@@ -152,6 +152,7 @@ struct CurrencyConverterView: View {
                     targetCurrency: viewModel.homeCurrencyCode
                 )
             }
+            .presentationDragIndicator(.visible)
         }
         .onAppear {
             // Auto-focus on the home currency field when view appears

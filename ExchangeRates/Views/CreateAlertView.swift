@@ -147,6 +147,7 @@ struct CreateAlertView: View {
                 }
             }
         }
+        .presentationDragIndicator(.visible)
     }
 }
 

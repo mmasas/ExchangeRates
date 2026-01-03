@@ -71,6 +71,7 @@ struct ExchangeRateRow: View {
             NavigationStack {
                 CurrencyConverterView(exchangeRate: exchangeRate)
             }
+            .presentationDragIndicator(.visible)
         }
     }
 }

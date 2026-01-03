@@ -71,6 +71,7 @@ struct LogsView: View {
         }
         .sheet(isPresented: $showingShareSheet) {
             ShareSheet(activityItems: [exportLogsAsText()])
+                .presentationDragIndicator(.visible)
         }
     }
     

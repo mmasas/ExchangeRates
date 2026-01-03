@@ -20,7 +20,7 @@ class CryptoService {
         let cryptoIds = ids ?? MainCryptoHelper.mainCryptos
         let idsString = cryptoIds.joined(separator: ",")
         
-        guard let url = URL(string: "\(baseURL)/coins/markets?vs_currency=usd&ids=\(idsString)&order=market_cap_desc&sparkline=false") else {
+        guard let url = URL(string: "\(baseURL)/coins/markets?vs_currency=usd&ids=\(idsString)&order=market_cap_desc&sparkline=true") else {
             throw URLError(.badURL)
         }
         

@@ -13,7 +13,6 @@ struct CurrencyView: View {
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
-    @State private var activeAlertsCount: Int = 0
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -30,7 +29,7 @@ struct CurrencyView: View {
                             .padding()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.top, 60)
+                    .padding(.top, 72)
                 } else {
                     List {
                         if viewModel.isLoading && viewModel.allExchangeRates.isEmpty {
@@ -70,25 +69,9 @@ struct CurrencyView: View {
                 // Custom header with blur effect (like tab bar)
                 VStack(spacing: 0) {
                     HStack {
-                        NavigationLink(value: "alerts") {
-                            ZStack {
-                                Image(systemName: "bell.fill")
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 20))
-                                
-                                if activeAlertsCount > 0 {
-                                    Text("\(activeAlertsCount)")
-                                        .font(.system(size: 11, weight: .bold))
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 5)
-                                        .padding(.vertical, 2)
-                                        .background(Color.red)
-                                        .clipShape(Capsule())
-                                        .offset(x: 10, y: -10)
-                                }
-                            }
-                        }
-                        .frame(width: 44, height: 44)
+                        // Empty spacer to balance the header (matching CryptoView structure)
+                        Color.clear
+                            .frame(width: 44, height: 44)
                         
                         Spacer()
                         
@@ -101,18 +84,13 @@ struct CurrencyView: View {
                         
                         Spacer()
                         
-                        NavigationLink(value: "settings") {
-                            Image(systemName: "gearshape.fill")
-                                .foregroundColor(.primary)
-                                .font(.system(size: 20))
-                        }
-                        .frame(width: 44, height: 44)
+                        // Empty spacer to balance the header
+                        Color.clear
+                            .frame(width: 44, height: 44)
                     }
                     .padding(.top, 8)
                     .padding(.bottom, 12)
                     .padding(.horizontal, 16)
-                    
-                    // Divider()
                 }
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
@@ -120,24 +98,13 @@ struct CurrencyView: View {
             .background(Color(.systemGroupedBackground))
             .navigationDestination(for: String.self) { destination in
                 switch destination {
-                case "settings":
-                    SettingsView(existingCurrencyCodes: viewModel.exchangeRates.map { $0.key })
-                case "alerts":
-                    AlertsView()
                 case "debug":
                     DebugMenuView()
                 default:
                     EmptyView()
                 }
             }
-            .onAppear {
-                updateActiveAlertsCount()
-            }
         }
-    }
-    
-    private func updateActiveAlertsCount() {
-        activeAlertsCount = CurrencyAlertManager.shared.getActiveAlerts().count
     }
     
     private func handleTitleTap() {
