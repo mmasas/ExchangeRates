@@ -12,13 +12,24 @@ class HomeCurrencyManager {
     
     private let userDefaults = UserDefaults.standard
     private let homeCurrencyKey = "homeCurrency"
-    private let defaultHomeCurrency = "USD"
     
     private init() {}
     
-    /// Get the current home currency (default: USD)
+    /// Get the device's currency based on locale
+    private func getDeviceCurrency() -> String {
+        // Try to get currency from device locale
+        if let currencyCode = Locale.current.currency?.identifier {
+            LogManager.shared.log("Device currency detected: \(currencyCode)", level: .info, source: "HomeCurrencyManager")
+            return currencyCode
+        }
+        // Fallback to USD if device currency can't be determined
+        LogManager.shared.log("Device currency not detected, using USD as fallback", level: .warning, source: "HomeCurrencyManager")
+        return "USD"
+    }
+    
+    /// Get the current home currency (default: device currency)
     func getHomeCurrency() -> String {
-        return userDefaults.string(forKey: homeCurrencyKey) ?? defaultHomeCurrency
+        return userDefaults.string(forKey: homeCurrencyKey) ?? getDeviceCurrency()
     }
     
     /// Set the home currency and notify listeners
