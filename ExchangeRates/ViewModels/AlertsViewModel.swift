@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import UserNotifications
+import UIKit
 
 class AlertsViewModel: ObservableObject {
     @Published var alerts: [CurrencyAlert] = []
@@ -18,31 +19,59 @@ class AlertsViewModel: ObservableObject {
     private let alertChecker = AlertCheckerService.shared
     private let notificationService = NotificationService.shared
     
+    var currencyAlerts: [CurrencyAlert] {
+        alerts.filter { $0.alertType == .currency }
+    }
+    
+    var cryptoAlerts: [CurrencyAlert] {
+        alerts.filter { $0.alertType == .crypto }
+    }
+    
+    var triggeredAlertsCount: Int {
+        alerts.filter { $0.status == .triggered }.count
+    }
+    
     init() {
         loadAlerts()
     }
     
     func loadAlerts() {
         alerts = alertManager.getAllAlerts()
+        updateBadge()
+    }
+    
+    private func updateBadge() {
+        let count = triggeredAlertsCount
+        notificationService.setBadge(count: count)
+        // Notify MainTabView to update badge
+        NotificationCenter.default.post(name: NSNotification.Name("AlertsUpdated"), object: nil)
     }
     
     func deleteAlert(_ id: UUID) {
         alertManager.deleteAlert(id)
-        loadAlerts()
+        // Update array directly to preserve scroll position
+        alerts.removeAll { $0.id == id }
+        updateBadge()
     }
     
     func toggleAlert(_ id: UUID) {
-        guard var alert = alerts.first(where: { $0.id == id }) else { return }
+        guard let index = alerts.firstIndex(where: { $0.id == id }) else { return }
+        var alert = alerts[index]
         alert.toggleEnabled()
         alertManager.updateAlert(alert)
-        loadAlerts()
+        // Update array directly to preserve scroll position
+        alerts[index] = alert
+        updateBadge()
     }
     
     func resetAlert(_ id: UUID) {
-        guard var alert = alerts.first(where: { $0.id == id }) else { return }
+        guard let index = alerts.firstIndex(where: { $0.id == id }) else { return }
+        var alert = alerts[index]
         alert.reset()
         alertManager.updateAlert(alert)
-        loadAlerts()
+        // Update array directly to preserve scroll position
+        alerts[index] = alert
+        updateBadge()
     }
     
     func checkAlertsNow() async {
@@ -72,14 +101,27 @@ class AlertsViewModel: ObservableObject {
             
             // Send notifications for triggered alerts
             for alert in triggeredAlerts {
-                let currentRate = try await alertChecker.fetchRateForPair(
-                    base: alert.baseCurrency,
-                    target: alert.targetCurrency
-                )
-                LogManager.shared.log("Sending notification for \(alert.currencyPair) at rate \(currentRate.currentExchangeRate)", level: .info, source: "AlertsViewModel")
+                let currentRate: Double
+                if alert.alertType == .crypto {
+                    // Fetch crypto price
+                    guard let cryptoId = alert.cryptoId else {
+                        LogManager.shared.log("Crypto alert \(alert.id) missing cryptoId", level: .warning, source: "AlertsViewModel")
+                        continue
+                    }
+                    currentRate = try await alertChecker.fetchCryptoPrice(id: cryptoId)
+                    LogManager.shared.log("Sending notification for \(alert.currencyPair) at price \(currentRate)", level: .info, source: "AlertsViewModel")
+                } else {
+                    // Fetch currency rate
+                    let rate = try await alertChecker.fetchRateForPair(
+                        base: alert.baseCurrency,
+                        target: alert.targetCurrency
+                    )
+                    currentRate = rate.currentExchangeRate
+                    LogManager.shared.log("Sending notification for \(alert.currencyPair) at rate \(currentRate)", level: .info, source: "AlertsViewModel")
+                }
                 notificationService.scheduleNotification(
                     for: alert,
-                    currentRate: currentRate.currentExchangeRate
+                    currentRate: currentRate
                 )
             }
             
@@ -92,6 +134,7 @@ class AlertsViewModel: ObservableObject {
                 } else {
                     LogManager.shared.log("No alerts triggered", level: .info, source: "AlertsViewModel")
                 }
+                // Badge is updated in loadAlerts()
             }
         } catch {
             await MainActor.run {

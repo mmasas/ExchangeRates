@@ -71,7 +71,14 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
             }
             
             let content = UNMutableNotificationContent()
-            content.title = String(localized: "currency_alert_notification_title", defaultValue: "Currency Rate Alert")
+            
+            // Use appropriate title based on alert type
+            if alert.alertType == .crypto {
+                content.title = String(localized: "crypto_price_alert_notification_title", defaultValue: "Crypto Price Alert")
+            } else {
+                content.title = String(localized: "currency_alert_notification_title", defaultValue: "Currency Rate Alert")
+            }
+            
             content.body = createNotificationBody(for: alert, currentRate: currentRate)
             content.sound = .default
             content.badge = 1
@@ -121,8 +128,28 @@ class NotificationService: NSObject, UNUserNotificationCenterDelegate {
         let pair = alert.currencyPair
         let conditionText = alert.condition.displayName
         let targetValue = Double(truncating: alert.targetValue as NSDecimalNumber)
-        let formattedTarget = String(format: "%.4f", targetValue)
-        let formattedCurrent = String(format: "%.4f", currentRate)
+        
+        // Format numbers based on alert type
+        let formattedTarget: String
+        let formattedCurrent: String
+        
+        if alert.alertType == .crypto {
+            // For crypto, use appropriate decimal places
+            if targetValue >= 1.0 {
+                formattedTarget = String(format: "$%.2f", targetValue)
+            } else {
+                formattedTarget = String(format: "$%.4f", targetValue)
+            }
+            
+            if currentRate >= 1.0 {
+                formattedCurrent = String(format: "$%.2f", currentRate)
+            } else {
+                formattedCurrent = String(format: "$%.4f", currentRate)
+            }
+        } else {
+            formattedTarget = String(format: "%.4f", targetValue)
+            formattedCurrent = String(format: "%.4f", currentRate)
+        }
         
         return String(format: String(localized: "notification_body", defaultValue: "%@ crossed the value %@ %@. Current rate: %@"), pair, conditionText, formattedTarget, formattedCurrent)
     }

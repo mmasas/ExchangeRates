@@ -31,16 +31,43 @@ struct AlertsView: View {
                     .padding(.vertical, 40)
                 }
             } else {
-                ForEach(viewModel.alerts) { alert in
-                    AlertRow(alert: alert) {
-                        editingAlert = alert
-                        showingCreateAlert = true
-                    } onToggle: {
-                        viewModel.toggleAlert(alert.id)
-                    } onReset: {
-                        viewModel.resetAlert(alert.id)
-                    } onDelete: {
-                        viewModel.deleteAlert(alert.id)
+                // Currency Alerts Section
+                if !viewModel.currencyAlerts.isEmpty {
+                    Section {
+                        ForEach(viewModel.currencyAlerts) { alert in
+                            AlertRow(alert: alert) {
+                                editingAlert = alert
+                                showingCreateAlert = true
+                            } onToggle: {
+                                viewModel.toggleAlert(alert.id)
+                            } onReset: {
+                                viewModel.resetAlert(alert.id)
+                            } onDelete: {
+                                viewModel.deleteAlert(alert.id)
+                            }
+                        }
+                    } header: {
+                        Text(String(localized: "currency_alerts_section", defaultValue: "Currency Alerts"))
+                    }
+                }
+                
+                // Crypto Alerts Section
+                if !viewModel.cryptoAlerts.isEmpty {
+                    Section {
+                        ForEach(viewModel.cryptoAlerts) { alert in
+                            AlertRow(alert: alert) {
+                                editingAlert = alert
+                                showingCreateAlert = true
+                            } onToggle: {
+                                viewModel.toggleAlert(alert.id)
+                            } onReset: {
+                                viewModel.resetAlert(alert.id)
+                            } onDelete: {
+                                viewModel.deleteAlert(alert.id)
+                            }
+                        }
+                    } header: {
+                        Text(String(localized: "crypto_alerts_section", defaultValue: "Crypto Alerts"))
                     }
                 }
             }
@@ -91,8 +118,7 @@ struct AlertsView: View {
         }
         .onAppear {
             viewModel.loadAlerts()
-            // Clear badge when viewing alerts
-            NotificationService.shared.clearBadge()
+            // Badge is updated in loadAlerts() to show count of triggered alerts
         }
         .alert(String(localized: "error"), isPresented: .constant(viewModel.errorMessage != nil)) {
             Button(String(localized: "ok"), role: .cancel) {
@@ -117,28 +143,60 @@ struct AlertRow: View {
         VStack(alignment: .leading, spacing: 12) {
             // Top row: Currency pair with flags + Toggle
             HStack(alignment: .center) {
-                // Flags and currency codes
+                // Flags and currency codes / Crypto info
                 HStack(spacing: 8) {
-                    // Base currency
-                    HStack(spacing: 4) {
-                        Text(CurrencyFlagHelper.flag(for: alert.baseCurrency))
-                            .font(.system(size: 24))
-                        Text(alert.baseCurrency)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.primary)
-                    }
-                    
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.secondary)
-                    
-                    // Target currency
-                    HStack(spacing: 4) {
-                        Text(CurrencyFlagHelper.flag(for: alert.targetCurrency))
-                            .font(.system(size: 24))
-                        Text(alert.targetCurrency)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.primary)
+                    if alert.alertType == .crypto {
+                        // Crypto display
+                        HStack(spacing: 4) {
+                            Image(systemName: "bitcoinsign.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.orange)
+                            if let symbol = alert.cryptoSymbol {
+                                Text(symbol)
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundColor(.primary)
+                            } else if let cryptoId = alert.cryptoId {
+                                Text(cryptoId.capitalized)
+                                    .font(.system(size: 15, weight: .semibold))
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.secondary)
+                        
+                        // USD target
+                        HStack(spacing: 4) {
+                            Text(CurrencyFlagHelper.flag(for: "USD"))
+                                .font(.system(size: 24))
+                            Text("USD")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
+                    } else {
+                        // Currency display
+                        // Base currency
+                        HStack(spacing: 4) {
+                            Text(CurrencyFlagHelper.flag(for: alert.baseCurrency))
+                                .font(.system(size: 24))
+                            Text(alert.baseCurrency)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
+                        
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.secondary)
+                        
+                        // Target currency
+                        HStack(spacing: 4) {
+                            Text(CurrencyFlagHelper.flag(for: alert.targetCurrency))
+                                .font(.system(size: 24))
+                            Text(alert.targetCurrency)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
                     }
                 }
                 
@@ -245,7 +303,16 @@ struct AlertRow: View {
     
     private func formatValue(_ value: Decimal) -> String {
         let doubleValue = Double(truncating: value as NSDecimalNumber)
-        return String(format: "%.4f", doubleValue)
+        if alert.alertType == .crypto {
+            // Format crypto prices with $ and appropriate decimal places
+            if doubleValue >= 1.0 {
+                return String(format: "$%.2f", doubleValue)
+            } else {
+                return String(format: "$%.4f", doubleValue)
+            }
+        } else {
+            return String(format: "%.4f", doubleValue)
+        }
     }
     
     private func formatDate(_ date: Date) -> String {

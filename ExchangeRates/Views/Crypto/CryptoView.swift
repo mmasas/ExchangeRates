@@ -15,15 +15,9 @@ struct CryptoView: View {
     /// The row index at which to trigger prefetching of the next page
     private let prefetchThreshold = 35
     
-    /// Header height changes based on search state
-    private var headerHeight: CGFloat {
-        isSearchActive ? 122 : 72
-    }
-    
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                // Content - starts behind the header, scrolls underneath it
+            Group {
                 if let errorMessage = viewModel.errorMessage, !viewModel.isLoading {
                     VStack {
                         Text(String(localized: "error"))
@@ -35,7 +29,6 @@ struct CryptoView: View {
                             .padding()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.top, headerHeight)
                 } else {
                     List {
                         if viewModel.isLoading && viewModel.cryptocurrencies.isEmpty {
@@ -80,15 +73,15 @@ struct CryptoView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
-                    .contentMargins(.top, headerHeight, for: .scrollContent)
                     .refreshable {
                         LogManager.shared.log("Pull to refresh triggered", level: .info, source: "CryptoView")
                         await viewModel.refreshCryptocurrencies()
                         LogManager.shared.log("Pull to refresh completed", level: .success, source: "CryptoView")
                     }
                 }
-                
-                // Custom header with blur effect (like tab bar)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                // Custom header with blur effect
                 VStack(spacing: 0) {
                     HStack {
                         // Search button (leading side)

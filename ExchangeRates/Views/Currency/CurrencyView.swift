@@ -16,8 +16,7 @@ struct CurrencyView: View {
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            ZStack(alignment: .top) {
-                // Content - starts behind the header, scrolls underneath it
+            Group {
                 if let errorMessage = viewModel.errorMessage, !viewModel.isLoading {
                     VStack {
                         Text(String(localized: "error"))
@@ -29,7 +28,6 @@ struct CurrencyView: View {
                             .padding()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.top, 72)
                 } else {
                     List {
                         if viewModel.isLoading && viewModel.allExchangeRates.isEmpty {
@@ -58,15 +56,15 @@ struct CurrencyView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
-                    .contentMargins(.top, 72, for: .scrollContent)
                     .refreshable {
                         LogManager.shared.log("Pull to refresh triggered", level: .info, source: "CurrencyView")
                         await viewModel.refreshAllRates()
                         LogManager.shared.log("Pull to refresh completed", level: .success, source: "CurrencyView")
                     }
                 }
-                
-                // Custom header with blur effect (like tab bar)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                // Custom header with blur effect
                 VStack(spacing: 0) {
                     HStack {
                         // Empty spacer to balance the header (matching CryptoView structure)
@@ -137,4 +135,3 @@ struct CurrencyView: View {
 #Preview {
     CurrencyView()
 }
-

@@ -21,64 +21,124 @@ struct CreateAlertView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker(String(localized: "base_currency"), selection: $viewModel.baseCurrency) {
-                        Text(String(localized: "select_currency")).tag("")
-                        ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
-                            Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
-                                .tag(code)
-                        }
+                    Picker(String(localized: "alert_type", defaultValue: "Alert Type"), selection: $viewModel.alertType) {
+                        Text(String(localized: "currency", defaultValue: "Currency")).tag(AlertType.currency)
+                        Text(String(localized: "crypto", defaultValue: "Crypto")).tag(AlertType.crypto)
                     }
-                    
-                    if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
-                        Button(action: {
-                            viewModel.swapCurrencies()
-                        }) {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "arrow.up.arrow.down")
-                                    .font(.system(size: 16, weight: .medium))
-                                Text(String(localized: "swap_order"))
-                                    .font(.system(size: 16))
-                                Spacer()
+                } header: {
+                    Text(String(localized: "alert_type", defaultValue: "Alert Type"))
+                }
+                
+                if viewModel.alertType == .currency {
+                    Section {
+                        Picker(String(localized: "base_currency"), selection: $viewModel.baseCurrency) {
+                            Text(String(localized: "select_currency")).tag("")
+                            ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
+                                Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
+                                    .tag(code)
                             }
-                            .foregroundColor(.blue)
                         }
-                    }
-                    
-                    Picker(String(localized: "target_currency"), selection: $viewModel.targetCurrency) {
-                        Text(String(localized: "select_currency")).tag("")
-                        ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
-                            Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
-                                .tag(code)
+                        
+                        if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
+                            Button(action: {
+                                viewModel.swapCurrencies()
+                            }) {
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "arrow.up.arrow.down")
+                                        .font(.system(size: 16, weight: .medium))
+                                    Text(String(localized: "swap_order"))
+                                        .font(.system(size: 16))
+                                    Spacer()
+                                }
+                                .foregroundColor(.blue)
+                            }
                         }
-                    }
-                    
-                    if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
-                        HStack {
-                            Text(String(localized: "current_rate"))
-                                .foregroundColor(.secondary)
-                            Spacer()
-                            if viewModel.isLoadingRate {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            } else if let rate = viewModel.currentRate {
-                                Text(String(format: "%.4f", rate))
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.primary)
-                            } else {
-                                Text("—")
+                        
+                        Picker(String(localized: "target_currency"), selection: $viewModel.targetCurrency) {
+                            Text(String(localized: "select_currency")).tag("")
+                            ForEach(viewModel.getAvailableCurrencies(), id: \.self) { code in
+                                Text("\(CurrencyFlagHelper.flag(for: code)) \(code) - \(CurrencyFlagHelper.countryName(for: code))")
+                                    .tag(code)
+                            }
+                        }
+                        
+                        if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
+                            HStack {
+                                Text(String(localized: "current_rate"))
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                if viewModel.isLoadingRate {
+                                    ProgressView()
+                                        .scaleEffect(0.8)
+                                } else if let rate = viewModel.currentRate {
+                                    Text(String(format: "%.4f", rate))
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(.primary)
+                                } else {
+                                    Text("—")
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    } header: {
+                        Text(String(localized: "currency_pair"))
+                    } footer: {
+                        if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
+                            if let rate = viewModel.currentRate {
+                                Text("\(viewModel.baseCurrency) → \(viewModel.targetCurrency): \(String(format: "%.4f", rate))")
+                                    .font(.caption)
                                     .foregroundColor(.secondary)
                             }
                         }
                     }
-                } header: {
-                    Text(String(localized: "currency_pair"))
-                } footer: {
-                    if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
-                        if let rate = viewModel.currentRate {
-                            Text("\(viewModel.baseCurrency) → \(viewModel.targetCurrency): \(String(format: "%.4f", rate))")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                } else {
+                    // Crypto selection
+                    Section {
+                        Picker(String(localized: "select_crypto", defaultValue: "Select Cryptocurrency"), selection: Binding(
+                            get: { viewModel.selectedCrypto ?? "" },
+                            set: { viewModel.selectedCrypto = $0.isEmpty ? nil : $0 }
+                        )) {
+                            Text(String(localized: "select_crypto", defaultValue: "Select Cryptocurrency")).tag("")
+                            ForEach(viewModel.getCryptoList(), id: \.id) { crypto in
+                                Text("\(crypto.symbol) - \(crypto.name)")
+                                    .tag(crypto.id)
+                            }
+                        }
+                        
+                        if viewModel.selectedCrypto != nil {
+                            HStack {
+                                Text(String(localized: "current_rate", defaultValue: "Current Price"))
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                                if viewModel.isLoadingRate {
+                                    ProgressView()
+                                        .scaleEffect(0.8)
+                                } else if let price = viewModel.currentRate {
+                                    if price >= 1.0 {
+                                        Text(String(format: "$%.2f", price))
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .foregroundColor(.primary)
+                                    } else {
+                                        Text(String(format: "$%.4f", price))
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .foregroundColor(.primary)
+                                    }
+                                } else {
+                                    Text("—")
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                        }
+                    } header: {
+                        Text(String(localized: "crypto_selection", defaultValue: "Cryptocurrency"))
+                    } footer: {
+                        if let cryptoId = viewModel.selectedCrypto, let price = viewModel.currentRate {
+                            if let crypto = viewModel.getCryptoList().first(where: { $0.id == cryptoId }) {
+                                Text("\(crypto.symbol) → USD: \(price >= 1.0 ? String(format: "$%.2f", price) : String(format: "$%.4f", price))")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
                 }
@@ -93,7 +153,7 @@ struct CreateAlertView: View {
                     HStack {
                         Text(String(localized: "target_value"))
                         Spacer()
-                        TextField("0.0000", text: $viewModel.targetValue)
+                        TextField(viewModel.alertType == .crypto ? "$0.00" : "0.0000", text: $viewModel.targetValue)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .environment(\.layoutDirection, .leftToRight)

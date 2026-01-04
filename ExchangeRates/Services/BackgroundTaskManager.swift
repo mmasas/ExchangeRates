@@ -37,6 +37,7 @@ class BackgroundTaskManager {
     private let taskIdentifier = "com.exchangerates.alertCheck"
     private let alertChecker = AlertCheckerService.shared
     private let notificationService = NotificationService.shared
+    private let alertManager = CurrencyAlertManager.shared
     
     /// Minimum interval between background refreshes (15 minutes is iOS minimum)
     private let minimumRefreshInterval: TimeInterval = 15 * 60
@@ -172,20 +173,36 @@ class BackgroundTaskManager {
                 
                 // Send notifications for triggered alerts
                 for alert in triggeredAlerts {
-                    // Fetch current rate for notification
-                    let currentRate = try await alertChecker.fetchRateForPair(
-                        base: alert.baseCurrency,
-                        target: alert.targetCurrency
-                    )
+                    let currentRate: Double
+                    if alert.alertType == .crypto {
+                        // Fetch crypto price
+                        guard let cryptoId = alert.cryptoId else {
+                            LogManager.shared.log("Crypto alert \(alert.id) missing cryptoId", level: .warning, source: "BackgroundTaskManager")
+                            continue
+                        }
+                        currentRate = try await alertChecker.fetchCryptoPrice(id: cryptoId)
+                    } else {
+                        // Fetch currency rate
+                        let rate = try await alertChecker.fetchRateForPair(
+                            base: alert.baseCurrency,
+                            target: alert.targetCurrency
+                        )
+                        currentRate = rate.currentExchangeRate
+                    }
                     
                     // Check notification permission
                     let status = await notificationService.getAuthorizationStatus()
                     if status == .authorized {
                         notificationService.scheduleNotification(
                             for: alert,
-                            currentRate: currentRate.currentExchangeRate
+                            currentRate: currentRate
                         )
                     }
+                }
+                
+                // Update badge count
+                await MainActor.run {
+                    updateBadgeCount()
                 }
                 
                 return triggeredAlerts.count
@@ -216,5 +233,15 @@ class BackgroundTaskManager {
                 }
             }
         }
+    }
+    
+    /// Updates the badge count based on triggered alerts
+    @MainActor
+    private func updateBadgeCount() {
+        let allAlerts = alertManager.getAllAlerts()
+        let triggeredCount = allAlerts.filter { $0.status == .triggered }.count
+        notificationService.setBadge(count: triggeredCount)
+        // Notify MainTabView to update badge
+        NotificationCenter.default.post(name: NSNotification.Name("AlertsUpdated"), object: nil)
     }
 }

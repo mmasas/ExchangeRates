@@ -12,6 +12,7 @@ class AlertCheckerService {
     
     private let alertManager = CurrencyAlertManager.shared
     private let customCurrencyService = CustomCurrencyService.shared
+    private let cryptoService = CryptoService.shared
     
     private init() {}
     
@@ -22,8 +23,12 @@ class AlertCheckerService {
         
         LogManager.shared.log("Checking \(activeAlerts.count) active alerts", level: .info, source: "AlertCheckerService")
         
-        // Check each alert
-        for alert in activeAlerts {
+        // Separate alerts by type
+        let currencyAlerts = activeAlerts.filter { $0.alertType == .currency }
+        let cryptoAlerts = activeAlerts.filter { $0.alertType == .crypto }
+        
+        // Check currency alerts
+        for alert in currencyAlerts {
             do {
                 // Fetch current rate for the currency pair
                 let currentRate = try await fetchRateForPair(
@@ -53,6 +58,37 @@ class AlertCheckerService {
             }
         }
         
+        // Check crypto alerts
+        for alert in cryptoAlerts {
+            do {
+                guard let cryptoId = alert.cryptoId else {
+                    LogManager.shared.log("Crypto alert \(alert.id) missing cryptoId", level: .warning, source: "AlertCheckerService")
+                    continue
+                }
+                
+                // Fetch current crypto price
+                let currentPrice = try await fetchCryptoPrice(id: cryptoId)
+                let targetValue = Double(truncating: alert.targetValue as NSDecimalNumber)
+                
+                LogManager.shared.log("Crypto Alert \(alert.currencyPair): current=\(currentPrice), target=\(targetValue), condition=\(alert.condition.displayName)", level: .info, source: "AlertCheckerService")
+                
+                // Check if alert condition is satisfied
+                if alert.condition.isSatisfied(by: currentPrice) {
+                    // Alert triggered
+                    var triggeredAlert = alert
+                    triggeredAlert.markAsTriggered()
+                    alertManager.updateAlert(triggeredAlert)
+                    triggeredAlerts.append(triggeredAlert)
+                    LogManager.shared.log("Crypto Alert TRIGGERED: \(alert.currencyPair)", level: .success, source: "AlertCheckerService")
+                } else {
+                    LogManager.shared.log("Crypto Alert not triggered: \(alert.currencyPair)", level: .info, source: "AlertCheckerService")
+                }
+            } catch {
+                LogManager.shared.log("Failed to check crypto alert \(alert.id): \(error.localizedDescription)", level: .warning, source: "AlertCheckerService")
+                // Continue checking other alerts even if one fails
+            }
+        }
+        
         // Check for auto-reset
         await checkAutoReset()
         
@@ -69,6 +105,12 @@ class AlertCheckerService {
     func fetchRateForPair(base: String, target: String) async throws -> ExchangeRate {
         // Use CustomCurrencyService which supports any currency pair
         return try await customCurrencyService.fetchExchangeRate(for: base, target: target)
+    }
+    
+    /// Fetches current price for a cryptocurrency (in USD)
+    func fetchCryptoPrice(id: String) async throws -> Double {
+        let crypto = try await cryptoService.fetchCrypto(id: id)
+        return crypto.currentPrice
     }
     
     /// Checks and resets alerts that have passed their auto-reset time

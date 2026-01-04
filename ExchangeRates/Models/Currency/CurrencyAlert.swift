@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum AlertType: String, Codable {
+    case currency
+    case crypto
+}
+
 enum AlertCondition: Codable, Equatable {
     case above(Double)
     case below(Double)
@@ -38,6 +43,7 @@ enum AlertStatus: String, Codable {
 
 struct CurrencyAlert: Codable, Identifiable {
     let id: UUID
+    let alertType: AlertType
     let baseCurrency: String
     let targetCurrency: String
     let condition: AlertCondition
@@ -47,9 +53,12 @@ struct CurrencyAlert: Codable, Identifiable {
     var triggeredAt: Date?
     let createdAt: Date
     var autoResetAfterHours: Int?
+    let cryptoId: String?
+    let cryptoSymbol: String?
     
     init(
         id: UUID = UUID(),
+        alertType: AlertType = .currency,
         baseCurrency: String,
         targetCurrency: String,
         condition: AlertCondition,
@@ -58,9 +67,12 @@ struct CurrencyAlert: Codable, Identifiable {
         status: AlertStatus = .active,
         triggeredAt: Date? = nil,
         createdAt: Date = Date(),
-        autoResetAfterHours: Int? = nil
+        autoResetAfterHours: Int? = nil,
+        cryptoId: String? = nil,
+        cryptoSymbol: String? = nil
     ) {
         self.id = id
+        self.alertType = alertType
         self.baseCurrency = baseCurrency
         self.targetCurrency = targetCurrency
         self.condition = condition
@@ -70,10 +82,15 @@ struct CurrencyAlert: Codable, Identifiable {
         self.triggeredAt = triggeredAt
         self.createdAt = createdAt
         self.autoResetAfterHours = autoResetAfterHours
+        self.cryptoId = cryptoId
+        self.cryptoSymbol = cryptoSymbol
     }
     
     var currencyPair: String {
-        "\(baseCurrency) → \(targetCurrency)"
+        if alertType == .crypto, let symbol = cryptoSymbol {
+            return "\(symbol) → USD"
+        }
+        return "\(baseCurrency) → \(targetCurrency)"
     }
     
     var isActive: Bool {

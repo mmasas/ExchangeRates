@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import UIKit
 
 @main
 struct ExchangeRatesApp: App {
@@ -53,8 +54,8 @@ struct ExchangeRatesApp: App {
                     }
                 }
                 
-                // Clear badge when app opens
-                NotificationService.shared.clearBadge()
+                // Update badge count when app opens
+                updateBadgeCount()
                 
                 // Schedule background check after app has appeared
                 // This runs on MainActor and checks availability before scheduling
@@ -94,5 +95,16 @@ struct ExchangeRatesApp: App {
                 source: "ExchangeRatesApp"
             )
         }
+    }
+    
+    /// Updates the badge count based on triggered alerts
+    @MainActor
+    private func updateBadgeCount() {
+        let alertManager = CurrencyAlertManager.shared
+        let allAlerts = alertManager.getAllAlerts()
+        let triggeredCount = allAlerts.filter { $0.status == .triggered }.count
+        NotificationService.shared.setBadge(count: triggeredCount)
+        // Notify MainTabView to update badge
+        NotificationCenter.default.post(name: NSNotification.Name("AlertsUpdated"), object: nil)
     }
 }
