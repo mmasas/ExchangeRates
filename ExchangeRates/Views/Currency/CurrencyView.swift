@@ -10,9 +10,12 @@ import UIKit
 
 struct CurrencyView: View {
     @StateObject private var viewModel = ExchangeRatesViewModel()
+    @StateObject private var networkMonitor = NetworkMonitor.shared
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
+    
+    private let cacheManager = DataCacheManager.shared
     
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -66,6 +69,13 @@ struct CurrencyView: View {
             .safeAreaInset(edge: .top, spacing: 0) {
                 // Custom header with blur effect
                 VStack(spacing: 0) {
+                    // Offline indicator banner (if offline)
+                    if !networkMonitor.isConnected {
+                        OfflineIndicatorView(lastUpdateDate: cacheManager.getLastUpdateDate())
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+                    
+                    // Header content
                     HStack {
                         // Empty spacer to balance the header (matching CryptoView structure)
                         Color.clear

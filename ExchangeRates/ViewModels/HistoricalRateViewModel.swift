@@ -18,6 +18,7 @@ class HistoricalRateViewModel: ObservableObject {
     @Published var errorMessage: String?
     
     private let currencyService = CustomCurrencyService.shared
+    private let networkMonitor = NetworkMonitor.shared
     
     init(baseCurrency: String, targetCurrency: String) {
         self.baseCurrency = baseCurrency
@@ -29,6 +30,14 @@ class HistoricalRateViewModel: ObservableObject {
     func fetchHistoricalRate() {
         guard !baseCurrency.isEmpty, !targetCurrency.isEmpty, baseCurrency != targetCurrency else {
             errorMessage = String(localized: "base_and_target_must_differ", defaultValue: "Base currency and target currency must be different")
+            return
+        }
+        
+        // Check if offline - historical rates require network
+        if !networkMonitor.isConnected {
+            isLoading = false
+            errorMessage = String(localized: "offline_historical_rates_unavailable", defaultValue: "Historical rates are not available offline. Please connect to the internet.")
+            historicalRate = nil
             return
         }
         

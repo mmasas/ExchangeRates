@@ -9,8 +9,11 @@ import SwiftUI
 
 struct CryptoView: View {
     @StateObject private var viewModel = CryptoViewModel()
+    @StateObject private var networkMonitor = NetworkMonitor.shared
     @State private var isSearchActive = false
     @FocusState private var isSearchFocused: Bool
+    
+    private let cacheManager = DataCacheManager.shared
     
     /// The row index at which to trigger prefetching of the next page
     private let prefetchThreshold = 35
@@ -83,6 +86,13 @@ struct CryptoView: View {
             .safeAreaInset(edge: .top, spacing: 0) {
                 // Custom header with blur effect
                 VStack(spacing: 0) {
+                    // Offline indicator banner (if offline)
+                    if !networkMonitor.isConnected {
+                        OfflineIndicatorView(lastUpdateDate: cacheManager.getLastUpdateDate())
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                    }
+                    
+                    // Header content
                     HStack {
                         // Search button (leading side)
                         Button {

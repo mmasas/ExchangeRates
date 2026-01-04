@@ -11,6 +11,7 @@ struct CryptoDetailView: View {
     let cryptocurrency: Cryptocurrency
     
     @Environment(\.dismiss) private var dismiss
+    @StateObject private var networkMonitor = NetworkMonitor.shared
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -96,11 +97,38 @@ struct CryptoDetailView: View {
                         .foregroundColor(.secondary)
                         .padding(.horizontal, 4)
                     
-                    LargeChartView(
-                        prices: cryptocurrency.sparklinePrices,
-                        isPositive: cryptocurrency.isPositiveChange
-                    )
-                    .frame(height: 220)
+                    if !networkMonitor.isConnected {
+                        // Show offline message for chart
+                        VStack(spacing: 12) {
+                            Image(systemName: "wifi.slash")
+                                .font(.system(size: 32))
+                                .foregroundColor(.orange)
+                            Text(String(localized: "chart_offline_unavailable", defaultValue: "Chart is not available offline"))
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 220)
+                        .frame(maxWidth: .infinity)
+                    } else if let sparklinePrices = cryptocurrency.sparklinePrices, !sparklinePrices.isEmpty {
+                        LargeChartView(
+                            prices: sparklinePrices,
+                            isPositive: cryptocurrency.isPositiveChange
+                        )
+                        .frame(height: 220)
+                    } else {
+                        VStack(spacing: 12) {
+                            Image(systemName: "chart.line.downtrend.xyaxis")
+                                .font(.system(size: 32))
+                                .foregroundColor(.secondary)
+                            Text(String(localized: "no_chart_data", defaultValue: "No chart data available"))
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(height: 220)
+                        .frame(maxWidth: .infinity)
+                    }
                 }
                 .padding(16)
                 .background(Color(.systemBackground))

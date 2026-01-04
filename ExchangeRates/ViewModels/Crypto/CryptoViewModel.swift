@@ -15,6 +15,8 @@ class CryptoViewModel: ObservableObject {
     @Published var isLoadingNextPage: Bool = false
     @Published var errorMessage: String?
     @Published var searchText: String = ""
+    @Published var isOffline: Bool = false
+    @Published var lastUpdateDate: Date?
     
     /// Current page number (1-indexed)
     private(set) var currentPage = 1
@@ -35,8 +37,18 @@ class CryptoViewModel: ObservableObject {
     
     private var currentTask: Task<Void, Never>?
     private var prefetchTask: Task<Void, Never>?
+    private let networkMonitor = NetworkMonitor.shared
+    private let cacheManager = DataCacheManager.shared
     
     init() {
+        // Load from cache first if available (on main actor)
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            self.loadFromCache()
+            self.updateOfflineStatus()
+        }
+        
+        // Load fresh data (will use cache if offline)
         loadCryptocurrencies()
     }
     
@@ -50,17 +62,52 @@ class CryptoViewModel: ObservableObject {
     @MainActor
     func loadCryptocurrenciesAsync() async {
         let isInitialLoad = cryptocurrencies.isEmpty
-        LogManager.shared.log("Starting crypto load - isInitialLoad: \(isInitialLoad)", level: .info, source: "CryptoViewModel")
+        LogManager.shared.log("Starting crypto load - isInitialLoad: \(isInitialLoad), current count: \(cryptocurrencies.count)", level: .info, source: "CryptoViewModel")
         
         isLoading = isInitialLoad
         errorMessage = nil
         currentPage = 1
+        updateOfflineStatus()
+        
+        // Check if offline - load from cache if so
+        if !networkMonitor.isConnected {
+            LogManager.shared.log("Offline mode: loading cryptocurrencies from cache", level: .info, source: "CryptoViewModel")
+            
+            // If we already have data from loadFromCache, keep it
+            if !cryptocurrencies.isEmpty {
+                LogManager.shared.log("Already have cached data: \(cryptocurrencies.count) items, skipping reload", level: .info, source: "CryptoViewModel")
+                isLoading = false
+                return
+            }
+            
+            // Otherwise try to load from cache
+            let cachedCryptos = cacheManager.loadCryptocurrencies()
+            if !cachedCryptos.isEmpty {
+                cryptocurrencies = cachedCryptos
+                isLoading = false
+                lastUpdateDate = cacheManager.getLastCryptocurrenciesUpdateDate()
+                LogManager.shared.log("Loaded \(cachedCryptos.count) cryptocurrencies from cache", level: .success, source: "CryptoViewModel")
+                return
+            } else {
+                LogManager.shared.log("No cached cryptocurrencies available", level: .warning, source: "CryptoViewModel")
+                isLoading = false
+                return
+            }
+        }
         
         do {
             let page1Ids = MainCryptoHelper.getCryptos(forPage: 1)
             let cryptos = try await CryptoService.shared.fetchCryptoPrices(ids: page1Ids)
             cryptocurrencies = cryptos
             isLoading = false
+            
+            // Save to cache on successful fetch
+            if !cryptos.isEmpty {
+                cacheManager.saveCryptocurrencies(cryptos)
+                lastUpdateDate = cacheManager.getLastCryptocurrenciesUpdateDate()
+                LogManager.shared.log("Saved \(cryptos.count) cryptocurrencies to cache", level: .success, source: "CryptoViewModel")
+            }
+            
             LogManager.shared.log("Loaded \(cryptos.count) cryptocurrencies (page 1) with sparklines", level: .success, source: "CryptoViewModel")
         } catch {
             // Don't show error if task was cancelled
@@ -128,5 +175,22 @@ class CryptoViewModel: ObservableObject {
         // Reset to page 1 on refresh
         currentPage = 1
         await loadCryptocurrenciesAsync()
+    }
+    
+    /// Load data from cache (used on app init)
+    @MainActor
+    private func loadFromCache() {
+        let cachedCryptos = cacheManager.loadCryptocurrencies()
+        if !cachedCryptos.isEmpty {
+            cryptocurrencies = cachedCryptos
+            lastUpdateDate = cacheManager.getLastCryptocurrenciesUpdateDate()
+            LogManager.shared.log("Loaded \(cachedCryptos.count) cryptocurrencies from cache", level: .info, source: "CryptoViewModel")
+        }
+    }
+    
+    /// Update offline status based on network monitor
+    @MainActor
+    private func updateOfflineStatus() {
+        isOffline = !networkMonitor.isConnected
     }
 }

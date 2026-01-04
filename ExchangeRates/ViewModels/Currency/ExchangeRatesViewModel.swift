@@ -16,11 +16,15 @@ class ExchangeRatesViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isLoadingCustom: Bool = false
     @Published var errorMessage: String?
+    @Published var isOffline: Bool = false
+    @Published var lastUpdateDate: Date?
     
     private var currentTask: Task<Void, Never>?
     private var customTask: Task<Void, Never>?
     private let orderManager = CurrencyOrderManager.shared
     private let homeCurrencyManager = HomeCurrencyManager.shared
+    private let networkMonitor = NetworkMonitor.shared
+    private let cacheManager = DataCacheManager.shared
     
     // Track if initial loads have completed (to avoid syncing with partial data)
     private var mainCurrenciesLoaded = false
@@ -40,6 +44,26 @@ class ExchangeRatesViewModel: ObservableObject {
     }
     
     init() {
+        // Load from cache first if available
+        loadFromCache()
+        
+        // Update offline status on main actor
+        Task { @MainActor [weak self] in
+            self?.updateOfflineStatus()
+        }
+        
+        // Listen for network status changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("NetworkStatusChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor [weak self] in
+                self?.updateOfflineStatus()
+            }
+        }
+        
         loadExchangeRates()
         loadCustomExchangeRates()
         
@@ -116,6 +140,26 @@ class ExchangeRatesViewModel: ObservableObject {
         
         isLoading = isInitialLoad
         errorMessage = nil
+        updateOfflineStatus()
+        
+        // Check if offline - load from cache if so
+        if !networkMonitor.isConnected {
+            LogManager.shared.log("Offline mode: loading exchange rates from cache", level: .info, source: "ExchangeRatesViewModel")
+            let cachedRates = cacheManager.loadExchangeRates()
+            if !cachedRates.isEmpty {
+                exchangeRates = cachedRates
+                mainCurrenciesLoaded = true
+                isLoading = false
+                lastUpdateDate = cacheManager.getLastExchangeRatesUpdateDate()
+                LogManager.shared.log("Loaded \(cachedRates.count) exchange rates from cache", level: .success, source: "ExchangeRatesViewModel")
+                syncOrderIfReady()
+                return
+            } else {
+                LogManager.shared.log("No cached exchange rates available", level: .warning, source: "ExchangeRatesViewModel")
+                isLoading = false
+                return
+            }
+        }
         
         // Get home currency and main currencies
         let homeCurrency = homeCurrencyManager.getHomeCurrency()
@@ -156,6 +200,13 @@ class ExchangeRatesViewModel: ObservableObject {
         exchangeRates = rates
         mainCurrenciesLoaded = true
         
+        // Save to cache on successful fetch
+        if !rates.isEmpty {
+            cacheManager.saveExchangeRates(rates)
+            lastUpdateDate = cacheManager.getLastExchangeRatesUpdateDate()
+            LogManager.shared.log("Saved \(rates.count) exchange rates to cache", level: .success, source: "ExchangeRatesViewModel")
+        }
+        
         // Initialize or reset order to maintain main currencies order
         let currencyCodes = mainCurrencies
         let existingOrder = orderManager.getOrderedCurrencies()
@@ -179,6 +230,7 @@ class ExchangeRatesViewModel: ObservableObject {
         LogManager.shared.log("Loading custom exchange rates", level: .info, source: "ExchangeRatesViewModel")
         
         isLoadingCustom = true
+        updateOfflineStatus()
         
         let customCurrencyCodes = CustomCurrencyManager.shared.getCustomCurrencies()
         
@@ -188,6 +240,19 @@ class ExchangeRatesViewModel: ObservableObject {
             isLoadingCustom = false
             LogManager.shared.log("No custom currencies to load, customCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
             // Sync order only after BOTH main and custom currencies are loaded
+            syncOrderIfReady()
+            return
+        }
+        
+        // Check if offline - load from cache if so
+        if !networkMonitor.isConnected {
+            LogManager.shared.log("Offline mode: loading custom exchange rates from cache", level: .info, source: "ExchangeRatesViewModel")
+            let cachedRates = cacheManager.loadCustomExchangeRates()
+            customExchangeRates = cachedRates
+            customCurrenciesLoaded = true
+            isLoadingCustom = false
+            lastUpdateDate = cacheManager.getLastExchangeRatesUpdateDate()
+            LogManager.shared.log("Loaded \(cachedRates.count) custom exchange rates from cache", level: .success, source: "ExchangeRatesViewModel")
             syncOrderIfReady()
             return
         }
@@ -215,6 +280,14 @@ class ExchangeRatesViewModel: ObservableObject {
         customExchangeRates = rates
         customCurrenciesLoaded = true
         isLoadingCustom = false
+        
+        // Save to cache on successful fetch
+        if !rates.isEmpty {
+            cacheManager.saveCustomExchangeRates(rates)
+            lastUpdateDate = cacheManager.getLastExchangeRatesUpdateDate()
+            LogManager.shared.log("Saved \(rates.count) custom exchange rates to cache", level: .success, source: "ExchangeRatesViewModel")
+        }
+        
         LogManager.shared.log("Loaded \(rates.count) custom exchange rates, customCurrenciesLoaded=true", level: .success, source: "ExchangeRatesViewModel")
         
         // Sync order only after BOTH main and custom currencies are loaded
@@ -273,6 +346,34 @@ class ExchangeRatesViewModel: ObservableObject {
         
         LogManager.shared.log("syncOrderIfReady: both loads complete, syncing order with \(allCurrencyCodes.count) currencies", level: .success, source: "ExchangeRatesViewModel")
         orderManager.syncOrder(with: allCurrencyCodes)
+    }
+    
+    /// Load data from cache (used on app init)
+    @MainActor
+    private func loadFromCache() {
+        let cachedMainRates = cacheManager.loadExchangeRates()
+        let cachedCustomRates = cacheManager.loadCustomExchangeRates()
+        
+        if !cachedMainRates.isEmpty {
+            exchangeRates = cachedMainRates
+            mainCurrenciesLoaded = true
+        }
+        
+        if !cachedCustomRates.isEmpty {
+            customExchangeRates = cachedCustomRates
+            customCurrenciesLoaded = true
+        }
+        
+        if !cachedMainRates.isEmpty || !cachedCustomRates.isEmpty {
+            lastUpdateDate = cacheManager.getLastUpdateDate()
+            LogManager.shared.log("Loaded cached data: \(cachedMainRates.count) main, \(cachedCustomRates.count) custom", level: .info, source: "ExchangeRatesViewModel")
+        }
+    }
+    
+    /// Update offline status based on network monitor
+    @MainActor
+    private func updateOfflineStatus() {
+        isOffline = !networkMonitor.isConnected
     }
     
     /// Check alerts after both main and custom currencies are loaded
