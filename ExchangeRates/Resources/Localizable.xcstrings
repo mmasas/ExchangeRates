@@ -1,3014 +1,3530 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "" : {
-
-    },
-    "—" : {
-
-    },
-    "(24h)" : {
-
-    },
-    "%@" : {
-
-    },
-    "%@ - %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ - %2$@"
+  "sourceLanguage": "en",
+  "strings": {
+    "": {},
+    "—": {},
+    "(24h)": {},
+    "%@": {},
+    "%@ - %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ - %2$@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ - %2$@"
+          }
         }
       }
     },
-    "%@ / %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ / %2$@"
+    "%@ / %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ / %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ / %2$@"
           }
         }
       }
     },
-    "%@ %@ - %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@ - %3$@"
+    "%@ %@ - %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ %2$@ - %3$@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ %2$@ - %3$@"
+          }
         }
       }
     },
-    "%@ → %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ → %2$@"
+    "%@ → %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ → %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ → %2$@"
           }
         }
       }
     },
-    "%@ → %@: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ → %2$@: %3$@"
+    "%@ → %@: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ → %2$@: %3$@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ → %2$@: %3$@"
+          }
         }
       }
     },
-    "%@ → USD: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ → USD: %2$@"
+    "%@ → USD: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ → USD: %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ → USD: %2$@"
           }
         }
       }
     },
-    "%@ copied to clipboard" : {
-
-    },
-    "%lld." : {
-
-    },
-    "→" : {
-
-    },
-    "$0.00" : {
-
-    },
-    "0" : {
-
-    },
-    "0.0000" : {
-
-    },
-    "7_day_chart" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "7-Day Chart"
+    "%@ copied to clipboard": {},
+    "%lld.": {},
+    "→": {},
+    "$0.00": {},
+    "0": {},
+    "0.0000": {},
+    "7_day_chart": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7-Day Chart"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gráfico de 7 Días"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gráfico de 7 Días"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Graphique sur 7 Jours"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Graphique sur 7 Jours"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "גרף 7 ימים"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "גרף 7 ימים"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7日間チャート"
           }
         }
       }
     },
-    "above" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Above"
+    "above": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Above"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por encima"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por encima"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Au-dessus"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Au-dessus"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מעל ל־"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מעל ל־"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以上"
+          }
         }
       }
     },
-    "active" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active"
+    "active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actif"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Actif"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "פעיל"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "פעיל"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有効"
           }
         }
       }
     },
-    "add" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add"
+    "add": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הוסף"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הוסף"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追加"
+          }
         }
       }
     },
-    "Add Currency" : {
-
-    },
-    "add_alert_to_start" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a new alert to get started"
+    "Add Currency": {},
+    "add_alert_to_start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a new alert to get started"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade una nueva alerta para comenzar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añade una nueva alerta para comenzar"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez une nouvelle alerte pour commencer"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajoutez une nouvelle alerte pour commencer"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הוסף התראה חדשה כדי להתחיל"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הוסף התראה חדשה כדי להתחיל"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始するには新しいアラートを追加してください"
           }
         }
       }
     },
-    "add_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add Currency"
+    "add_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add Currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une Devise"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter une Devise"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הוסף מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הוסף מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨を追加"
           }
         }
       }
     },
-    "add_new_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add New Currency"
+    "add_new_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add New Currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir Nueva Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir Nueva Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une Nouvelle Devise"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter une Nouvelle Devise"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הוסף מטבע חדש"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הוסף מטבע חדש"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい通貨を追加"
           }
         }
       }
     },
-    "additional_settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Additional Settings"
+    "additional_settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Additional Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuración Adicional"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración Adicional"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paramètres Supplémentaires"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paramètres Supplémentaires"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הגדרות נוספות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הגדרות נוספות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "追加設定"
           }
         }
       }
     },
-    "after_hours" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "After %lld hours"
+    "after_hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After %lld hours"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Después de %lld horas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Después de %lld horas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Après %lld heures"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Après %lld heures"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אחרי %lld שעות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אחרי %lld שעות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld時間後"
           }
         }
       }
-    },
-    "Alert JSON" : {
-
     },
-    "alert_condition" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert Condition"
+    "Alert JSON": {},
+    "alert_condition": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert Condition"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condición de Alerta"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condición de Alerta"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condition d'Alerte"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condition d'Alerte"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "תנאי התראה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "תנאי התראה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラート条件"
           }
         }
       }
     },
-    "alert_type" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert Type"
+    "alert_type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert Type"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo de Alerta"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de Alerta"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type d'Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type d'Alerte"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "סוג התראה"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "סוג התראה"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートタイプ"
+          }
         }
       }
     },
-    "alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerts"
+    "alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertes"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラート"
           }
         }
       }
     },
-    "alerts_tab" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerts"
+    "alerts_tab": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerts"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertas"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראות"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראות"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラート"
+          }
         }
       }
     },
-    "alerts_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency Rate Alerts"
+    "alerts_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency Rate Alerts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas de Tipo de Cambio"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertas de Tipo de Cambio"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes de Taux de Change"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertes de Taux de Change"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראות שערי מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראות שערי מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為替レートアラート"
           }
         }
       }
     },
-    "All" : {
-
-    },
-    "App Settings" : {
-
-    },
-    "auto_reset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto Reset"
+    "All": {},
+    "App Settings": {},
+    "auto_reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reinicio Automático"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinicio Automático"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialisation Automatique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialisation Automatique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "איפוס אוטומטי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "איפוס אוטומטי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動リセット"
           }
         }
       }
     },
-    "auto_reset_after_hours" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto reset: %lld hours"
+    "auto_reset_after_hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto reset: %lld hours"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reinicio automático: %lld horas"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reinicio automático: %lld horas"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialisation automatique : %lld heures"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialisation automatique : %lld heures"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "איפוס אוטומטי: %lld שעות"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "איפוס אוטומטי: %lld שעות"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動リセット: %lld時間"
+          }
         }
       }
     },
-    "base_and_target_must_differ" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Base currency and target currency must be different"
+    "base_and_target_must_differ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base currency and target currency must be different"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La moneda base y la moneda objetivo deben ser diferentes"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La moneda base y la moneda objetivo deben ser diferentes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La devise de base et la devise cible doivent être différentes"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La devise de base et la devise cible doivent être différentes"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע בסיס ומטבע יעד חייבים להיות שונים"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע בסיס ומטבע יעד חייבים להיות שונים"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基準通貨と対象通貨は異なる必要があります"
           }
         }
       }
     },
-    "base_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Base Currency"
+    "base_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base Currency"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moneda Base"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda Base"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devise de Base"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devise de Base"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע בסיס"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע בסיס"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基準通貨"
+          }
         }
       }
     },
-    "below" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Below"
+    "below": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Below"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por debajo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por debajo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En dessous"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En dessous"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מתחת ל־"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מתחת ל־"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以下"
           }
         }
       }
     },
-    "cancel" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
+    "cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelar"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ביטול"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ביטול"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
         }
       }
     },
-    "Cancel" : {
-
-    },
-    "central_africa" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Central Africa"
+    "Cancel": {},
+    "central_africa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Central Africa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "África Central"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "África Central"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afrique Centrale"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afrique Centrale"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מרכז אפריקה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מרכז אפריקה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中央アフリカ"
           }
         }
       }
-    },
-    "Clear" : {
-
     },
-    "Color Scheme" : {
-
-    },
-    "color_scheme" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Color Scheme"
+    "Clear": {},
+    "Color Scheme": {},
+    "color_scheme": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color Scheme"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esquema de Color"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esquema de Color"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schéma de Couleurs"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schéma de Couleurs"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערכת נושא"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערכת נושא"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カラースキーム"
           }
         }
       }
     },
-    "condition" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condition"
+    "condition": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condition"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condición"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condición"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Condition"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condition"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "תנאי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "תנאי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "条件"
           }
         }
       }
-    },
-    "Copied!" : {
-
     },
-    "Copy" : {
-
-    },
-    "Copy All" : {
-
-    },
-    "Copy All Data" : {
-
-    },
-    "crypto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto"
+    "Copied!": {},
+    "Copy": {},
+    "Copy All": {},
+    "Copy All Data": {},
+    "crypto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cripto"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cripto"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨"
           }
         }
       }
     },
-    "crypto_alerts_section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto Alerts"
+    "crypto_alerts_section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto Alerts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas de Cripto"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertas de Cripto"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes Crypto"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertes Crypto"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראות קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראות קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨アラート"
           }
         }
       }
     },
-    "crypto_price_alert_notification_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto Price Alert"
+    "crypto_price_alert_notification_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto Price Alert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerta de Precio de Cripto"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerta de Precio de Cripto"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte de Prix Crypto"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte de Prix Crypto"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראה על מחיר קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראה על מחיר קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨価格アラート"
           }
         }
       }
     },
-    "crypto_selection" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cryptocurrency"
+    "crypto_selection": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cryptocurrency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criptomoneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Criptomoneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cryptomonnaie"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cryptomonnaie"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨"
           }
         }
       }
     },
-    "crypto_tab" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto"
+    "crypto_tab": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cripto"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cripto"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crypto"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crypto"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨"
           }
         }
       }
     },
-    "crypto_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cryptocurrencies"
+    "crypto_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cryptocurrencies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criptomonedas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Criptomonedas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cryptomonnaies"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cryptomonnaies"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבעות קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבעות קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨"
           }
         }
       }
     },
-    "currencies_tab" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currencies"
+    "currencies_tab": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currencies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monedas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monedas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devises"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devises"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבעות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבעות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨"
           }
         }
       }
     },
-    "currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency"
+    "currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devise"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devise"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨"
           }
         }
       }
-    },
-    "Currency Alerts (%lld)" : {
-
     },
-    "Currency Code" : {
-
-    },
-    "Currency Order" : {
-
-    },
-    "Currency Order (%lld)" : {
-
-    },
-    "currency_alert_notification_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency Rate Alert"
+    "Currency Alerts (%lld)": {},
+    "Currency Code": {},
+    "Currency Order": {},
+    "Currency Order (%lld)": {},
+    "currency_alert_notification_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency Rate Alert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerta de Tipo de Cambio"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerta de Tipo de Cambio"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte de Taux de Change"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte de Taux de Change"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראה על שער מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראה על שער מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為替レートアラート"
           }
         }
       }
     },
-    "currency_alerts_section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency Alerts"
+    "currency_alerts_section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency Alerts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertas de Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertas de Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alertes de Devise"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alertes de Devise"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראות מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראות מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨アラート"
           }
         }
       }
     },
-    "currency_converter" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency Converter"
+    "currency_converter": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency Converter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertidor de Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertidor de Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convertisseur de Devises"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertisseur de Devises"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ממיר מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ממיר מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨コンバーター"
           }
         }
       }
     },
-    "currency_pair" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency Pair"
+    "currency_pair": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Currency Pair"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par de Monedas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Par de Monedas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paire de Devises"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paire de Devises"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "זוג מטבעות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "זוג מטבעות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨ペア"
           }
         }
       }
     },
-    "current_rate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Current Rate"
+    "current_rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current Rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de Cambio Actual"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo de Cambio Actual"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux Actuel"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taux Actuel"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שער נוכחי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שער נוכחי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在のレート"
           }
         }
       }
-    },
-    "Custom Currencies" : {
-
     },
-    "Custom Currencies (%lld)" : {
-
-    },
-    "custom_currencies" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom Currencies"
+    "Custom Currencies": {},
+    "Custom Currencies (%lld)": {},
+    "custom_currencies": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom Currencies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monedas Personalizadas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monedas Personalizadas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devises Personnalisées"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devises Personnalisées"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבעות מותאמים אישית"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבעות מותאמים אישית"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カスタム通貨"
           }
         }
       }
     },
-    "dark" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark"
+    "dark": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oscuro"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oscuro"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sombre"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sombre"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כהה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "כהה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダーク"
           }
         }
       }
-    },
-    "Debug Menu" : {
-
     },
-    "delete" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
+    "Debug Menu": {},
+    "delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supprimer"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מחק"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מחק"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
         }
       }
     },
-    "edit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit"
+    "edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifier"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערוך"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערוך"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集"
           }
         }
       }
     },
-    "Edit %@" : {
-
-    },
-    "Edit the JSON representation of the alert. Make sure it's valid JSON." : {
-
-    },
-    "edit_alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit Alert"
+    "Edit %@": {},
+    "Edit the JSON representation of the alert. Make sure it's valid JSON.": {},
+    "edit_alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Alert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar Alerta"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar Alerta"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier l'Alerte"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifier l'Alerte"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערוך התראה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערוך התראה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートを編集"
           }
         }
       }
     },
-    "enable_alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable Alert"
+    "enable_alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Alert"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activar Alerta"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar Alerta"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activer l'Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer l'Alerte"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הפעל התראה"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפעל התראה"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートを有効化"
+          }
         }
       }
     },
-    "english" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "English"
+    "english": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "English"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inglés"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inglés"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anglais"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anglais"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אנגלית"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אנגלית"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "英語"
           }
         }
       }
     },
-    "Enter 3-letter ISO currency codes" : {
-
-    },
-    "Enter a 3-letter ISO currency code (e.g., USD, EUR, ILS)" : {
-
-    },
-    "error" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error"
+    "Enter 3-letter ISO currency codes": {},
+    "Enter a 3-letter ISO currency code (e.g., USD, EUR, ILS)": {},
+    "error": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreur"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שגיאה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שגיאה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エラー"
           }
         }
       }
     },
-    "Error" : {
-
-    },
-    "error_checking_alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error checking alerts: %@"
+    "Error": {},
+    "error_checking_alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error checking alerts: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al verificar alertas: %@"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error al verificar alertas: %@"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreur lors de la vérification des alertes : %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erreur lors de la vérification des alertes : %@"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שגיאה בבדיקת התראות: %@"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שגיאה בבדיקת התראות: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートの確認エラー: %@"
           }
         }
       }
     },
-    "europe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Europe"
+    "europe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Europe"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Europa"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Europa"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Europe"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Europe"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אירופה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אירופה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヨーロッパ"
           }
         }
       }
     },
-    "exchange_rates_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exchange Rates"
+    "exchange_rates_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exchange Rates"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipos de Cambio"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipos de Cambio"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux de Change"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taux de Change"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שערי מטבעות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שערי מטבעות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為替レート"
           }
         }
       }
     },
-    "failed_to_load_crypto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to load cryptocurrencies: %@"
+    "failed_to_load_crypto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to load cryptocurrencies: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al cargar criptomonedas: %@"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error al cargar criptomonedas: %@"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du chargement des cryptomonnaies : %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Échec du chargement des cryptomonnaies : %@"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נכשל בטעינת מטבעות קריפטו: %@"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נכשל בטעינת מטבעות קריפטו: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨の読み込みに失敗しました: %@"
           }
         }
       }
     },
-    "failed_to_load_exchange_rate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to load exchange rate: %@"
+    "failed_to_load_exchange_rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to load exchange rate: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al cargar el tipo de cambio: %@"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Error al cargar el tipo de cambio: %@"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du chargement du taux de change : %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Échec du chargement du taux de change : %@"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נכשל בטעינת שער המרה: %@"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נכשל בטעינת שער המרה: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為替レートの読み込みに失敗しました: %@"
           }
         }
       }
-    },
-    "Filter" : {
-
     },
-    "french" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "French"
+    "Filter": {},
+    "french": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "French"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Francés"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Francés"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Français"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Français"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "צרפתית"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "צרפתית"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フランス語"
+          }
         }
       }
     },
-    "french_polynesia" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "French Polynesia"
+    "french_polynesia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "French Polynesia"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polinesia Francesa"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Polinesia Francesa"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Polynésie Française"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Polynésie Française"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "פולינזיה הצרפתית"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "פולינזיה הצרפתית"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フランス領ポリネシア"
           }
         }
       }
     },
-    "hebrew" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hebrew"
+    "hebrew": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hebrew"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hebreo"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hebreo"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hébreu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hébreu"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "עברית"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "עברית"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヘブライ語"
+          }
         }
       }
     },
-    "historical_rate_result" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Historical Rate"
+    "historical_rate_result": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historical Rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasa Histórica"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tasa Histórica"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux Historique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taux Historique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שער היסטורי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שער היסטורי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "過去のレート"
           }
         }
       }
     },
-    "historical_rate_title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Historical Rate"
+    "historical_rate_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historical Rate"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tasa Histórica"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tasa Histórica"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taux Historique"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux Historique"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שער היסטורי"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שער היסטורי"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "過去のレート"
+          }
         }
       }
-    },
-    "Home Currency" : {
-
-    },
-    "Home Currency Code" : {
-
     },
-    "home_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Home Currency"
+    "Home Currency": {},
+    "Home Currency Code": {},
+    "home_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home Currency"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moneda Principal"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda Principal"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devise Principale"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devise Principale"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע בית"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע בית"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ホーム通貨"
+          }
         }
       }
     },
-    "home_currency_footer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All exchange rates will be displayed relative to the selected home currency"
+    "home_currency_footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All exchange rates will be displayed relative to the selected home currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos los tipos de cambio se mostrarán en relación con la moneda principal seleccionada"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Todos los tipos de cambio se mostrarán en relación con la moneda principal seleccionada"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les taux de change seront affichés par rapport à la devise principale sélectionnée"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tous les taux de change seront affichés par rapport à la devise principale sélectionnée"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כל שערי המטבעות יוצגו ביחס למטבע הבית שנבחר"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "כל שערי המטבעות יוצגו ביחס למטבע הבית שנבחר"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての為替レートは、選択したホーム通貨を基準に表示されます"
           }
         }
       }
     },
-    "invalid_target_value" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invalid target value"
+    "invalid_target_value": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid target value"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valor objetivo no válido"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valor objetivo no válido"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valeur cible invalide"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valeur cible invalide"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערך יעד לא תקין"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערך יעד לא תקין"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無効な目標値"
+          }
         }
       }
     },
-    "language" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Language"
+    "language": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Idioma"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Langue"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שפה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שפה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語"
           }
         }
       }
     },
-    "Language" : {
-
-    },
-    "language_change_message" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please close and reopen the app for the language change to take full effect."
+    "Language": {},
+    "language_change_message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please close and reopen the app for the language change to take full effect."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por favor, cierra y vuelve a abrir la aplicación para que el cambio de idioma surta efecto completo."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, cierra y vuelve a abrir la aplicación para que el cambio de idioma surta efecto completo."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez fermer et rouvrir l'application pour que le changement de langue prenne pleinement effet."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veuillez fermer et rouvrir l'application pour que le changement de langue prenne pleinement effet."
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אנא סגור ופתח מחדש את האפליקציה כדי שהשינוי בשפה ייכנס לתוקף מלא."
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אנא סגור ופתח מחדש את האפליקציה כדי שהשינוי בשפה ייכנס לתוקף מלא."
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語変更を完全に反映するには、アプリを閉じて再度開いてください。"
           }
         }
       }
     },
-    "language_change_restart_required" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Language Changed"
+    "language_change_restart_required": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language Changed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma Cambiado"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Idioma Cambiado"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue Modifiée"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Langue Modifiée"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "השפה שונתה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "השפה שונתה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語が変更されました"
           }
         }
       }
     },
-    "language_system" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System"
+    "language_system": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistema"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistema"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מערכת"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מערכת"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
           }
         }
       }
     },
-    "last_updated" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last updated:"
+    "last_updated": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last updated:"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última actualización:"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Última actualización:"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière mise à jour :"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernière mise à jour :"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "עודכן לאחרונה:"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "עודכן לאחרונה:"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最終更新:"
           }
         }
       }
     },
-    "light" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Light"
+    "light": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Light"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライト"
           }
         }
       }
-    },
-    "Logs" : {
-
     },
-    "Logs (%lld)" : {
-
-    },
-    "new_alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Alert"
+    "Logs": {},
+    "Logs (%lld)": {},
+    "new_alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Alert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva Alerta"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nueva Alerta"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle Alerte"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nouvelle Alerte"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "התראה חדשה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "התראה חדשה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいアラート"
           }
         }
       }
-    },
-    "No alerts" : {
-
     },
-    "No currency order" : {
-
-    },
-    "No custom currencies" : {
-
-    },
-    "No logs available" : {
-
-    },
-    "no_alerts_configured" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No alerts configured"
+    "No alerts": {},
+    "No currency order": {},
+    "No custom currencies": {},
+    "No logs available": {},
+    "no_alerts_configured": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No alerts configured"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay alertas configuradas"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay alertas configuradas"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune alerte configurée"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucune alerte configurée"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אין התראות מוגדרות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אין התראות מוגדרות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートが設定されていません"
           }
         }
       }
     },
-    "no_auto_reset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Auto Reset"
+    "no_auto_reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Auto Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin Reinicio Automático"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin Reinicio Automático"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de Réinitialisation Automatique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pas de Réinitialisation Automatique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ללא איפוס אוטומטי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ללא איפוס אוטומטי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動リセットなし"
           }
         }
       }
     },
-    "no_chart_data" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No chart data available"
+    "no_chart_data": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No chart data available"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay datos del gráfico disponibles"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hay datos del gráfico disponibles"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune donnée de graphique disponible"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucune donnée de graphique disponible"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אין נתוני גרף זמינים"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אין נתוני גרף זמינים"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "チャートデータがありません"
           }
         }
       }
     },
-    "no_data_for_date" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No Auto Reset"
+    "no_data_for_date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Auto Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin Reinicio Automático"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin Reinicio Automático"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas de Réinitialisation Automatique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pas de Réinitialisation Automatique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ללא איפוס אוטומטי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ללא איפוס אוטומטי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動リセットなし"
           }
         }
       }
     },
-    "not_available" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "N/A"
+    "not_available": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N/A"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N/D"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "N/D"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "N/D"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "N/D"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "לא זמין"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "לא זמין"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "該当なし"
           }
         }
       }
     },
-    "notification_body" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ crossed the value %@ %@. Current rate: %@"
+    "notification_body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ crossed the value %@ %@. Current rate: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ cruzó el valor %@ %@. Tipo de cambio actual: %@"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ cruzó el valor %@ %@. Tipo de cambio actual: %@"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ a franchi la valeur %@ %@. Taux actuel : %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ a franchi la valeur %@ %@. Taux actuel : %@"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ חצה את הערך %@ %@. השער הנוכחי: %@"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ חצה את הערך %@ %@. השער הנוכחי: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@が値%@ %@を通過しました。現在のレート: %@"
           }
         }
       }
     },
-    "notification_permission_required" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notification permission is required to check alerts. Please enable notifications in Settings."
+    "notification_permission_required": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification permission is required to check alerts. Please enable notifications in Settings."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere permiso de notificaciones para verificar alertas. Por favor, habilita las notificaciones en Configuración."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se requiere permiso de notificaciones para verificar alertas. Por favor, habilita las notificaciones en Configuración."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'autorisation de notification est requise pour vérifier les alertes. Veuillez activer les notifications dans les Paramètres."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L'autorisation de notification est requise pour vérifier les alertes. Veuillez activer les notifications dans les Paramètres."
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נדרשת הרשאה להתראות כדי לבדוק התראות. אנא אפשר התראות בהגדרות."
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נדרשת הרשאה להתראות כדי לבדוק התראות. אנא אפשר התראות בהגדרות."
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アラートを確認するには通知の許可が必要です。設定で通知を有効にしてください。"
           }
         }
       }
     },
-    "ok" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
+    "ok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceptar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aceptar"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "אישור"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "אישור"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
-    },
-    "OK" : {
-
     },
-    "Order of currencies as they appear in the app" : {
-
-    },
-    "paused" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paused"
+    "OK": {},
+    "Order of currencies as they appear in the app": {},
+    "paused": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausado"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausado"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pause"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En pause"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מושהה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מושהה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一時停止"
           }
         }
       }
     },
-    "please_enter_target_value" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please enter a target value"
+    "please_enter_target_value": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter a target value"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por favor, ingresa un valor objetivo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, ingresa un valor objetivo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez entrer une valeur cible"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veuillez entrer une valeur cible"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נא להזין ערך יעד"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נא להזין ערך יעד"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標値を入力してください"
           }
         }
       }
     },
-    "please_select_base_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please select a base currency"
+    "please_select_base_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please select a base currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por favor, selecciona una moneda base"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, selecciona una moneda base"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez sélectionner une devise de base"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veuillez sélectionner une devise de base"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נא לבחור מטבע בסיס"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נא לבחור מטבע בסיס"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基準通貨を選択してください"
           }
         }
       }
     },
-    "please_select_crypto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please select a cryptocurrency"
+    "please_select_crypto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please select a cryptocurrency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por favor, selecciona una criptomoneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, selecciona una criptomoneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez sélectionner une cryptomonnaie"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veuillez sélectionner une cryptomonnaie"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נא לבחור מטבע קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נא לבחור מטבע קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨を選択してください"
           }
         }
       }
     },
-    "please_select_target_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please select a target currency"
+    "please_select_target_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please select a target currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por favor, selecciona una moneda objetivo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Por favor, selecciona una moneda objetivo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez sélectionner une devise cible"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Veuillez sélectionner une devise cible"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "נא לבחור מטבע יעד"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "נא לבחור מטבע יעד"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対象通貨を選択してください"
           }
         }
       }
     },
-    "rate_label" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rate: %@"
+    "rate_label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rate: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de cambio: %@"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo de cambio: %@"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taux : %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Taux : %@"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שער: %@"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שער: %@"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レート: %@"
           }
         }
       }
-    },
-    "Refresh" : {
-
     },
-    "reset" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset"
+    "Refresh": {},
+    "reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reiniciar"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "איפוס"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "איפוס"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リセット"
           }
         }
       }
     },
-    "reset_currency_order" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset Currency Order"
+    "reset_currency_order": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset Currency Order"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reiniciar Orden de Monedas"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar Orden de Monedas"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser l'Ordre des Devises"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser l'Ordre des Devises"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "איפוס סדר מטבעות"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "איפוס סדר מטבעות"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨順序をリセット"
+          }
         }
       }
     },
-    "save" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "save": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrer"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "שמור"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שמור"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
           }
         }
       }
     },
-    "Save" : {
-
-    },
-    "search_crypto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search cryptocurrencies..."
+    "Save": {},
+    "search_crypto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search cryptocurrencies..."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar criptomonedas..."
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buscar criptomonedas..."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechercher des cryptomonnaies..."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rechercher des cryptomonnaies..."
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "חיפוש מטבעות קריפטו..."
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "חיפוש מטבעות קריפטו..."
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨を検索..."
           }
         }
       }
     },
-    "select_crypto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Cryptocurrency"
+    "select_crypto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Cryptocurrency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar Criptomoneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccionar Criptomoneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionner une Cryptomonnaie"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionner une Cryptomonnaie"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בחר מטבע קריפטו"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "בחר מטבע קריפטו"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号通貨を選択"
           }
         }
       }
     },
-    "select_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Currency"
+    "select_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar Moneda"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccionar Moneda"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionner une Devise"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionner une Devise"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בחר מטבע"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "בחר מטבע"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通貨を選択"
           }
         }
       }
     },
-    "select_date" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Date"
+    "select_date": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select Date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar Fecha"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccionar Fecha"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionner la Date"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionner la Date"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בחר תאריך"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "בחר תאריך"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日付を選択"
           }
         }
       }
     },
-    "select_date_to_view_rate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select a date to view the historical rate"
+    "select_date_to_view_rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a date to view the historical rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecciona una fecha para ver la tasa histórica"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selecciona una fecha para ver la tasa histórica"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionnez une date pour voir le taux historique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionnez une date pour voir le taux historique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בחר תאריך כדי לצפות בשער ההיסטורי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "בחר תאריך כדי לצפות בשער ההיסטורי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "過去のレートを表示するには日付を選択してください"
           }
         }
       }
     },
-    "settings" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configuración"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paramètres"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paramètres"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הגדרות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הגדרות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
           }
         }
       }
     },
-    "settings_tab" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "settings_tab": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajustes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réglages"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הגדרות"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הגדרות"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
           }
         }
       }
     },
-    "spanish" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spanish"
+    "spanish": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spanish"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Español"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Español"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espagnol"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Espagnol"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ספרדית"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ספרדית"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スペイン語"
           }
         }
       }
-    },
-    "Stored Data" : {
-
     },
-    "swap_order" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Swap Order"
+    "Stored Data": {},
+    "swap_order": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap Order"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intercambiar Orden"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Intercambiar Orden"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inverser l'Ordre"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inverser l'Ordre"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הפוך סדר"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הפוך סדר"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "順序を入れ替え"
           }
         }
       }
     },
-    "system" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System"
+    "system": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistema"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistema"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מערכת"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מערכת"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
+          }
         }
       }
     },
-    "target_currency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Target Currency"
+    "target_currency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target Currency"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda Objetivo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moneda Objetivo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devise Cible"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devise Cible"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מטבע יעד"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מטבע יעד"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対象通貨"
           }
         }
       }
     },
-    "target_value" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Target Value"
+    "target_value": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target Value"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valor Objetivo"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valor Objetivo"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valeur Cible"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valeur Cible"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערך יעד"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערך יעד"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標値"
+          }
         }
       }
     },
-    "target_value_must_be_positive" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Target value must be a positive number"
+    "target_value_must_be_positive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target value must be a positive number"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El valor objetivo debe ser un número positivo"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El valor objetivo debe ser un número positivo"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La valeur cible doit être un nombre positif"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La valeur cible doit être un nombre positif"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ערך יעד חייב להיות מספר חיובי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ערך יעד חייב להיות מספר חיובי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標値は正の数である必要があります"
           }
         }
       }
     },
-    "triggered" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Triggered"
+    "triggered": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triggered"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activado"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activado"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Déclenché"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déclenché"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "הופעל"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הופעל"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "トリガー済み"
+          }
         }
       }
-    },
-    "USD" : {
-
-    },
-    "View Logs" : {
-
     },
-    "View Stored Data" : {
-
-    },
-    "view_historical_rate" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View Historical Rate"
+    "USD": {},
+    "View Logs": {},
+    "View Stored Data": {},
+    "view_historical_rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View Historical Rate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver Tasa Histórica"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ver Tasa Histórica"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le Taux Historique"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voir le Taux Historique"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "צפה בשער היסטורי"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "צפה בשער היסטורי"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "過去のレートを表示"
           }
         }
       }
     },
-    "west_africa" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "West Africa"
+    "west_africa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "West Africa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "África Occidental"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "África Occidental"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Afrique de l'Ouest"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Afrique de l'Ouest"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "מערב אפריקה"
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "מערב אפריקה"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "西アフリカ"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

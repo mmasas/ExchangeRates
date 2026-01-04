@@ -15,6 +15,7 @@ enum AppLanguage: String, CaseIterable {
     case english = "en"
     case spanish = "es"
     case french = "fr"
+    case japanese = "ja"
     
     var displayName: String {
         switch self {
@@ -32,6 +33,9 @@ enum AppLanguage: String, CaseIterable {
         case .french:
             // Return French name in French
             return "Français"
+        case .japanese:
+            // Return Japanese name in Japanese
+            return "日本語"
         }
     }
     
@@ -47,6 +51,8 @@ enum AppLanguage: String, CaseIterable {
             return Locale(identifier: "es_ES")
         case .french:
             return Locale(identifier: "fr_FR")
+        case .japanese:
+            return Locale(identifier: "ja_JP")
         }
     }
     
@@ -61,6 +67,8 @@ enum AppLanguage: String, CaseIterable {
                 return "es"
             } else if deviceLang.hasPrefix("fr") {
                 return "fr"
+            } else if deviceLang.hasPrefix("ja") {
+                return "ja"
             } else {
                 return "en"
             }
@@ -72,6 +80,8 @@ enum AppLanguage: String, CaseIterable {
             return "es"
         case .french:
             return "fr"
+        case .japanese:
+            return "ja"
         }
     }
 }
