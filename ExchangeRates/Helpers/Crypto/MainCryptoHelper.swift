@@ -809,64 +809,11 @@ class MainCryptoHelper {
         return binancePairsDict[symbol] != nil
     }
     
-    /// Get Binance symbols for given CoinGecko IDs
-    /// - Parameter coinGeckoIds: Array of CoinGecko cryptocurrency IDs
-    /// - Returns: Array of Binance trading pair symbols (e.g., ["BTCUSDT", "ETHUSDT"])
-    static func getBinanceSymbols(for coinGeckoIds: [String]) -> [String] {
-        return coinGeckoIds.compactMap { getSymbol(for: $0) }
-    }
-    
     /// Get CoinGecko ID for a given Binance symbol (reverse lookup)
     /// - Parameter binanceSymbol: The Binance trading pair symbol (e.g., "BTCUSDT")
     /// - Returns: The CoinGecko ID (e.g., "bitcoin"), or nil if not found
     static func getCoinGeckoId(for binanceSymbol: String) -> String? {
         return binancePairsDict[binanceSymbol]
-    }
-    
-    /// Get main cryptos for a specific provider
-    /// - Parameter provider: The crypto provider type
-    /// - Returns: Array of cryptocurrency IDs
-    static func getMainCryptosForProvider(_ provider: CryptoProviderType) -> [String] {
-        switch provider {
-        case .coingecko:
-            return mainCryptos
-        case .binance:
-            // Return all CoinGecko IDs that have Binance pairs
-            return mainCryptos.filter { coinGeckoId in
-                getSymbol(for: coinGeckoId) != nil
-            }
-        }
-    }
-    
-    /// Get all Binance symbols (for pagination)
-    /// Returns symbols in the order they appear in binancePairsDict
-    /// - Returns: Array of all Binance trading pair symbols in original order
-    static func getAllBinanceSymbols() -> [String] {
-        // Dictionary in Swift preserves insertion order, so we can use keys directly
-        return Array(binancePairsDict.keys)
-    }
-    
-    /// Get Binance symbols for a specific page
-    /// Uses mainCryptos as the base, converting each CoinGecko ID to Binance symbol
-    /// - Parameters:
-    ///   - page: Page number (1-indexed)
-    ///   - pageSize: Number of items per page
-    /// - Returns: Array of Binance symbols for the page, in mainCryptos order
-    static func getBinanceSymbols(forPage page: Int, pageSize: Int) -> [String] {
-        let startIndex = (page - 1) * pageSize
-        let endIndex = min(startIndex + pageSize, mainCryptos.count)
-        guard startIndex < mainCryptos.count else { return [] }
-        
-        let pageCoinGeckoIds = Array(mainCryptos[startIndex..<endIndex])
-        return pageCoinGeckoIds.compactMap { getSymbol(for: $0) }
-    }
-    
-    /// Get total number of pages for Binance symbols
-    /// Based on mainCryptos count (100 items = 2 pages of 50)
-    /// - Parameter pageSize: Number of items per page
-    /// - Returns: Total number of pages
-    static func getBinanceTotalPages(pageSize: Int) -> Int {
-        return (mainCryptos.count + pageSize - 1) / pageSize
     }
     
     // MARK: - Image URLs

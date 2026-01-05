@@ -1108,9 +1108,6 @@
         }
       }
     },
-    "Crypto Provider" : {
-
-    },
     "crypto_alerts_section" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1508,9 +1505,6 @@
         }
       }
     },
-    "Current Provider:" : {
-
-    },
     "Current Status:" : {
 
     },
@@ -1624,9 +1618,6 @@
           }
         }
       }
-    },
-    "Data Provider" : {
-
     },
     "Debug Menu" : {
 

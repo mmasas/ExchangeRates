@@ -38,7 +38,7 @@ class BinanceCryptoService: CryptoProvider {
             binanceSymbols = providedIds.compactMap { idToSymbolMap[$0.lowercased()] }
         } else {
             // Get all Binance symbols in original order (as they appear in binancePairsDict)
-            binanceSymbols = MainCryptoHelper.getAllBinanceSymbols()
+            binanceSymbols = Array(MainCryptoHelper.binancePairsDict.keys)
         }
         
         guard !binanceSymbols.isEmpty else {

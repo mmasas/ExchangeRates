@@ -9,34 +9,9 @@ import SwiftUI
 
 struct DebugMenuView: View {
     @StateObject private var networkMonitor = NetworkMonitor.shared
-    @State private var selectedProvider: CryptoProviderType
-    
-    init() {
-        let provider = CryptoProviderManager.shared.getProvider()
-        _selectedProvider = State(initialValue: provider)
-    }
     
     var body: some View {
         List {
-            Section("Crypto Provider") {
-                Picker("Data Provider", selection: $selectedProvider) {
-                    ForEach(CryptoProviderType.allCases, id: \.self) { provider in
-                        Text(provider.displayName).tag(provider)
-                    }
-                }
-                .pickerStyle(.menu)
-                .onChange(of: selectedProvider) { oldValue, newValue in
-                    CryptoProviderManager.shared.setProvider(newValue)
-                }
-                
-                HStack {
-                    Text("Current Provider:")
-                    Spacer()
-                    Text(selectedProvider.displayName)
-                        .foregroundColor(.secondary)
-                }
-            }
-            
             Section("Network Testing") {
                 Toggle("Simulate Offline Mode", isOn: $networkMonitor.simulateOffline)
                 
@@ -60,10 +35,6 @@ struct DebugMenuView: View {
         }
         .navigationTitle("Debug Menu")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            // Update selected provider when view appears
-            selectedProvider = CryptoProviderManager.shared.getProvider()
-        }
     }
 }
 
