@@ -15,7 +15,7 @@ class NetworkMonitor: ObservableObject {
     @Published var isConnected: Bool = true
     
     // Debug mode: allows simulating offline state for testing
-    private var simulateOffline: Bool = false {
+    @Published var simulateOffline: Bool = false {
         didSet {
             updateConnectionStatus()
         }

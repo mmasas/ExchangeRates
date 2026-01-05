@@ -12,6 +12,7 @@ struct CryptoDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     @StateObject private var networkMonitor = NetworkMonitor.shared
+    @EnvironmentObject var viewModel: CryptoViewModel
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -92,43 +93,28 @@ struct CryptoDetailView: View {
                 
                 // Chart section
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(String(localized: "7_day_chart"))
+                    Text(viewModel.selectedTimeRange.chartTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.secondary)
                         .padding(.horizontal, 4)
                     
-                    if !networkMonitor.isConnected {
-                        // Show offline message for chart
-                        VStack(spacing: 12) {
-                            Image(systemName: "wifi.slash")
-                                .font(.system(size: 32))
-                                .foregroundColor(.orange)
-                            Text(String(localized: "chart_offline_unavailable", defaultValue: "Chart is not available offline"))
-                                .font(.system(size: 14))
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
+                    // Time range selector
+                    TimeRangeSelectorView(
+                        selectedRange: $viewModel.selectedTimeRange,
+                        onRangeSelected: { range in
+                            viewModel.updateTimeRange(range, for: cryptocurrency.id)
                         }
-                        .frame(height: 220)
-                        .frame(maxWidth: .infinity)
-                    } else if let sparklinePrices = cryptocurrency.sparklinePrices, !sparklinePrices.isEmpty {
-                        LargeChartView(
-                            prices: sparklinePrices,
-                            isPositive: cryptocurrency.isPositiveChange
-                        )
-                        .frame(height: 220)
-                    } else {
-                        VStack(spacing: 12) {
-                            Image(systemName: "chart.line.downtrend.xyaxis")
-                                .font(.system(size: 32))
-                                .foregroundColor(.secondary)
-                            Text(String(localized: "no_chart_data", defaultValue: "No chart data available"))
-                                .font(.system(size: 14))
-                                .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(height: 220)
-                        .frame(maxWidth: .infinity)
-                    }
+                    )
+                    
+                    // Interactive chart
+                    InteractiveChartView(
+                        chartData: viewModel.chartData,
+                        timeRange: viewModel.selectedTimeRange,
+                        isPositive: cryptocurrency.isPositiveChange,
+                        isLoading: viewModel.isLoadingChart,
+                        isOffline: !networkMonitor.isConnected,
+                        errorMessage: viewModel.chartErrorMessage
+                    )
                 }
                 .padding(16)
                 .background(Color(.systemBackground))
@@ -154,6 +140,10 @@ struct CryptoDetailView: View {
         }
         .background(Color(.systemGroupedBackground))
         .presentationDragIndicator(.visible)
+        .onAppear {
+            // Load chart data for default range when view appears
+            viewModel.loadChartData(cryptoId: cryptocurrency.id, range: viewModel.selectedTimeRange)
+        }
     }
 }
 
@@ -174,5 +164,6 @@ struct CryptoDetailView: View {
             ])
         )
     )
+    .environmentObject(CryptoViewModel())
 }
 

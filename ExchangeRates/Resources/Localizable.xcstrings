@@ -121,6 +121,9 @@
     "→" : {
 
     },
+    "|" : {
+
+    },
     "$0.00" : {
 
     },
@@ -129,6 +132,91 @@
     },
     "0.0000" : {
 
+    },
+    "1_day_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Day Chart"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גרף יום אחד"
+          }
+        }
+      }
+    },
+    "1_month_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Month Chart"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גרף חודש אחד"
+          }
+        }
+      }
+    },
+    "1_year_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Year Chart"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גרף שנה אחת"
+          }
+        }
+      }
+    },
+    "3_month_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 Month Chart"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גרף 3 חודשים"
+          }
+        }
+      }
+    },
+    "6_month_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6 Month Chart"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "גרף 6 חודשים"
+          }
+        }
+      }
     },
     "7_day_chart" : {
       "extractionState" : "manual",
@@ -1861,6 +1949,23 @@
         }
       }
     },
+    "failed_to_load_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load chart data"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "נכשל בטעינת נתוני גרף"
+          }
+        }
+      }
+    },
     "failed_to_load_crypto" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2411,6 +2516,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ライト"
+          }
+        }
+      }
+    },
+    "loading_chart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading chart..."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "טוען גרף..."
           }
         }
       }

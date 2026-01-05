@@ -9,23 +9,11 @@ import SwiftUI
 
 struct DebugMenuView: View {
     @StateObject private var networkMonitor = NetworkMonitor.shared
-    @State private var simulateOffline = false
     
     var body: some View {
         List {
             Section("Network Testing") {
-                Toggle("Simulate Offline Mode", isOn: $simulateOffline)
-                    .onChange(of: simulateOffline) { _, newValue in
-                        // Force network monitor to reflect simulated state
-                        // Note: This is a debug-only feature
-                        if newValue {
-                            // We can't directly set isConnected, but we can use a workaround
-                            // by posting a notification that simulates offline
-                            NotificationCenter.default.post(name: NSNotification.Name("SimulateOffline"), object: nil)
-                        } else {
-                            NotificationCenter.default.post(name: NSNotification.Name("SimulateOnline"), object: nil)
-                        }
-                    }
+                Toggle("Simulate Offline Mode", isOn: $networkMonitor.simulateOffline)
                 
                 HStack {
                     Text("Current Status:")

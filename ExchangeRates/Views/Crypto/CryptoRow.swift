@@ -14,6 +14,7 @@ struct CryptoRow: View {
     
     @State private var isPressed = false
     @State private var showDetail = false
+    @EnvironmentObject var viewModel: CryptoViewModel
     
     init(cryptocurrency: Cryptocurrency, sparklinePrices: [Double]? = nil, isLoadingSparkline: Bool = false) {
         self.cryptocurrency = cryptocurrency
@@ -98,6 +99,7 @@ struct CryptoRow: View {
         }
         .sheet(isPresented: $showDetail) {
             CryptoDetailView(cryptocurrency: cryptocurrency)
+                .environmentObject(viewModel)
         }
     }
 }

@@ -58,5 +58,54 @@ class CryptoService {
         }
         return crypto
     }
+    
+    /// Fetch market chart data for a cryptocurrency over a specified time range
+    /// - Parameters:
+    ///   - id: The cryptocurrency ID (e.g., "bitcoin")
+    ///   - days: Number of days of data (1, 7, 30, 90, 180, 365)
+    /// - Returns: Array of ChartDataPoint with timestamps and prices
+    func fetchMarketChart(id: String, days: Int) async throws -> [ChartDataPoint] {
+        guard let url = URL(string: "\(baseURL)/coins/\(id)/market_chart?vs_currency=usd&days=\(days)") else {
+            throw URLError(.badURL)
+        }
+        
+        // Use Task.detached to ensure request completes even if parent task is cancelled
+        let requestUrl = url
+        let (data, response) = try await Task.detached(priority: .userInitiated) {
+            var request = URLRequest(url: requestUrl)
+            request.cachePolicy = .reloadIgnoringLocalCacheData
+            request.timeoutInterval = 30
+            return try await URLSession.shared.data(for: request)
+        }.value
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard httpResponse.statusCode == 200 else {
+            LogManager.shared.log("CoinGecko market_chart API error: \(httpResponse.statusCode)", level: .error, source: "CryptoService")
+            throw URLError(.badServerResponse)
+        }
+        
+        // Parse the response
+        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        guard let pricesArray = json?["prices"] as? [[Double]] else {
+            LogManager.shared.log("Failed to parse market_chart response", level: .error, source: "CryptoService")
+            throw URLError(.cannotParseResponse)
+        }
+        
+        // Convert to ChartDataPoint array
+        let chartData = pricesArray.compactMap { priceData -> ChartDataPoint? in
+            guard priceData.count == 2 else { return nil }
+            let timestampMs = priceData[0]
+            let price = priceData[1]
+            let date = Date(timeIntervalSince1970: timestampMs / 1000.0)
+            return ChartDataPoint(timestamp: date, price: price)
+        }
+        
+        LogManager.shared.log("Fetched \(chartData.count) chart data points for \(id) (\(days) days)", level: .success, source: "CryptoService")
+        
+        return chartData
+    }
 }
 

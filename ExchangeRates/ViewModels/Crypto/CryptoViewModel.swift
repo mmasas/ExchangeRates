@@ -18,6 +18,12 @@ class CryptoViewModel: ObservableObject {
     @Published var isOffline: Bool = false
     @Published var lastUpdateDate: Date?
     
+    // Chart-specific state
+    @Published var chartData: [ChartDataPoint] = []
+    @Published var selectedTimeRange: ChartTimeRange = .defaultRange
+    @Published var isLoadingChart: Bool = false
+    @Published var chartErrorMessage: String?
+    
     /// Current page number (1-indexed)
     private(set) var currentPage = 1
     
@@ -37,8 +43,12 @@ class CryptoViewModel: ObservableObject {
     
     private var currentTask: Task<Void, Never>?
     private var prefetchTask: Task<Void, Never>?
+    private var chartTask: Task<Void, Never>?
     private let networkMonitor = NetworkMonitor.shared
     private let cacheManager = DataCacheManager.shared
+    
+    // Cache for chart data: [cryptoId: [timeRange: chartData]]
+    private var chartDataCache: [String: [ChartTimeRange: [ChartDataPoint]]] = [:]
     
     init() {
         // Load from cache first if available (on main actor)
@@ -192,5 +202,79 @@ class CryptoViewModel: ObservableObject {
     @MainActor
     private func updateOfflineStatus() {
         isOffline = !networkMonitor.isConnected
+    }
+    
+    // MARK: - Chart Data Management
+    
+    /// Load chart data for a specific cryptocurrency and time range
+    @MainActor
+    func loadChartData(cryptoId: String, range: ChartTimeRange) {
+        // Cancel any existing chart task
+        chartTask?.cancel()
+        
+        // Check cache first
+        if let cachedData = chartDataCache[cryptoId]?[range], !cachedData.isEmpty {
+            LogManager.shared.log("Using cached chart data for \(cryptoId) (\(range.displayLabel))", level: .info, source: "CryptoViewModel")
+            chartData = cachedData
+            chartErrorMessage = nil
+            return
+        }
+        
+        // Check if offline
+        if !networkMonitor.isConnected {
+            LogManager.shared.log("Offline: Cannot load chart data", level: .warning, source: "CryptoViewModel")
+            chartErrorMessage = String(localized: "chart_offline_unavailable", defaultValue: "Chart is not available offline")
+            isLoadingChart = false
+            return
+        }
+        
+        // Start loading
+        isLoadingChart = true
+        chartErrorMessage = nil
+        
+        chartTask = Task {
+            await loadChartDataAsync(cryptoId: cryptoId, range: range)
+        }
+    }
+    
+    @MainActor
+    private func loadChartDataAsync(cryptoId: String, range: ChartTimeRange) async {
+        do {
+            LogManager.shared.log("Fetching chart data for \(cryptoId) (\(range.displayLabel), \(range.days) days)", level: .info, source: "CryptoViewModel")
+            
+            let data = try await CryptoService.shared.fetchMarketChart(id: cryptoId, days: range.days)
+            
+            // Cache the data
+            if chartDataCache[cryptoId] == nil {
+                chartDataCache[cryptoId] = [:]
+            }
+            chartDataCache[cryptoId]?[range] = data
+            
+            // Update UI
+            chartData = data
+            isLoadingChart = false
+            chartErrorMessage = nil
+            
+            LogManager.shared.log("Loaded \(data.count) chart data points for \(cryptoId)", level: .success, source: "CryptoViewModel")
+        } catch {
+            // Don't show error if task was cancelled
+            if let urlError = error as? URLError, urlError.code == .cancelled {
+                LogManager.shared.log("Chart request was cancelled", level: .warning, source: "CryptoViewModel")
+                isLoadingChart = false
+                return
+            }
+            
+            LogManager.shared.log("Error loading chart data: \(error.localizedDescription)", level: .error, source: "CryptoViewModel")
+            chartErrorMessage = String(localized: "failed_to_load_chart", defaultValue: "Failed to load chart data")
+            isLoadingChart = false
+            chartData = []
+        }
+    }
+    
+    /// Update the selected time range and reload chart data if needed
+    @MainActor
+    func updateTimeRange(_ range: ChartTimeRange, for cryptoId: String) {
+        selectedTimeRange = range
+        loadChartData(cryptoId: cryptoId, range: range)
     }
 }
