@@ -14,6 +14,7 @@ struct CryptoRow: View {
     
     @State private var isPressed = false
     @State private var showDetail = false
+    @State private var currentProvider: CryptoProviderType = CryptoProviderManager.shared.getProvider()
     @EnvironmentObject var viewModel: CryptoViewModel
     
     init(cryptocurrency: Cryptocurrency, sparklinePrices: [Double]? = nil, isLoadingSparkline: Bool = false) {
@@ -37,13 +38,17 @@ struct CryptoRow: View {
                         .frame(width: 40, height: 40)
                         .clipShape(Circle())
                 case .failure:
-                    Image(systemName: "questionmark.circle.fill")
-                        .font(.system(size: 32))
-                        .foregroundColor(.gray)
+                    // Empty placeholder - just show a gray circle
+                    Circle()
+                        .fill(Color(.systemGray5))
                         .frame(width: 40, height: 40)
                 @unknown default:
                     EmptyView()
                 }
+            }
+            .id("\(cryptocurrency.id)-\(cryptocurrency.image)-\(currentProvider.rawValue)") // Force reload when switching providers
+            .onReceive(NotificationCenter.default.publisher(for: CryptoProviderManager.providerChangedNotification)) { _ in
+                currentProvider = CryptoProviderManager.shared.getProvider()
             }
             
             // 2. Name and symbol (truncate if too long)

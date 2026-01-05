@@ -94,6 +94,7 @@ struct LogsView: View {
 
 struct LogEntryRow: View {
     let entry: LogEntry
+    @State private var showCopyConfirmation = false
     
     private var levelColor: Color {
         switch entry.level {
@@ -140,6 +141,19 @@ struct LogEntryRow: View {
                 .foregroundColor(.primary)
         }
         .padding(.vertical, 4)
+        .contextMenu {
+            Button {
+                copyLogToClipboard()
+            } label: {
+                Label("Copy Log", systemImage: "doc.on.doc")
+            }
+            
+            Button {
+                copyMessageOnly()
+            } label: {
+                Label("Copy Message Only", systemImage: "text.bubble")
+            }
+        }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button {
                 copyLogToClipboard()
@@ -147,6 +161,11 @@ struct LogEntryRow: View {
                 Label("Copy", systemImage: "doc.on.doc")
             }
             .tint(.blue)
+        }
+        .alert("Copied!", isPresented: $showCopyConfirmation) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Log entry copied to clipboard")
         }
     }
     
@@ -163,6 +182,20 @@ struct LogEntryRow: View {
         // Haptic feedback
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
+        
+        // Show confirmation
+        showCopyConfirmation = true
+    }
+    
+    private func copyMessageOnly() {
+        UIPasteboard.general.string = entry.message
+        
+        // Haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        // Show confirmation
+        showCopyConfirmation = true
     }
 }
 

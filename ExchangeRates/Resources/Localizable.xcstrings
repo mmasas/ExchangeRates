@@ -1067,6 +1067,12 @@
     "Copy All Data" : {
 
     },
+    "Copy Log" : {
+
+    },
+    "Copy Message Only" : {
+
+    },
     "crypto" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1101,6 +1107,9 @@
           }
         }
       }
+    },
+    "Crypto Provider" : {
+
     },
     "crypto_alerts_section" : {
       "extractionState" : "manual",
@@ -1499,6 +1508,9 @@
         }
       }
     },
+    "Current Provider:" : {
+
+    },
     "Current Status:" : {
 
     },
@@ -1612,6 +1624,9 @@
           }
         }
       }
+    },
+    "Data Provider" : {
+
     },
     "Debug Menu" : {
 
@@ -2536,6 +2551,9 @@
           }
         }
       }
+    },
+    "Log entry copied to clipboard" : {
+
     },
     "Logs" : {
 

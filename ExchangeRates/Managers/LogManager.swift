@@ -8,6 +8,14 @@
 import Foundation
 import Combine
 
+extension DateFormatter {
+    static let logFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss.SSS"
+        return formatter
+    }()
+}
+
 struct LogEntry: Identifiable, Codable {
     let id: UUID
     let timestamp: Date
@@ -43,6 +51,12 @@ class LogManager: ObservableObject {
     private init() {}
     
     func log(_ message: String, level: LogLevel = .info, source: String = "") {
+        // Print to Xcode console
+        let timestamp = DateFormatter.logFormatter.string(from: Date())
+        let sourcePrefix = source.isEmpty ? "" : "[\(source)] "
+        let logMessage = "\(timestamp) [\(level.rawValue.uppercased())] \(sourcePrefix)\(message)"
+        print(logMessage)
+        
         queue.async { [weak self] in
             guard let self = self else { return }
             

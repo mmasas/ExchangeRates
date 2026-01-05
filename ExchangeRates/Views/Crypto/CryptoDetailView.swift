@@ -12,6 +12,7 @@ struct CryptoDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     @StateObject private var networkMonitor = NetworkMonitor.shared
+    @State private var currentProvider: CryptoProviderType = CryptoProviderManager.shared.getProvider()
     @EnvironmentObject var viewModel: CryptoViewModel
     
     private var dateFormatter: DateFormatter {
@@ -46,13 +47,17 @@ struct CryptoDetailView: View {
                                 .clipShape(Circle())
                                 .shadow(color: Color.primary.opacity(0.15), radius: 8, x: 0, y: 4)
                         case .failure:
-                            Image(systemName: "questionmark.circle.fill")
-                                .font(.system(size: 60))
-                                .foregroundColor(.gray)
+                            // Empty placeholder - just show a gray circle
+                            Circle()
+                                .fill(Color(.systemGray5))
                                 .frame(width: 80, height: 80)
                         @unknown default:
                             EmptyView()
                         }
+                    }
+                    .id("\(cryptocurrency.id)-\(cryptocurrency.image)-\(currentProvider.rawValue)") // Force reload when switching providers
+                    .onReceive(NotificationCenter.default.publisher(for: CryptoProviderManager.providerChangedNotification)) { _ in
+                        currentProvider = CryptoProviderManager.shared.getProvider()
                     }
                     
                     VStack(spacing: 4) {

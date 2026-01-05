@@ -29,7 +29,17 @@ class CryptoViewModel: ObservableObject {
     
     /// Whether there are more pages to load
     var hasMorePages: Bool {
-        currentPage < MainCryptoHelper.totalPages
+        let provider = providerManager.getProvider()
+        let totalPages: Int
+        
+        if provider == .binance {
+            totalPages = MainCryptoHelper.getBinanceTotalPages(pageSize: MainCryptoHelper.pageSize)
+        } else {
+            let availableCryptos = MainCryptoHelper.getMainCryptosForProvider(provider)
+            totalPages = (availableCryptos.count + MainCryptoHelper.pageSize - 1) / MainCryptoHelper.pageSize
+        }
+        
+        return currentPage < totalPages
     }
     
     /// Filtered cryptocurrencies based on search text
@@ -46,6 +56,7 @@ class CryptoViewModel: ObservableObject {
     private var chartTask: Task<Void, Never>?
     private let networkMonitor = NetworkMonitor.shared
     private let cacheManager = DataCacheManager.shared
+    private let providerManager = CryptoProviderManager.shared
     
     // Cache for chart data: [cryptoId: [timeRange: chartData]]
     private var chartDataCache: [String: [ChartTimeRange: [ChartDataPoint]]] = [:]
@@ -59,6 +70,37 @@ class CryptoViewModel: ObservableObject {
         }
         
         // Load fresh data (will use cache if offline)
+        loadCryptocurrencies()
+        
+        // Listen for provider changes
+        NotificationCenter.default.addObserver(
+            forName: CryptoProviderManager.providerChangedNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.handleProviderChange()
+            }
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    /// Handle provider change - clear cache and reload data
+    @MainActor
+    private func handleProviderChange() {
+        LogManager.shared.log("Provider changed, clearing cache and reloading data", level: .info, source: "CryptoViewModel")
+        
+        // Clear chart cache
+        chartDataCache.removeAll()
+        
+        // Clear cryptocurrencies and reset page
+        cryptocurrencies = []
+        currentPage = 1
+        
+        // Reload data
         loadCryptocurrencies()
     }
     
@@ -106,7 +148,21 @@ class CryptoViewModel: ObservableObject {
         }
         
         do {
-            let page1Ids = MainCryptoHelper.getCryptos(forPage: 1)
+            // Get cryptos for current provider
+            let provider = providerManager.getProvider()
+            let page1Ids: [String]
+            
+            if provider == .binance {
+                // For Binance, get symbols for page 1 (based on mainCryptos order)
+                let binanceSymbols = MainCryptoHelper.getBinanceSymbols(forPage: 1, pageSize: MainCryptoHelper.pageSize)
+                // Convert Binance symbols back to CoinGecko IDs for API call
+                page1Ids = binanceSymbols.compactMap { MainCryptoHelper.getCoinGeckoId(for: $0) }
+            } else {
+                // For CoinGecko, use main cryptos
+                let availableCryptos = MainCryptoHelper.getMainCryptosForProvider(provider)
+                page1Ids = Array(availableCryptos.prefix(MainCryptoHelper.pageSize))
+            }
+            
             let cryptos = try await CryptoService.shared.fetchCryptoPrices(ids: page1Ids)
             cryptocurrencies = cryptos
             isLoading = false
@@ -157,10 +213,39 @@ class CryptoViewModel: ObservableObject {
         let nextPage = currentPage + 1
         
         do {
-            let pageIds = MainCryptoHelper.getCryptos(forPage: nextPage)
+            // Get cryptos for current provider
+            let provider = providerManager.getProvider()
+            let pageIds: [String]
+            
+            if provider == .binance {
+                // For Binance, get symbols for next page (based on mainCryptos order)
+                let binanceSymbols = MainCryptoHelper.getBinanceSymbols(forPage: nextPage, pageSize: MainCryptoHelper.pageSize)
+                guard !binanceSymbols.isEmpty else {
+                    isLoadingNextPage = false
+                    return
+                }
+                // Convert Binance symbols back to CoinGecko IDs for API call
+                pageIds = binanceSymbols.compactMap { MainCryptoHelper.getCoinGeckoId(for: $0) }
+            } else {
+                // For CoinGecko, use main cryptos
+                let availableCryptos = MainCryptoHelper.getMainCryptosForProvider(provider)
+                let startIndex = (nextPage - 1) * MainCryptoHelper.pageSize
+                let endIndex = min(startIndex + MainCryptoHelper.pageSize, availableCryptos.count)
+                guard startIndex < availableCryptos.count else {
+                    isLoadingNextPage = false
+                    return
+                }
+                pageIds = Array(availableCryptos[startIndex..<endIndex])
+            }
+            
+            guard !pageIds.isEmpty else {
+                isLoadingNextPage = false
+                return
+            }
+            
             let newCryptos = try await CryptoService.shared.fetchCryptoPrices(ids: pageIds)
             
-            // Append new cryptos to existing list
+            // Append new cryptos to existing list (maintaining order)
             cryptocurrencies.append(contentsOf: newCryptos)
             currentPage = nextPage
             isLoadingNextPage = false
