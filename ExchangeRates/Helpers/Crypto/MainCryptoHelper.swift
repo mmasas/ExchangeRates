@@ -790,6 +790,88 @@ class MainCryptoHelper {
         "KGSTUSDT": "kgst"
     ]
     
+    /// Direct mapping from CoinGecko IDs to Binance trading pair symbols
+    /// This ensures reliable chart data fetching by avoiding reverse lookup mismatches
+    /// Only includes cryptocurrencies that have Binance USDT trading pairs
+    static let coinGeckoToBinanceSymbol: [String: String] = [
+        "bitcoin": "BTCUSDT",
+        "ethereum": "ETHUSDT",
+        "binancecoin": "BNBUSDT",
+        "ripple": "XRPUSDT",
+        "usd-coin": "USDCUSDT",
+        "solana": "SOLUSDT",
+        "tron": "TRXUSDT",
+        "dogecoin": "DOGEUSDT",
+        "cardano": "ADAUSDT",
+        "bitcoin-cash": "BCHUSDT",
+        "wrapped-bitcoin": "WBTCUSDT",
+        "wrapped-beacon-eth": "WBETHUSDT",
+        "chainlink": "LINKUSDT",
+        "usds": "USDSUSDT",
+        "zcash": "ZECUSDT",
+        "monero": "XMRUSDT",
+        "stellar": "XLMUSDT",
+        "ethena-usde": "USDEUSDT",
+        "litecoin": "LTCUSDT",
+        "sui": "SUIUSDT",
+        "avalanche-2": "AVAXUSDT",
+        "hedera-hashgraph": "HBARUSDT",
+        "shiba-inu": "SHIBUSDT",
+        "the-open-network": "TONUSDT",
+        "dai": "DAIUSDT",
+        "uniswap": "UNIUSDT",
+        "polkadot": "DOTUSDT",
+        "pepe": "PEPEUSDT",
+        "aave": "AAVEUSDT",
+        "bittensor": "TAOUSDT",
+        "near": "NEARUSDT",
+        "ethereum-classic": "ETCUSDT",
+        "ethena": "ENAUSDT",
+        "internet-computer": "ICPUSDT",
+        "pax-gold": "PAXGUSDT",
+        "worldcoin-wld": "WLDUSDT",
+        "aptos": "APTUSDT",
+        "binance-staked-sol": "BNSOLUSDT",
+        "ondo-finance": "ONDOUSDT",
+        "arbitrum": "ARBUSDT",
+        "polygon-ecosystem-token": "POLUSDT",
+        "quant-network": "QNTUSDT",
+        "algorand": "ALGOUSDT",
+        "filecoin": "FILUSDT",
+        "cosmos": "ATOMUSDT",
+        "official-trump": "TRUMPUSDT",
+        "vechain": "VETUSDT",
+        "render-token": "RENDERUSDT",
+        "immutable-x": "IMXUSDT",
+        "injective-protocol": "INJUSDT",
+        "optimism": "OPUSDT",
+        "stacks": "STXUSDT",
+        "the-graph": "GRTUSDT",
+        "sei-network": "SEIUSDT",
+        "celestia": "TIAUSDT",
+        "maker": "MKRUSDT",
+        "theta-token": "THETAUSDT",
+        "fantom": "FTMUSDT",
+        "flow": "FLOWUSDT",
+        "floki": "FLOKIUSDT",
+        "bonk": "BONKUSDT",
+        "lido-dao": "LDOUSDT",
+        "first-digital-usd": "FDUSDUSDT",
+        "fetch-ai": "FETUSDT",
+        "arweave": "ARUSDT",
+        "gala": "GALAUSDT",
+        "helium": "HNTUSDT",
+        "jupiter-exchange-solana": "JUPUSDT",
+        "pyth-network": "PYTHUSDT",
+        "axie-infinity": "AXSUSDT",
+        "eos": "EOSUSDT",
+        "beam-2": "BEAMUSDT",
+        "neo": "NEOUSDT",
+        "thorchain": "RUNEUSDT",
+        "pendle": "PENDLEUSDT",
+        "dydx-chain": "DYDXUSDT"
+    ]
+    
     /// Get name (שם) for a given symbol (קוד)
     /// - Parameter symbol: The trading pair symbol (e.g., "BTCUSDT")
     /// - Returns: The name of the cryptocurrency (e.g., "bitcoin"), or nil if not found
@@ -801,6 +883,12 @@ class MainCryptoHelper {
     /// - Parameter name: The cryptocurrency name (e.g., "bitcoin")
     /// - Returns: The trading pair symbol (e.g., "BTCUSDT"), or nil if not found
     static func getSymbol(for name: String) -> String? {
+        // First, try direct mapping for reliable chart data fetching
+        if let symbol = coinGeckoToBinanceSymbol[name.lowercased()] {
+            return symbol
+        }
+        
+        // Fall back to reverse lookup in binancePairsDict for backward compatibility
         return binancePairsDict.first(where: { $0.value.lowercased() == name.lowercased() })?.key
     }
     
