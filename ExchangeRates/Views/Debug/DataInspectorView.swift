@@ -13,8 +13,16 @@ struct DataInspectorView: View {
     @State private var homeCurrency: String = ""
     @State private var customCurrencies: [String] = []
     @State private var currencyOrder: [String] = []
+    @State private var customCryptos: [String] = []
     @State private var colorScheme: String = ""
     @State private var language: String = ""
+    @State private var cryptoProvider: String = ""
+    @State private var websocketEnabled: Bool = false
+    @State private var cachedExchangeRatesCount: Int = 0
+    @State private var cachedCustomExchangeRatesCount: Int = 0
+    @State private var cachedCryptocurrenciesCount: Int = 0
+    @State private var lastExchangeRatesUpdate: Date? = nil
+    @State private var lastCryptocurrenciesUpdate: Date? = nil
     @State private var showingEditSheet = false
     @State private var editingItem: DataItem? = nil
     @State private var showingCopyConfirmation = false
@@ -22,42 +30,69 @@ struct DataInspectorView: View {
     
     var body: some View {
         List {
-            // Currency Alerts Section
-            Section {
+            // Alerts Section
+            Section(header: HStack {
+                Text("Currency Alerts")
+                Spacer()
+                Text("\(alerts.count)")
+                    .foregroundColor(.secondary)
+                if !alerts.isEmpty {
+                    Button("Copy All") {
+                        copyAlertsToClipboard()
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                }
+            }) {
                 if alerts.isEmpty {
                     Text("No alerts")
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(alerts) { alert in
-                        DataItemRow(
-                            title: alert.currencyPair,
-                            value: formatAlert(alert),
-                            onCopy: {
-                                copyToClipboard(formatAlert(alert), itemName: "Alert")
-                            },
-                            onEdit: {
-                                editingItem = .alert(alert)
-                                showingEditSheet = true
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack {
+                                Text(alert.currencyPair)
+                                    .font(.headline)
+                                Spacer()
+                                HStack(spacing: 12) {
+                                    Button(action: {
+                                        copyToClipboard(formatAlert(alert), itemName: "Alert")
+                                    }) {
+                                        Image(systemName: "doc.on.doc")
+                                            .font(.caption)
+                                    }
+                                    .buttonStyle(.plain)
+                                    
+                                    Button(action: {
+                                        editingItem = .alert(alert)
+                                        showingEditSheet = true
+                                    }) {
+                                        Image(systemName: "pencil")
+                                            .font(.caption)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                             }
-                        )
-                    }
-                }
-            } header: {
-                HStack {
-                    Text("Currency Alerts (\(alerts.count))")
-                    Spacer()
-                    if !alerts.isEmpty {
-                        Button("Copy All") {
-                            copyAlertsToClipboard()
+                            
+                            HStack {
+                                Label(alert.status.rawValue.capitalized, systemImage: alert.isActive ? "bell.fill" : "bell.slash.fill")
+                                    .font(.caption)
+                                    .foregroundColor(alert.isActive ? .green : .orange)
+                                
+                                Spacer()
+                                
+                                Text(formatAlertSummary(alert))
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                        .font(.caption)
-                        .foregroundColor(.blue)
+                        .padding(.vertical, 4)
                     }
                 }
             }
             
-            // Home Currency Section
-            Section("Home Currency") {
+            // User Preferences Section
+            Section(header: Text("User Preferences")) {
                 DataItemRow(
                     title: "Home Currency",
                     value: homeCurrency.isEmpty ? "Not set" : homeCurrency,
@@ -69,72 +104,7 @@ struct DataInspectorView: View {
                         showingEditSheet = true
                     }
                 )
-            }
-            
-            // Custom Currencies Section
-            Section {
-                if customCurrencies.isEmpty {
-                    Text("No custom currencies")
-                        .foregroundColor(.secondary)
-                } else {
-                    ForEach(customCurrencies, id: \.self) { currency in
-                        DataItemRow(
-                            title: currency,
-                            value: currency,
-                            onCopy: {
-                                copyToClipboard(currency, itemName: "Currency")
-                            },
-                            onEdit: nil
-                        )
-                    }
-                }
-            } header: {
-                HStack {
-                    Text("Custom Currencies (\(customCurrencies.count))")
-                    Spacer()
-                    if !customCurrencies.isEmpty {
-                        Button("Copy All") {
-                            copyArrayToClipboard(customCurrencies, itemName: "Custom Currencies")
-                        }
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                    }
-                }
-            }
-            
-            // Currency Order Section
-            Section {
-                if currencyOrder.isEmpty {
-                    Text("No currency order")
-                        .foregroundColor(.secondary)
-                } else {
-                    ForEach(Array(currencyOrder.enumerated()), id: \.offset) { index, currency in
-                        DataItemRow(
-                            title: "\(index + 1). \(currency)",
-                            value: currency,
-                            onCopy: {
-                                copyToClipboard(currency, itemName: "Currency Order Item")
-                            },
-                            onEdit: nil
-                        )
-                    }
-                }
-            } header: {
-                HStack {
-                    Text("Currency Order (\(currencyOrder.count))")
-                    Spacer()
-                    if !currencyOrder.isEmpty {
-                        Button("Copy All") {
-                            copyArrayToClipboard(currencyOrder, itemName: "Currency Order")
-                        }
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                    }
-                }
-            }
-            
-            // Color Scheme Section
-            Section("App Settings") {
+                
                 DataItemRow(
                     title: "Color Scheme",
                     value: colorScheme.isEmpty ? "Not set" : colorScheme,
@@ -158,6 +128,163 @@ struct DataInspectorView: View {
                         showingEditSheet = true
                     }
                 )
+                
+                DataItemRow(
+                    title: "Crypto Provider",
+                    value: cryptoProvider.isEmpty ? "Not set" : cryptoProvider,
+                    onCopy: {
+                        copyToClipboard(cryptoProvider, itemName: "Crypto Provider")
+                    },
+                    onEdit: {
+                        editingItem = .cryptoProvider(cryptoProvider)
+                        showingEditSheet = true
+                    }
+                )
+                
+                HStack {
+                    Text("WebSocket Enabled")
+                    Spacer()
+                    Text(websocketEnabled ? "Yes" : "No")
+                        .foregroundColor(websocketEnabled ? .green : .secondary)
+                }
+            }
+            
+            // Custom Data Section
+            Section(header: HStack {
+                Text("Custom Currencies")
+                Spacer()
+                Text("\(customCurrencies.count)")
+                    .foregroundColor(.secondary)
+                if !customCurrencies.isEmpty {
+                    Button("Copy All") {
+                        copyArrayToClipboard(customCurrencies, itemName: "Custom Currencies")
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                }
+            }) {
+                if customCurrencies.isEmpty {
+                    Text("No custom currencies")
+                        .foregroundColor(.secondary)
+                } else {
+                    ForEach(customCurrencies, id: \.self) { currency in
+                        DataItemRow(
+                            title: currency,
+                            value: currency,
+                            onCopy: {
+                                copyToClipboard(currency, itemName: "Currency")
+                            },
+                            onEdit: nil
+                        )
+                    }
+                }
+            }
+            
+            Section(header: HStack {
+                Text("Custom Cryptocurrencies")
+                Spacer()
+                Text("\(customCryptos.count)")
+                    .foregroundColor(.secondary)
+                if !customCryptos.isEmpty {
+                    Button("Copy All") {
+                        copyArrayToClipboard(customCryptos, itemName: "Custom Cryptos")
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                }
+            }) {
+                if customCryptos.isEmpty {
+                    Text("No custom cryptocurrencies")
+                        .foregroundColor(.secondary)
+                } else {
+                    ForEach(customCryptos, id: \.self) { crypto in
+                        DataItemRow(
+                            title: crypto,
+                            value: crypto,
+                            onCopy: {
+                                copyToClipboard(crypto, itemName: "Crypto")
+                            },
+                            onEdit: nil
+                        )
+                    }
+                }
+            }
+            
+            // Currency Order Section
+            Section(header: HStack {
+                Text("Currency Order")
+                Spacer()
+                Text("\(currencyOrder.count)")
+                    .foregroundColor(.secondary)
+                if !currencyOrder.isEmpty {
+                    Button("Copy All") {
+                        copyArrayToClipboard(currencyOrder, itemName: "Currency Order")
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                }
+            }) {
+                if currencyOrder.isEmpty {
+                    Text("No currency order")
+                        .foregroundColor(.secondary)
+                } else {
+                    ForEach(Array(currencyOrder.enumerated()), id: \.offset) { index, currency in
+                        HStack {
+                            Text("\(index + 1).")
+                                .foregroundColor(.secondary)
+                                .frame(width: 30)
+                            Text(currency)
+                                .font(.body)
+                            Spacer()
+                            Button(action: {
+                                copyToClipboard(currency, itemName: "Currency Order Item")
+                            }) {
+                                Image(systemName: "doc.on.doc")
+                                    .font(.caption)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(.vertical, 2)
+                    }
+                }
+            }
+            
+            // Cache Information Section
+            Section(header: Text("Cache Information")) {
+                HStack {
+                    Text("Exchange Rates")
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("\(cachedExchangeRatesCount) items")
+                            .foregroundColor(.secondary)
+                        if let date = lastExchangeRatesUpdate {
+                            Text(formatDate(date))
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+                
+                HStack {
+                    Text("Custom Exchange Rates")
+                    Spacer()
+                    Text("\(cachedCustomExchangeRatesCount) items")
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Cryptocurrencies")
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("\(cachedCryptocurrenciesCount) items")
+                            .foregroundColor(.secondary)
+                        if let date = lastCryptocurrenciesUpdate {
+                            Text(formatDate(date))
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle("Stored Data")
@@ -210,6 +337,9 @@ struct DataInspectorView: View {
         // Load custom currencies
         customCurrencies = CustomCurrencyManager.shared.getCustomCurrencies()
         
+        // Load custom cryptos
+        customCryptos = CustomCryptoManager.shared.getCustomCryptos()
+        
         // Load currency order
         currencyOrder = CurrencyOrderManager.shared.getOrderedCurrencies()
         
@@ -218,6 +348,25 @@ struct DataInspectorView: View {
         
         // Load language
         language = LanguageManager.shared.getLanguage().rawValue
+        
+        // Load crypto provider
+        cryptoProvider = CryptoProviderManager.shared.getProvider().displayName
+        
+        // Load WebSocket enabled state
+        websocketEnabled = WebSocketManager.shared.isWebSocketEnabled
+        
+        // Load cache information
+        let cachedRates = DataCacheManager.shared.loadExchangeRates()
+        cachedExchangeRatesCount = cachedRates.count
+        
+        let cachedCustomRates = DataCacheManager.shared.loadCustomExchangeRates()
+        cachedCustomExchangeRatesCount = cachedCustomRates.count
+        
+        let cachedCryptos = DataCacheManager.shared.loadCryptocurrencies()
+        cachedCryptocurrenciesCount = cachedCryptos.count
+        
+        lastExchangeRatesUpdate = DataCacheManager.shared.getLastExchangeRatesUpdateDate()
+        lastCryptocurrenciesUpdate = DataCacheManager.shared.getLastCryptocurrenciesUpdateDate()
     }
     
     private func formatAlert(_ alert: CurrencyAlert) -> String {
@@ -230,6 +379,28 @@ struct DataInspectorView: View {
             return jsonString
         }
         return "Failed to encode alert"
+    }
+    
+    private func formatAlertSummary(_ alert: CurrencyAlert) -> String {
+        let conditionText: String
+        switch alert.condition {
+        case .above(let threshold):
+            conditionText = "Above \(formatDecimal(threshold))"
+        case .below(let threshold):
+            conditionText = "Below \(formatDecimal(threshold))"
+        }
+        return conditionText
+    }
+    
+    private func formatDecimal(_ value: Double) -> String {
+        return String(format: "%.4f", value)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
     
     private func copyToClipboard(_ text: String, itemName: String) {
@@ -282,9 +453,19 @@ struct DataInspectorView: View {
             "currencyAlerts": alertsJSON,
             "homeCurrency": homeCurrency,
             "customCurrencies": customCurrencies,
+            "customCryptos": customCryptos,
             "currencyOrder": currencyOrder,
             "colorScheme": colorScheme,
-            "language": language
+            "language": language,
+            "cryptoProvider": cryptoProvider,
+            "websocketEnabled": websocketEnabled,
+            "cacheInfo": [
+                "exchangeRatesCount": cachedExchangeRatesCount,
+                "customExchangeRatesCount": cachedCustomExchangeRatesCount,
+                "cryptocurrenciesCount": cachedCryptocurrenciesCount,
+                "lastExchangeRatesUpdate": lastExchangeRatesUpdate?.timeIntervalSince1970 ?? 0,
+                "lastCryptocurrenciesUpdate": lastCryptocurrenciesUpdate?.timeIntervalSince1970 ?? 0
+            ]
         ]
         
         // Convert to JSON
@@ -307,6 +488,11 @@ struct DataInspectorView: View {
         case .language(let value):
             if let lang = AppLanguage(rawValue: value) {
                 LanguageManager.shared.setLanguage(lang)
+            }
+            
+        case .cryptoProvider(let value):
+            if let provider = CryptoProviderType.allCases.first(where: { $0.displayName == value }) {
+                CryptoProviderManager.shared.setProvider(provider)
             }
             
         case .alert(let alert):
@@ -372,6 +558,7 @@ enum DataItem {
     case homeCurrency(String)
     case colorScheme(String)
     case language(String)
+    case cryptoProvider(String)
     case alert(CurrencyAlert)
     case customCurrencies([String])
     case currencyOrder([String])
@@ -384,6 +571,8 @@ enum DataItem {
             return "Color Scheme"
         case .language:
             return "Language"
+        case .cryptoProvider:
+            return "Crypto Provider"
         case .alert:
             return "Alert"
         case .customCurrencies:

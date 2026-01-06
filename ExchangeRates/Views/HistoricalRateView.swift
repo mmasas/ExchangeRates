@@ -31,13 +31,17 @@ struct HistoricalRateView: View {
                 // Header with currency info
                 VStack(spacing: 12) {
                     HStack(spacing: 16) {
-                        Text(CurrencyFlagHelper.flag(for: viewModel.baseCurrency))
-                            .font(.system(size: 48))
+                        CurrencyFlagHelper.flagImage(for: viewModel.baseCurrency)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 48, height: 48)
                         Text("→")
                             .font(.system(size: 24))
                             .foregroundColor(.secondary)
-                        Text(CurrencyFlagHelper.flag(for: viewModel.targetCurrency))
-                            .font(.system(size: 48))
+                        CurrencyFlagHelper.flagImage(for: viewModel.targetCurrency)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 48, height: 48)
                     }
                     
                     Text("\(viewModel.baseCurrency) → \(viewModel.targetCurrency)")

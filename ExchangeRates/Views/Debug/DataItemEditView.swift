@@ -49,6 +49,15 @@ struct DataItemEditView: View {
                         }
                     }
                     
+                case .cryptoProvider:
+                    Section {
+                        Picker("Crypto Provider", selection: $stringValue) {
+                            ForEach(CryptoProviderType.allCases, id: \.displayName) { provider in
+                                Text(provider.displayName).tag(provider.displayName)
+                            }
+                        }
+                    }
+                    
                 case .alert:
                     Section {
                         TextEditor(text: $jsonValue)
@@ -174,6 +183,9 @@ struct DataItemEditView: View {
         case .language(let value):
             stringValue = value
             
+        case .cryptoProvider(let value):
+            stringValue = value
+            
         case .alert(let alert):
             let encoder = JSONEncoder()
             encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
@@ -221,6 +233,15 @@ struct DataItemEditView: View {
                 dismiss()
             } else {
                 errorMessage = "Invalid language option"
+                showingError = true
+            }
+            
+        case .cryptoProvider:
+            if CryptoProviderType.allCases.contains(where: { $0.displayName == stringValue }) {
+                onSave(.cryptoProvider(stringValue))
+                dismiss()
+            } else {
+                errorMessage = "Invalid crypto provider option"
                 showingError = true
             }
             

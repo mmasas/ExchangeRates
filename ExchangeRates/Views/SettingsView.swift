@@ -18,7 +18,7 @@ struct SettingsView: View {
     
     var body: some View {
         List {
-            // Language section
+            // MARK: - General Settings
             Section {
                 Picker(String(localized: "language"), selection: $viewModel.language) {
                     ForEach(AppLanguage.allCases, id: \.self) { language in
@@ -26,11 +26,18 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.menu)
+                
+                Picker(String(localized: "color_scheme"), selection: $viewModel.colorScheme) {
+                    ForEach(ColorSchemeOption.allCases, id: \.self) { option in
+                        Text(option.displayName).tag(option)
+                    }
+                }
+                .pickerStyle(.menu)
             } header: {
-                Text(String(localized: "language"))
+                Label(String(localized: "general_settings", defaultValue: "General"), systemImage: "gearshape.fill")
             }
             
-            // Home Currency section
+            // MARK: - Currency Management
             Section {
                 Picker(String(localized: "home_currency"), selection: $viewModel.homeCurrency) {
                     ForEach(viewModel.allCurrenciesForHomePicker, id: \.self) { code in
@@ -40,14 +47,13 @@ struct SettingsView: View {
                 }
                 .pickerStyle(.menu)
             } header: {
-                Text(String(localized: "home_currency"))
+                Label(String(localized: "currency_management", defaultValue: "Currency Management"), systemImage: "banknote.fill")
             } footer: {
                 Text(String(localized: "home_currency_footer"))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
             
-            // Add currency section
             Section {
                 if viewModel.isLoading {
                     HStack {
@@ -90,13 +96,14 @@ struct SettingsView: View {
                 Text(String(localized: "add_new_currency"))
             }
             
-            // Current custom currencies section
             if !viewModel.customCurrencies.isEmpty {
                 Section {
                     ForEach(viewModel.customCurrencies, id: \.self) { code in
                         HStack {
-                            Text(CurrencyFlagHelper.flag(for: code))
-                                .font(.system(size: 24))
+                            CurrencyFlagHelper.flagImage(for: code)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(code)
                                     .font(.system(size: 16, weight: .medium))
@@ -113,19 +120,6 @@ struct SettingsView: View {
                 }
             }
             
-            // Color scheme section
-            Section {
-                Picker(String(localized: "color_scheme"), selection: $viewModel.colorScheme) {
-                    ForEach(ColorSchemeOption.allCases, id: \.self) { option in
-                        Text(option.displayName).tag(option)
-                    }
-                }
-                .pickerStyle(.menu)
-            } header: {
-                Text(String(localized: "color_scheme"))
-            }
-            
-            // Reset currency order section
             Section {
                 Button {
                     viewModel.resetCurrencyOrder()
@@ -138,7 +132,75 @@ struct SettingsView: View {
                     }
                 }
             }
+            
+            // MARK: - Cryptocurrency Management
+            Section {
+                if viewModel.isLoadingCrypto {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                    .padding()
+                } else {
+                    Picker(String(localized: "add_crypto", defaultValue: "Add Cryptocurrency"), selection: $viewModel.selectedCrypto) {
+                        Text(String(localized: "select_crypto", defaultValue: "Select cryptocurrency")).tag("")
+                        ForEach(viewModel.availableCryptos, id: \.self) { cryptoId in
+                            Text(viewModel.getCryptoDisplayName(for: cryptoId))
+                                .tag(cryptoId)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
+                    if !viewModel.selectedCrypto.isEmpty {
+                        Button {
+                            viewModel.addSelectedCrypto()
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text(String(localized: "add"))
+                                    .font(.system(size: 16, weight: .semibold))
+                                Spacer()
+                            }
+                        }
+                        .disabled(viewModel.isLoadingCrypto)
+                    }
+                }
+                
+                if let error = viewModel.cryptoErrorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.caption)
+                }
+            } header: {
+                Label(String(localized: "cryptocurrency_management", defaultValue: "Cryptocurrency Management"), systemImage: "bitcoinsign.circle.fill")
+            } footer: {
+                Text(String(localized: "custom_crypto_footer", defaultValue: "Add cryptocurrencies for live tracking. These will be included in your crypto list with real-time price updates."))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            if !viewModel.customCryptos.isEmpty {
+                Section {
+                    ForEach(viewModel.customCryptos, id: \.self) { cryptoId in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(viewModel.getCryptoDisplayName(for: cryptoId))
+                                    .font(.system(size: 16, weight: .medium))
+                                Text(cryptoId)
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                        }
+                    }
+                    .onDelete(perform: viewModel.removeCrypto)
+                } header: {
+                    Text(String(localized: "custom_cryptos", defaultValue: "Custom Cryptocurrencies"))
+                }
+            }
         }
+        .listStyle(.insetGrouped)
         .navigationTitle(String(localized: "settings"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
@@ -160,6 +222,11 @@ class SettingsViewModel: ObservableObject {
     @Published var selectedCurrency: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    @Published var customCryptos: [String] = []
+    @Published var availableCryptos: [String] = []
+    @Published var selectedCrypto: String = ""
+    @Published var isLoadingCrypto: Bool = false
+    @Published var cryptoErrorMessage: String?
     @Published var homeCurrency: String {
         didSet {
             HomeCurrencyManager.shared.setHomeCurrency(homeCurrency)
@@ -190,6 +257,7 @@ class SettingsViewModel: ObservableObject {
     private var isInitialLoad: Bool = true
     
     private let currencyManager = CustomCurrencyManager.shared
+    private let cryptoManager = CustomCryptoManager.shared
     private let colorSchemeManager = ColorSchemeManager.shared
     private let homeCurrencyManager = HomeCurrencyManager.shared
     private let orderManager = CurrencyOrderManager.shared
@@ -210,6 +278,8 @@ class SettingsViewModel: ObservableObject {
     func loadData() {
         customCurrencies = currencyManager.getCustomCurrencies()
         updateAvailableCurrencies()
+        customCryptos = cryptoManager.getCustomCryptos()
+        updateAvailableCryptos()
         colorScheme = colorSchemeManager.getColorScheme()
         homeCurrency = homeCurrencyManager.getHomeCurrency()
         language = LanguageManager.shared.getLanguage()
@@ -224,6 +294,86 @@ class SettingsViewModel: ObservableObject {
         let homeCurrency = homeCurrencyManager.getHomeCurrency()
         let excluded = customCurrencies + existingCurrencyCodes + [homeCurrency]
         availableCurrencies = currencyManager.getAvailableCurrenciesForAdding(excluding: excluded)
+    }
+    
+    private func updateAvailableCryptos() {
+        // Get available cryptos from binancePairsDict, excluding mainCryptos and already-added custom cryptos
+        availableCryptos = MainCryptoHelper.getAvailableCryptosForAdding(excluding: customCryptos)
+    }
+    
+    func getCryptoDisplayName(for cryptoId: String) -> String {
+        // Format the CoinGecko ID as a readable name
+        // Replace hyphens with spaces and capitalize each word
+        return cryptoId
+            .replacingOccurrences(of: "-", with: " ")
+            .split(separator: " ")
+            .map { $0.capitalized }
+            .joined(separator: " ")
+    }
+    
+    func addSelectedCrypto() {
+        guard !selectedCrypto.isEmpty else { return }
+        
+        isLoadingCrypto = true
+        cryptoErrorMessage = nil
+        
+        Task { @MainActor in
+            // Verify the crypto exists in Binance by checking if we can get a symbol
+            guard MainCryptoHelper.getSymbol(for: selectedCrypto) != nil else {
+                cryptoErrorMessage = String(localized: "crypto_not_found_in_binance", defaultValue: "Cryptocurrency not found in Binance")
+                isLoadingCrypto = false
+                return
+            }
+            
+            // Verify the crypto can be fetched from Binance (try to get price data)
+            do {
+                // Use BinanceCryptoService to verify the crypto exists and can be fetched
+                let binanceService = BinanceCryptoService.shared
+                let cryptos = try await binanceService.fetchCryptoPrices(ids: [selectedCrypto])
+                
+                if cryptos.isEmpty {
+                    throw NSError(domain: "SettingsViewModel", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cryptocurrency not found in Binance"])
+                }
+                
+                cryptoManager.addCustomCrypto(selectedCrypto)
+                customCryptos = cryptoManager.getCustomCryptos()
+                updateAvailableCryptos()
+                let addedCrypto = selectedCrypto
+                selectedCrypto = ""
+                
+                // Notify CryptoViewModel to reload with custom crypto
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("CustomCryptoAdded"),
+                    object: nil,
+                    userInfo: ["cryptoId": addedCrypto]
+                )
+                
+            } catch {
+                cryptoErrorMessage = String(format: String(localized: "failed_to_load_crypto", defaultValue: "Failed to load cryptocurrency: %@"), String(describing: error.localizedDescription))
+            }
+            
+            isLoadingCrypto = false
+        }
+    }
+    
+    func removeCrypto(at offsets: IndexSet) {
+        var removedIds: [String] = []
+        for index in offsets {
+            let cryptoId = customCryptos[index]
+            removedIds.append(cryptoId)
+            cryptoManager.removeCustomCrypto(cryptoId)
+        }
+        customCryptos = cryptoManager.getCustomCryptos()
+        updateAvailableCryptos()
+        
+        // Notify CryptoViewModel to reload with removed crypto IDs
+        for cryptoId in removedIds {
+            NotificationCenter.default.post(
+                name: NSNotification.Name("CustomCryptoRemoved"),
+                object: nil,
+                userInfo: ["cryptoId": cryptoId]
+            )
+        }
     }
     
     func addSelectedCurrency() {

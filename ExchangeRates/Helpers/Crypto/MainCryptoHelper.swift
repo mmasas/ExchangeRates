@@ -941,6 +941,40 @@ class MainCryptoHelper {
         return binancePairsDict[binanceSymbol]
     }
     
+    /// Get available cryptocurrencies from binancePairsDict that are NOT in mainCryptos
+    /// - Parameter excluding: Additional CoinGecko IDs to exclude (e.g., already-added custom cryptos)
+    /// - Returns: Array of CoinGecko IDs that can be added for live tracking
+    static func getAvailableCryptosForAdding(excluding: [String] = []) -> [String] {
+        // Get all unique CoinGecko IDs from binancePairsDict values
+        let allBinanceCryptos = Set(binancePairsDict.values.map { $0.lowercased() })
+        
+        // Get main cryptos as lowercase set for comparison
+        let mainCryptosSet = Set(mainCryptos.map { $0.lowercased() })
+        
+        // Get excluded cryptos as lowercase set
+        let excludedSet = Set(excluding.map { $0.lowercased() })
+        
+        // Filter: cryptos in binancePairsDict that are NOT in mainCryptos and NOT in excluded list
+        let available = allBinanceCryptos.filter { cryptoId in
+            !mainCryptosSet.contains(cryptoId) && !excludedSet.contains(cryptoId)
+        }
+        
+        // Convert back to original case from binancePairsDict (preserve first occurrence)
+        var result: [String] = []
+        var seen = Set<String>()
+        
+        for (_, value) in binancePairsDict {
+            let lowercased = value.lowercased()
+            if available.contains(lowercased) && !seen.contains(lowercased) {
+                result.append(value)
+                seen.insert(lowercased)
+            }
+        }
+        
+        // Sort alphabetically by CoinGecko ID
+        return result.sorted { $0.lowercased() < $1.lowercased() }
+    }
+    
     // MARK: - Image URLs
     
     /// Get CoinGecko image URL for a cryptocurrency

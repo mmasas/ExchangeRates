@@ -27,101 +27,134 @@ struct CurrencyConverterView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Header with currency info
-                VStack(spacing: 12) {
-                    Text(CurrencyFlagHelper.flag(for: viewModel.exchangeRate.key))
-                        .font(.system(size: 64))
+                // Flag and currency info at the top
+                VStack(spacing: 16) {
+                    // Flag
+                    CurrencyFlagHelper.flagImage(for: viewModel.exchangeRate.key)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
                     
-                    Text("\(viewModel.exchangeRate.key) / \(viewModel.homeCurrencyCode)")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.primary)
-                    
-                    Text(String(format: String(localized: "rate_label", defaultValue: "Rate: %@"), viewModel.exchangeRate.formattedRate))
-                        .font(.system(size: 16))
-                        .foregroundColor(.secondary)
+                    // Currency pair and rate
+                    VStack(spacing: 8) {
+                        Text("\(viewModel.exchangeRate.key) / \(viewModel.homeCurrencyCode)")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.primary)
+                        
+                        Text(String(format: String(localized: "rate_label", defaultValue: "Rate: %@"), viewModel.exchangeRate.formattedRate))
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.secondary)
+                    }
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 8)
                 
                 // Conversion fields
-                VStack(spacing: 20) {
-                    // Home Currency Input Field
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(viewModel.homeCurrencyCode)")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.secondary)
-                        
-                        HStack {
-                            Text(homeCurrencySymbol)
-                                .font(.system(size: 24, weight: .semibold))
-                                .foregroundColor(.primary)
+                VStack(spacing: 16) {
+                            // Home Currency Input Field
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("\(viewModel.homeCurrencyCode)")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+                                    .textCase(.uppercase)
+                                
+                                HStack(spacing: 12) {
+                                    Text(homeCurrencySymbol)
+                                        .font(.system(size: 28, weight: .semibold))
+                                        .foregroundColor(.primary)
+                                    
+                                    TextField("0", text: Binding(
+                                        get: { viewModel.homeAmount },
+                                        set: { viewModel.updateHomeAmount($0) }
+                                    ))
+                                        .keyboardType(.decimalPad)
+                                        .font(.system(size: 36, weight: .bold))
+                                        .foregroundColor(.primary)
+                                        .focused($focusedField, equals: .home)
+                                        .environment(\.layoutDirection, .leftToRight)
+                                        .multilineTextAlignment(.leading)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 18)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(.systemBackground))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                                )
+                            }
                             
-                            TextField("0", text: Binding(
-                                get: { viewModel.homeAmount },
-                                set: { viewModel.updateHomeAmount($0) }
-                            ))
-                                .keyboardType(.decimalPad)
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
-                                .focused($focusedField, equals: .home)
-                                .environment(\.layoutDirection, .leftToRight)
-                                .multilineTextAlignment(.leading)
-                        }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(12)
-                        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
-                    }
-                    
-                    // Arrow indicator
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(.system(size: 24))
-                        .foregroundColor(.secondary)
-                        .padding(.vertical, 8)
-                    
-                    // Foreign Currency Input Field
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(viewModel.exchangeRate.key)
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.secondary)
-                        
-                        HStack {
-                            Text(CurrencyFlagHelper.flag(for: viewModel.exchangeRate.key))
-                                .font(.system(size: 24))
+                            // Arrow indicator
+                            Image(systemName: "arrow.up.arrow.down")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundColor(.secondary.opacity(0.7))
+                                .padding(.vertical, 4)
+                                .frame(maxWidth: .infinity)
                             
-                            TextField("0", text: Binding(
-                                get: { viewModel.foreignAmount },
-                                set: { viewModel.updateForeignAmount($0) }
-                            ))
-                                .keyboardType(.decimalPad)
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
-                                .focused($focusedField, equals: .foreign)
-                                .environment(\.layoutDirection, .leftToRight)
-                                .multilineTextAlignment(.leading)
+                            // Foreign Currency Input Field
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(viewModel.exchangeRate.key)
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+                                    .textCase(.uppercase)
+                                
+                                HStack(spacing: 12) {
+                                    CurrencyFlagHelper.flagImage(for: viewModel.exchangeRate.key)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 28, height: 28)
+                                        .clipShape(Circle())
+                                    
+                                    TextField("0", text: Binding(
+                                        get: { viewModel.foreignAmount },
+                                        set: { viewModel.updateForeignAmount($0) }
+                                    ))
+                                        .keyboardType(.decimalPad)
+                                        .font(.system(size: 36, weight: .bold))
+                                        .foregroundColor(.primary)
+                                        .focused($focusedField, equals: .foreign)
+                                        .environment(\.layoutDirection, .leftToRight)
+                                        .multilineTextAlignment(.leading)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 18)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(Color(.systemBackground))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                        )
+                                        .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+                                )
+                            }
                         }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(12)
-                        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
-                    }
-                }
-                .padding(.horizontal, 16)
+                        .padding(.horizontal, 16)
                 
                 // Historical rate button
                 Button {
                     focusedField = nil // Dismiss keyboard first
                     showHistoricalRate = true
                 } label: {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 10) {
                         Image(systemName: "calendar.badge.clock")
-                            .font(.system(size: 16))
+                            .font(.system(size: 16, weight: .medium))
                         Text(String(localized: "view_historical_rate", defaultValue: "View Historical Rate"))
-                            .font(.system(size: 16))
+                            .font(.system(size: 16, weight: .medium))
                     }
                     .foregroundColor(.blue)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 20)
+                    .background(
+                        Capsule()
+                            .fill(Color.blue.opacity(0.1))
+                    )
                 }
                 .padding(.top, 32)
+                .padding(.horizontal, 16)
             }
             .padding(.vertical, 16)
         }
@@ -132,11 +165,6 @@ struct CurrencyConverterView: View {
         .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(String(localized: "currency_converter"))
-                    .font(.headline)
-            }
-            
             // Done button above keyboard
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()

@@ -115,6 +115,9 @@
     "%lld" : {
 
     },
+    "%lld items" : {
+
+    },
     "%lld." : {
 
     },
@@ -421,6 +424,40 @@
         }
       }
     },
+    "add_crypto" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Cryptocurrency"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir Criptomoneda"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une Cryptomonnaie"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף מטבע קריפטו"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暗号通貨を追加"
+          }
+        }
+      }
+    },
     "add_currency" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -452,6 +489,41 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通貨を追加"
+          }
+        }
+      }
+    },
+    "add_custom_crypto" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Custom Cryptocurrency"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir Criptomoneda Personalizada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une Cryptomonnaie Personnalisée"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף מטבע קריפטו מותאם אישית"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタム暗号通貨を追加"
           }
         }
       }
@@ -774,9 +846,6 @@
         }
       }
     },
-    "App Settings" : {
-
-    },
     "auto_reset" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -951,6 +1020,9 @@
           }
         }
       }
+    },
+    "Cache Information" : {
+
     },
     "cancel" : {
       "extractionState" : "manual",
@@ -1171,6 +1243,9 @@
         }
       }
     },
+    "Crypto Provider" : {
+
+    },
     "crypto_alerts_section" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1202,6 +1277,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "暗号通貨アラート"
+          }
+        }
+      }
+    },
+    "crypto_not_found_in_binance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cryptocurrency not found in Binance"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptomoneda no encontrada en Binance"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cryptomonnaie introuvable sur Binance"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מטבע קריפטו לא נמצא בבינאנס"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Binanceで暗号通貨が見つかりません"
           }
         }
       }
@@ -1346,8 +1455,28 @@
         }
       }
     },
+    "Cryptocurrencies" : {
+
+    },
     "Cryptocurrency not found" : {
 
+    },
+    "cryptocurrency_management" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Cryptocurrency Management"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ניהול מטבעות קריפטו"
+          }
+        }
+      }
     },
     "currencies_tab" : {
       "extractionState" : "manual",
@@ -1419,16 +1548,13 @@
         }
       }
     },
-    "Currency Alerts (%lld)" : {
+    "Currency Alerts" : {
 
     },
     "Currency Code" : {
 
     },
     "Currency Order" : {
-
-    },
-    "Currency Order (%lld)" : {
 
     },
     "currency_alert_notification_title" : {
@@ -1536,6 +1662,23 @@
         }
       }
     },
+    "currency_management" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Currency Management"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ניהול מטבעות"
+          }
+        }
+      }
+    },
     "currency_pair" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1609,11 +1752,82 @@
         }
       }
     },
+    "Custom Cryptocurrencies" : {
+
+    },
     "Custom Currencies" : {
 
     },
-    "Custom Currencies (%lld)" : {
+    "Custom Exchange Rates" : {
 
+    },
+    "custom_crypto_footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add cryptocurrencies for live tracking. These will be included in your crypto list with real-time price updates."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade criptomonedas para seguimiento en vivo. Se incluirán en tu lista de cripto con actualizaciones de precios en tiempo real."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez des cryptomonnaies pour le suivi en direct. Elles seront incluses dans votre liste de crypto avec des mises à jour de prix en temps réel."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף מטבעות קריפטו למעקב חי. אלה ייכללו ברשימת הקריפטו שלך עם עדכוני מחירים בזמן אמת."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライブ追跡用の暗号通貨を追加します。これらはリアルタイムの価格更新とともに暗号通貨リストに含まれます。"
+          }
+        }
+      }
+    },
+    "custom_cryptos" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom Cryptocurrencies"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptomonedas Personalizadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cryptomonnaies Personnalisées"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מטבעות קריפטו מותאמים אישית"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタム暗号通貨"
+          }
+        }
+      }
     },
     "custom_currencies" : {
       "extractionState" : "manual",
@@ -1995,6 +2209,9 @@
         }
       }
     },
+    "Exchange Rates" : {
+
+    },
     "exchange_rates_title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2190,6 +2407,23 @@
         }
       }
     },
+    "general_settings" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "General"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "כללי"
+          }
+        }
+      }
+    },
     "hebrew" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2294,9 +2528,6 @@
           }
         }
       }
-    },
-    "Home Currency" : {
-
     },
     "Home Currency Code" : {
 
@@ -2758,10 +2989,16 @@
         }
       }
     },
+    "No" : {
+
+    },
     "No alerts" : {
 
     },
     "No currency order" : {
+
+    },
+    "No custom cryptocurrencies" : {
 
     },
     "No custom currencies" : {
@@ -3951,6 +4188,9 @@
     "USD" : {
 
     },
+    "User Preferences" : {
+
+    },
     "View Logs" : {
 
     },
@@ -3992,6 +4232,9 @@
         }
       }
     },
+    "WebSocket Enabled" : {
+
+    },
     "WebSocket Settings" : {
 
     },
@@ -4029,6 +4272,9 @@
           }
         }
       }
+    },
+    "Yes" : {
+
     }
   },
   "version" : "1.0"

@@ -168,8 +168,10 @@ struct AlertRow: View {
                         
                         // USD target
                         HStack(spacing: 4) {
-                            Text(CurrencyFlagHelper.flag(for: "USD"))
-                                .font(.system(size: 24))
+                            CurrencyFlagHelper.flagImage(for: "USD")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
                             Text("USD")
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(.primary)
@@ -178,8 +180,10 @@ struct AlertRow: View {
                         // Currency display
                         // Base currency
                         HStack(spacing: 4) {
-                            Text(CurrencyFlagHelper.flag(for: alert.baseCurrency))
-                                .font(.system(size: 24))
+                            CurrencyFlagHelper.flagImage(for: alert.baseCurrency)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
                             Text(alert.baseCurrency)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(.primary)
@@ -191,8 +195,10 @@ struct AlertRow: View {
                         
                         // Target currency
                         HStack(spacing: 4) {
-                            Text(CurrencyFlagHelper.flag(for: alert.targetCurrency))
-                                .font(.system(size: 24))
+                            CurrencyFlagHelper.flagImage(for: alert.targetCurrency)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24)
                             Text(alert.targetCurrency)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(.primary)

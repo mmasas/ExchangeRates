@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import UIKit
 
 struct CurrencyFlagHelper {
     // Special mappings for currencies that don't follow the standard pattern
@@ -14,6 +16,15 @@ struct CurrencyFlagHelper {
         "XAF": "🇨🇲", // Central African CFA franc
         "XOF": "🇸🇳", // West African CFA franc
         "XPF": "🇵🇫", // CFP franc
+    ]
+    
+    // Special mappings for currency codes to flag image asset names
+    private static let specialCurrencyFlagAssets: [String: String] = [
+        "EUR": "eu", // European Union flag
+        "GBP": "uk", // Great Britain Pound -> UK flag
+        "XAF": "cm", // Central African CFA franc -> Cameroon
+        "XOF": "sn", // West African CFA franc -> Senegal
+        "XPF": "pf", // CFP franc -> French Polynesia
     ]
     
     // Map currency codes to flag emojis
@@ -49,6 +60,50 @@ struct CurrencyFlagHelper {
         }
         
         return flag.isEmpty ? "🏳️" : flag
+    }
+    
+    // Get flag image asset name for a currency code
+    static func flagImageName(for currencyCode: String) -> String {
+        // Check special mappings first
+        if let specialAsset = specialCurrencyFlagAssets[currencyCode] {
+            return specialAsset
+        }
+        
+        // Convert currency code to country code (lowercase for asset names)
+        let countryCode = String(currencyCode.prefix(2)).lowercased()
+        return countryCode
+    }
+    
+    // Get SwiftUI Image for a currency code
+    // Returns the image asset if available, otherwise returns a placeholder
+    static func flagImage(for currencyCode: String) -> Image {
+        let imageName = flagImageName(for: currencyCode)
+        // Check if image exists in bundle
+        if UIImage(named: imageName) != nil {
+            return Image(imageName)
+        } else {
+            // Fallback: return a system image placeholder
+            // In practice, SwiftUI Image will handle missing images gracefully (shows nothing)
+            // But we provide a fallback to avoid empty space
+            return Image(systemName: "flag.fill")
+        }
+    }
+    
+    // Get a View that displays flag image with emoji fallback
+    // Use this when you want to ensure something is always displayed
+    @ViewBuilder
+    static func flagImageWithFallback(for currencyCode: String, size: CGFloat = 24) -> some View {
+        let imageName = flagImageName(for: currencyCode)
+        if UIImage(named: imageName) != nil {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: size, height: size)
+        } else {
+            // Fallback to emoji flag
+            Text(flag(for: currencyCode))
+                .font(.system(size: size))
+        }
     }
     
     // Get country name from currency code

@@ -11,11 +11,11 @@ struct LaunchScreenView: View {
     @State private var titleOpacity: Double = 0
     @State private var titleScale: CGFloat = 0.8
     @State private var rotationAngle: Double = 0
-    @State private var symbolOpacities: [Double] = [0, 0, 0, 0, 0]
-    @State private var symbolScales: [CGFloat] = [0.3, 0.3, 0.3, 0.3, 0.3]
+    @State private var symbolOpacities: [Double] = [0, 0, 0, 0, 0, 0]
+    @State private var symbolScales: [CGFloat] = [0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
     
-    let currencySymbols = ["₪", "$", "€", "£", "¥"]
-    let symbolCount = 5
+    let currencySymbols = ["₪", "$", "€", "£", "¥", "₿"]
+    let symbolCount = 6
     
     var body: some View {
         ZStack {

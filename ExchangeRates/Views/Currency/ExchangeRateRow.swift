@@ -22,8 +22,10 @@ struct ExchangeRateRow: View {
         }) {
             HStack(spacing: 16) {
                 // Flag
-                Text(CurrencyFlagHelper.flag(for: exchangeRate.key))
-                    .font(.system(size: 32))
+                CurrencyFlagHelper.flagImage(for: exchangeRate.key)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 32, height: 32)
                 
                 // Currency code
                 Text("\(exchangeRate.key) / \(homeCurrency)")

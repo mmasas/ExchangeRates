@@ -41,7 +41,7 @@ class CryptoViewModel: ObservableObject {
         // Apply live filter if enabled
         if showLiveOnly {
             filtered = filtered.filter { crypto in
-                MainCryptoHelper.shouldUseWebSocket(crypto.id)
+                MainCryptoHelper.shouldUseWebSocket(crypto.id) || customCryptoManager.isCustomCrypto(crypto.id)
             }
         }
         
@@ -63,6 +63,7 @@ class CryptoViewModel: ObservableObject {
     private let cacheManager = DataCacheManager.shared
     private let webSocketService = BinanceWebSocketService.shared
     private let websocketManager = WebSocketManager.shared
+    private let customCryptoManager = CustomCryptoManager.shared
     
     // Cache for chart data: [cryptoId: [timeRange: chartData]]
     private var chartDataCache: [String: [ChartTimeRange: [ChartDataPoint]]] = [:]
@@ -98,6 +99,21 @@ class CryptoViewModel: ObservableObject {
             self?.handleWebSocketPreferenceChange()
         }
         
+        // Subscribe to custom crypto changes
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCustomCryptoAdded),
+            name: NSNotification.Name("CustomCryptoAdded"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCustomCryptoRemoved),
+            name: NSNotification.Name("CustomCryptoRemoved"),
+            object: nil
+        )
+        
         // Load fresh data (will use cache if offline)
         loadCryptocurrencies()
     }
@@ -105,6 +121,7 @@ class CryptoViewModel: ObservableObject {
     deinit {
         websocketCancellable?.cancel()
         websocketPreferenceCancellable?.cancel()
+        NotificationCenter.default.removeObserver(self)
     }
     
     func loadCryptocurrencies() {
@@ -165,15 +182,15 @@ class CryptoViewModel: ObservableObject {
                 LogManager.shared.log("Saved \(cryptos.count) cryptocurrencies to cache", level: .success, source: "CryptoViewModel")
             }
             
+            // Load custom cryptos and add them to the list
+            await loadCustomCryptos()
+            
             // Connect WebSocket for selected cryptos if enabled
             if websocketManager.isWebSocketEnabled {
-                let websocketSymbols = MainCryptoHelper.getWebSocketSymbols()
-                if !websocketSymbols.isEmpty {
-                    webSocketService.connect(symbols: websocketSymbols)
-                }
+                connectWebSocketForLiveTracking()
             }
             
-            LogManager.shared.log("Loaded \(cryptos.count) cryptocurrencies (page 1) with sparklines", level: .success, source: "CryptoViewModel")
+            LogManager.shared.log("Loaded \(cryptocurrencies.count) cryptocurrencies (page 1 + custom) with sparklines", level: .success, source: "CryptoViewModel")
         } catch {
             // Don't show error if task was cancelled
             if let urlError = error as? URLError, urlError.code == .cancelled {
@@ -389,13 +406,104 @@ class CryptoViewModel: ObservableObject {
     private func handleWebSocketPreferenceChange() {
         if websocketManager.isWebSocketEnabled {
             // Connect WebSocket if enabled
-            let websocketSymbols = MainCryptoHelper.getWebSocketSymbols()
-            if !websocketSymbols.isEmpty {
-                webSocketService.connect(symbols: websocketSymbols)
-            }
+            connectWebSocketForLiveTracking()
         } else {
             // Disconnect WebSocket if disabled
             webSocketService.disconnect(clearSubscriptions: true)
+        }
+    }
+    
+    /// Connect WebSocket for live tracking (includes both websocketEnabledCryptos and custom cryptos)
+    @MainActor
+    private func connectWebSocketForLiveTracking() {
+        var symbols: [String] = []
+        
+        // Add symbols for websocket-enabled cryptos
+        symbols.append(contentsOf: MainCryptoHelper.getWebSocketSymbols())
+        
+        // Add symbols for custom cryptos
+        let customCryptos = customCryptoManager.getCustomCryptos()
+        for cryptoId in customCryptos {
+            if let symbol = MainCryptoHelper.getSymbol(for: cryptoId) {
+                symbols.append(symbol)
+            }
+        }
+        
+        // Remove duplicates
+        symbols = Array(Set(symbols))
+        
+        if !symbols.isEmpty {
+            webSocketService.connect(symbols: symbols)
+            LogManager.shared.log("Connected WebSocket for \(symbols.count) symbols (including \(customCryptos.count) custom cryptos)", level: .info, source: "CryptoViewModel")
+        }
+    }
+    
+    /// Load custom cryptos and add them to the cryptocurrencies list
+    @MainActor
+    private func loadCustomCryptos() async {
+        let customCryptoIds = customCryptoManager.getCustomCryptos()
+        guard !customCryptoIds.isEmpty else { return }
+        
+        // Filter out custom cryptos that are already in the list
+        let existingIds = Set(cryptocurrencies.map { $0.id.lowercased() })
+        let newCustomIds = customCryptoIds.filter { !existingIds.contains($0.lowercased()) }
+        
+        guard !newCustomIds.isEmpty else { return }
+        
+        do {
+            // Use BinanceCryptoService for custom cryptos (not CoinGecko)
+            let binanceService = BinanceCryptoService.shared
+            let customCryptos = try await binanceService.fetchCryptoPrices(ids: newCustomIds)
+            // Append custom cryptos to the end of the list
+            cryptocurrencies.append(contentsOf: customCryptos)
+            LogManager.shared.log("Loaded \(customCryptos.count) custom cryptocurrencies from Binance", level: .success, source: "CryptoViewModel")
+        } catch {
+            LogManager.shared.log("Error loading custom cryptos from Binance: \(error.localizedDescription)", level: .error, source: "CryptoViewModel")
+        }
+    }
+    
+    /// Handle custom crypto added notification
+    @objc private func handleCustomCryptoAdded(_ notification: Notification) {
+        guard let cryptoId = notification.userInfo?["cryptoId"] as? String else { return }
+        
+        Task { @MainActor in
+            // Check if already in list
+            if cryptocurrencies.contains(where: { $0.id.lowercased() == cryptoId.lowercased() }) {
+                return
+            }
+            
+            // Load the new custom crypto from Binance (not CoinGecko)
+            do {
+                let binanceService = BinanceCryptoService.shared
+                let cryptos = try await binanceService.fetchCryptoPrices(ids: [cryptoId])
+                if let newCrypto = cryptos.first {
+                    cryptocurrencies.append(newCrypto)
+                    LogManager.shared.log("Added custom crypto from Binance: \(cryptoId)", level: .success, source: "CryptoViewModel")
+                    
+                    // Update WebSocket connection to include new crypto
+                    if websocketManager.isWebSocketEnabled {
+                        connectWebSocketForLiveTracking()
+                    }
+                }
+            } catch {
+                LogManager.shared.log("Error loading added custom crypto \(cryptoId) from Binance: \(error.localizedDescription)", level: .error, source: "CryptoViewModel")
+            }
+        }
+    }
+    
+    /// Handle custom crypto removed notification
+    @objc private func handleCustomCryptoRemoved(_ notification: Notification) {
+        guard let cryptoId = notification.userInfo?["cryptoId"] as? String else { return }
+        
+        Task { @MainActor in
+            // Remove from list
+            cryptocurrencies.removeAll { $0.id.lowercased() == cryptoId.lowercased() }
+            LogManager.shared.log("Removed custom crypto: \(cryptoId)", level: .info, source: "CryptoViewModel")
+            
+            // Update WebSocket connection
+            if websocketManager.isWebSocketEnabled {
+                connectWebSocketForLiveTracking()
+            }
         }
     }
     
