@@ -15,6 +15,7 @@ class CryptoViewModel: ObservableObject {
     @Published var isLoadingNextPage: Bool = false
     @Published var errorMessage: String?
     @Published var searchText: String = ""
+    @Published var showLiveOnly: Bool = false
     @Published var isOffline: Bool = false
     @Published var lastUpdateDate: Date?
     
@@ -33,13 +34,26 @@ class CryptoViewModel: ObservableObject {
         return currentPage < totalPages
     }
     
-    /// Filtered cryptocurrencies based on search text
+    /// Filtered cryptocurrencies based on search text and live filter
     var filteredCryptocurrencies: [Cryptocurrency] {
-        guard !searchText.isEmpty else { return cryptocurrencies }
-        return cryptocurrencies.filter { crypto in
-            crypto.name.localizedCaseInsensitiveContains(searchText) ||
-            crypto.symbol.localizedCaseInsensitiveContains(searchText)
+        var filtered = cryptocurrencies
+        
+        // Apply live filter if enabled
+        if showLiveOnly {
+            filtered = filtered.filter { crypto in
+                MainCryptoHelper.shouldUseWebSocket(crypto.id)
+            }
         }
+        
+        // Apply search filter if search text is not empty
+        if !searchText.isEmpty {
+            filtered = filtered.filter { crypto in
+                crypto.name.localizedCaseInsensitiveContains(searchText) ||
+                crypto.symbol.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+        
+        return filtered
     }
     
     private var currentTask: Task<Void, Never>?
@@ -47,9 +61,18 @@ class CryptoViewModel: ObservableObject {
     private var chartTask: Task<Void, Never>?
     private let networkMonitor = NetworkMonitor.shared
     private let cacheManager = DataCacheManager.shared
+    private let webSocketService = BinanceWebSocketService.shared
+    private let websocketManager = WebSocketManager.shared
     
     // Cache for chart data: [cryptoId: [timeRange: chartData]]
     private var chartDataCache: [String: [ChartTimeRange: [ChartDataPoint]]] = [:]
+    
+    // Track previous prices for animation
+    private var previousPrices: [String: Double] = [:]
+    
+    // Combine cancellables
+    private var websocketCancellable: AnyCancellable?
+    private var websocketPreferenceCancellable: AnyCancellable?
     
     init() {
         // Load from cache first if available (on main actor)
@@ -59,8 +82,29 @@ class CryptoViewModel: ObservableObject {
             self.updateOfflineStatus()
         }
         
+        // Subscribe to WebSocket price updates
+        websocketCancellable = webSocketService.$priceUpdates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updates in
+                self?.updatePricesFromWebSocket(updates)
+            }
+        
+        // Subscribe to WebSocket preference changes
+        websocketPreferenceCancellable = NotificationCenter.default.publisher(
+            for: WebSocketManager.websocketPreferenceChangedNotification
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] _ in
+            self?.handleWebSocketPreferenceChange()
+        }
+        
         // Load fresh data (will use cache if offline)
         loadCryptocurrencies()
+    }
+    
+    deinit {
+        websocketCancellable?.cancel()
+        websocketPreferenceCancellable?.cancel()
     }
     
     func loadCryptocurrencies() {
@@ -119,6 +163,14 @@ class CryptoViewModel: ObservableObject {
                 cacheManager.saveCryptocurrencies(cryptos)
                 lastUpdateDate = cacheManager.getLastCryptocurrenciesUpdateDate()
                 LogManager.shared.log("Saved \(cryptos.count) cryptocurrencies to cache", level: .success, source: "CryptoViewModel")
+            }
+            
+            // Connect WebSocket for selected cryptos if enabled
+            if websocketManager.isWebSocketEnabled {
+                let websocketSymbols = MainCryptoHelper.getWebSocketSymbols()
+                if !websocketSymbols.isEmpty {
+                    webSocketService.connect(symbols: websocketSymbols)
+                }
             }
             
             LogManager.shared.log("Loaded \(cryptos.count) cryptocurrencies (page 1) with sparklines", level: .success, source: "CryptoViewModel")
@@ -292,5 +344,63 @@ class CryptoViewModel: ObservableObject {
     func updateTimeRange(_ range: ChartTimeRange, for cryptoId: String) {
         selectedTimeRange = range
         loadChartData(cryptoId: cryptoId, range: range)
+    }
+    
+    // MARK: - WebSocket Price Updates
+    
+    /// Update prices from WebSocket updates
+    @MainActor
+    private func updatePricesFromWebSocket(_ updates: [String: Double]) {
+        for (symbol, price) in updates {
+            // Find the crypto by Binance symbol and update its price
+            if let index = cryptocurrencies.firstIndex(where: { crypto in
+                guard let binanceSymbol = MainCryptoHelper.getSymbol(for: crypto.id) else {
+                    return false
+                }
+                return binanceSymbol == symbol
+            }) {
+                let currentCrypto = cryptocurrencies[index]
+                
+                // Store previous price for animation
+                previousPrices[currentCrypto.id] = currentCrypto.currentPrice
+                
+                // Create updated crypto with new price
+                let updatedCrypto = Cryptocurrency(
+                    id: currentCrypto.id,
+                    symbol: currentCrypto.symbol,
+                    name: currentCrypto.name,
+                    image: currentCrypto.image,
+                    currentPrice: price,
+                    priceChangePercentage24h: currentCrypto.priceChangePercentage24h,
+                    lastUpdated: currentCrypto.lastUpdated,
+                    sparklineIn7d: currentCrypto.sparklineIn7d,
+                    marketCapRank: currentCrypto.marketCapRank,
+                    high24h: currentCrypto.high24h,
+                    low24h: currentCrypto.low24h
+                )
+                
+                cryptocurrencies[index] = updatedCrypto
+            }
+        }
+    }
+    
+    /// Handle WebSocket preference changes
+    @MainActor
+    private func handleWebSocketPreferenceChange() {
+        if websocketManager.isWebSocketEnabled {
+            // Connect WebSocket if enabled
+            let websocketSymbols = MainCryptoHelper.getWebSocketSymbols()
+            if !websocketSymbols.isEmpty {
+                webSocketService.connect(symbols: websocketSymbols)
+            }
+        } else {
+            // Disconnect WebSocket if disabled
+            webSocketService.disconnect(clearSubscriptions: true)
+        }
+    }
+    
+    /// Get previous price for a crypto (for animation)
+    func getPreviousPrice(for cryptoId: String) -> Double? {
+        return previousPrices[cryptoId]
     }
 }

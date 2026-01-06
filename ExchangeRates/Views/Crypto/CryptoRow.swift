@@ -15,6 +15,8 @@ struct CryptoRow: View {
     @State private var isPressed = false
     @State private var showDetail = false
     @State private var currentProvider: CryptoProviderType = CryptoProviderManager.shared.getProvider()
+    @State private var isWebSocketEnabled: Bool = false
+    @ObservedObject private var websocketManager = WebSocketManager.shared
     @EnvironmentObject var viewModel: CryptoViewModel
     
     init(cryptocurrency: Cryptocurrency, sparklinePrices: [Double]? = nil, isLoadingSparkline: Bool = false) {
@@ -50,6 +52,14 @@ struct CryptoRow: View {
             .onReceive(NotificationCenter.default.publisher(for: CryptoProviderManager.providerChangedNotification)) { _ in
                 currentProvider = CryptoProviderManager.shared.getProvider()
             }
+            .onAppear {
+                // Check if this crypto uses WebSocket and if WebSocket is enabled
+                isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && websocketManager.isWebSocketEnabled
+            }
+            .onChange(of: websocketManager.isWebSocketEnabled) { _, newValue in
+                // Update WebSocket enabled state when preference changes
+                isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && newValue
+            }
             
             // 2. Name and symbol (truncate if too long)
             VStack(alignment: .leading, spacing: 2) {
@@ -72,11 +82,12 @@ struct CryptoRow: View {
             
             // 4. Price and change (LEFT in RTL - end of row)
             VStack(alignment: .trailing, spacing: 2) {
-                Text(cryptocurrency.formattedPrice)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .fixedSize(horizontal: true, vertical: false)
+                PriceChangeAnimationView(
+                    price: cryptocurrency.currentPrice,
+                    previousPrice: viewModel.getPreviousPrice(for: cryptocurrency.id)
+                )
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: false)
                 
                 HStack(spacing: 2) {
                     Image(systemName: cryptocurrency.isPositiveChange ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
@@ -85,6 +96,15 @@ struct CryptoRow: View {
                         .font(.system(size: 12, weight: .medium))
                 }
                 .foregroundColor(cryptocurrency.isPositiveChange ? .green : .red)
+                
+                // Live indicator or last update date
+                if isWebSocketEnabled {
+                    LiveIndicatorView()
+                } else if !cryptocurrency.relativeTimeString.isEmpty {
+                    Text(cryptocurrency.relativeTimeString)
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                }
             }
             .frame(minWidth: 80, alignment: .trailing)
         }
@@ -103,7 +123,7 @@ struct CryptoRow: View {
             showDetail = true
         }
         .sheet(isPresented: $showDetail) {
-            CryptoDetailView(cryptocurrency: cryptocurrency)
+            CryptoDetailView(cryptocurrencyId: cryptocurrency.id)
                 .environmentObject(viewModel)
         }
     }
@@ -119,7 +139,10 @@ struct CryptoRow: View {
             currentPrice: 87805.0,
             priceChangePercentage24h: 2.1,
             lastUpdated: "2026-01-01T10:00:00.000Z",
-            sparklineIn7d: SparklineIn7d(price: [85000, 86000, 84500, 87000, 88000, 87500, 87805])
+            sparklineIn7d: SparklineIn7d(price: [85000, 86000, 84500, 87000, 88000, 87500, 87805]),
+            marketCapRank: 1,
+            high24h: 89000.0,
+            low24h: 85000.0
         ),
         sparklinePrices: [85000, 86000, 84500, 87000, 88000, 87500, 87805]
     )
@@ -136,7 +159,10 @@ struct CryptoRow: View {
             currentPrice: 87805.0,
             priceChangePercentage24h: 2.1,
             lastUpdated: "2026-01-01T10:00:00.000Z",
-            sparklineIn7d: nil
+            sparklineIn7d: nil,
+            marketCapRank: 1,
+            high24h: 89000.0,
+            low24h: 85000.0
         ),
         isLoadingSparkline: true
     )

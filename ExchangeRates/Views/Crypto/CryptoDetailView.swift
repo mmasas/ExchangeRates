@@ -8,11 +8,19 @@
 import SwiftUI
 
 struct CryptoDetailView: View {
-    let cryptocurrency: Cryptocurrency
+    let cryptocurrencyId: String
     
     @Environment(\.dismiss) private var dismiss
     @StateObject private var networkMonitor = NetworkMonitor.shared
+    @State private var isWebSocketEnabled: Bool = false
+    @State private var previousPrice: Double?
+    @ObservedObject private var websocketManager = WebSocketManager.shared
     @EnvironmentObject var viewModel: CryptoViewModel
+    
+    // Get current cryptocurrency from viewModel (updates when WebSocket updates price)
+    private var cryptocurrency: Cryptocurrency? {
+        viewModel.cryptocurrencies.first { $0.id == cryptocurrencyId }
+    }
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -21,19 +29,21 @@ struct CryptoDetailView: View {
         return formatter
     }
     
-    private var lastUpdatedDate: Date? {
-        guard let dateString = cryptocurrency.lastUpdated else { return nil }
+    private func lastUpdatedDate(for crypto: Cryptocurrency) -> Date? {
+        guard let dateString = crypto.lastUpdated else { return nil }
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         return isoFormatter.date(from: dateString)
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Logo and name section
-                VStack(spacing: 12) {
-                    AsyncImage(url: URL(string: cryptocurrency.image)) { phase in
+        Group {
+            if let crypto = cryptocurrency {
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // Logo and name section
+                        VStack(spacing: 12) {
+                            AsyncImage(url: URL(string: crypto.image)) { phase in
                         switch phase {
                         case .empty:
                             ProgressView()
@@ -55,101 +65,171 @@ struct CryptoDetailView: View {
                         }
                     }
                     
-                    VStack(spacing: 4) {
-                        Text(cryptocurrency.name)
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(.primary)
-                        
-                        Text(cryptocurrency.displaySymbol)
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.secondary)
-                    }
-                }
-                .padding(.top, 24)
-                
-                // Price section
-                VStack(spacing: 8) {
-                    Text(cryptocurrency.formattedPrice)
-                        .font(.system(size: 44, weight: .bold))
-                        .foregroundColor(.primary)
-                    
-                    HStack(spacing: 6) {
-                        Image(systemName: cryptocurrency.isPositiveChange ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
-                            .font(.system(size: 14))
-                        Text(cryptocurrency.formattedChange)
-                            .font(.system(size: 18, weight: .semibold))
-                        Text("(24h)")
-                            .font(.system(size: 14))
-                            .foregroundColor(.secondary)
-                    }
-                    .foregroundColor(cryptocurrency.isPositiveChange ? .green : .red)
-                }
-                .padding(.vertical, 16)
-                .frame(maxWidth: .infinity)
-                .background(Color(.systemBackground))
-                .cornerRadius(16)
-                .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
-                .padding(.horizontal, 16)
-                
-                // Chart section
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(viewModel.selectedTimeRange.chartTitle)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal, 4)
-                    
-                    // Time range selector
-                    TimeRangeSelectorView(
-                        selectedRange: $viewModel.selectedTimeRange,
-                        onRangeSelected: { range in
-                            viewModel.updateTimeRange(range, for: cryptocurrency.id)
+                            VStack(spacing: 4) {
+                                Text(crypto.name)
+                                    .font(.system(size: 28, weight: .bold))
+                                    .foregroundColor(.primary)
+                                
+                                Text(crypto.displaySymbol)
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                    )
-                    
-                    // Interactive chart
-                    InteractiveChartView(
-                        chartData: viewModel.chartData,
-                        timeRange: viewModel.selectedTimeRange,
-                        isPositive: cryptocurrency.isPositiveChange,
-                        isLoading: viewModel.isLoadingChart,
-                        isOffline: !networkMonitor.isConnected,
-                        errorMessage: viewModel.chartErrorMessage
-                    )
-                }
-                .padding(16)
-                .background(Color(.systemBackground))
-                .cornerRadius(16)
-                .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
-                .padding(.horizontal, 16)
-                
-                // Last updated
-                if let date = lastUpdatedDate {
-                    HStack {
-                        Image(systemName: "clock")
+                        .padding(.top, 24)
+                        
+                        // Price section
+                        VStack(spacing: 8) {
+                            HStack(spacing: 8) {
+                                PriceChangeAnimationView(
+                                    price: crypto.currentPrice,
+                                    previousPrice: previousPrice
+                                )
+                                .font(.system(size: 44, weight: .bold))
+                                
+                                if isWebSocketEnabled {
+                                    LiveIndicatorView()
+                                }
+                            }
+                            
+                            HStack(spacing: 6) {
+                                Image(systemName: crypto.isPositiveChange ? "arrowtriangle.up.fill" : "arrowtriangle.down.fill")
+                                    .font(.system(size: 14))
+                                Text(crypto.formattedChange)
+                                    .font(.system(size: 18, weight: .semibold))
+                                Text("(24h)")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.secondary)
+                            }
+                            .foregroundColor(crypto.isPositiveChange ? .green : .red)
+                        }
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(16)
+                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .padding(.horizontal, 16)
+                        
+                        // Chart section
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(viewModel.selectedTimeRange.chartTitle)
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal, 4)
+                            
+                            // Time range selector
+                            TimeRangeSelectorView(
+                                selectedRange: $viewModel.selectedTimeRange,
+                                onRangeSelected: { range in
+                                    viewModel.updateTimeRange(range, for: crypto.id)
+                                }
+                            )
+                            
+                            // Interactive chart
+                            InteractiveChartView(
+                                chartData: viewModel.chartData,
+                                timeRange: viewModel.selectedTimeRange,
+                                isPositive: crypto.isPositiveChange,
+                                isLoading: viewModel.isLoadingChart,
+                                isOffline: !networkMonitor.isConnected,
+                                errorMessage: viewModel.chartErrorMessage
+                            )
+                        }
+                        .padding(16)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(16)
+                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .padding(.horizontal, 16)
+                        
+                        // Market data section under the chart
+                        HStack(spacing: 16) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(String(localized: "market_cap_rank", defaultValue: "Market Cap Rank"))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                                Text(crypto.marketCapRank.map { "#\($0)" } ?? String(localized: "not_available", defaultValue: "N/A"))
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.primary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            VStack(alignment: .center, spacing: 6) {
+                                Text(String(localized: "24h_low", defaultValue: "24h Low"))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                                Text(crypto.formattedLow24h)
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.red)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            VStack(alignment: .trailing, spacing: 6) {
+                                Text(String(localized: "24h_high", defaultValue: "24h High"))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                                Text(crypto.formattedHigh24h)
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.green)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                        .padding(16)
+                        .background(Color(.systemBackground))
+                        .cornerRadius(16)
+                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .padding(.horizontal, 16)
+                        
+                        // Last updated
+                        if let date = lastUpdatedDate(for: crypto) {
+                            HStack {
+                                Image(systemName: "clock")
+                                    .font(.system(size: 14))
+                                Text(String(localized: "last_updated"))
+                                Text(dateFormatter.string(from: date))
+                            }
                             .font(.system(size: 14))
-                        Text(String(localized: "last_updated"))
-                        Text(dateFormatter.string(from: date))
+                            .foregroundColor(.secondary)
+                            .padding(.top, 4)
+                        }
+                        
+                        Spacer(minLength: 32)
                     }
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-                    .padding(.top, 8)
                 }
-                
-                Spacer(minLength: 32)
+                .background(Color(.systemGroupedBackground))
+                .presentationDragIndicator(.visible)
+                .onAppear {
+                    // Check if this crypto uses WebSocket and if WebSocket is enabled
+                    if let crypto = cryptocurrency {
+                        isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(crypto.id) && websocketManager.isWebSocketEnabled
+                        previousPrice = crypto.currentPrice
+                        
+                        // Load chart data for default range when view appears
+                        viewModel.loadChartData(cryptoId: crypto.id, range: viewModel.selectedTimeRange)
+                    }
+                }
+                .onChange(of: cryptocurrency?.currentPrice) { oldValue, newValue in
+                    if let oldValue = oldValue {
+                        previousPrice = oldValue
+                    }
+                }
+                .onChange(of: websocketManager.isWebSocketEnabled) { _, newValue in
+                    // Update WebSocket enabled state when preference changes
+                    if let crypto = cryptocurrency {
+                        isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(crypto.id) && newValue
+                    }
+                }
+            } else {
+                // Fallback if cryptocurrency not found
+                Text("Cryptocurrency not found")
+                    .foregroundColor(.secondary)
             }
-        }
-        .background(Color(.systemGroupedBackground))
-        .presentationDragIndicator(.visible)
-        .onAppear {
-            // Load chart data for default range when view appears
-            viewModel.loadChartData(cryptoId: cryptocurrency.id, range: viewModel.selectedTimeRange)
         }
     }
 }
 
 #Preview {
-    CryptoDetailView(
-        cryptocurrency: Cryptocurrency(
+    let viewModel = CryptoViewModel()
+    viewModel.cryptocurrencies = [
+        Cryptocurrency(
             id: "bitcoin",
             symbol: "btc",
             name: "Bitcoin",
@@ -161,9 +241,13 @@ struct CryptoDetailView: View {
                 85000, 85500, 86000, 85800, 86200, 86500, 86300,
                 86800, 87000, 86700, 87200, 87500, 87300, 87800,
                 88000, 87600, 87900, 88200, 87800, 88100, 87805
-            ])
+            ]),
+            marketCapRank: 1,
+            high24h: 89000.0,
+            low24h: 85000.0
         )
-    )
-    .environmentObject(CryptoViewModel())
+    ]
+    return CryptoDetailView(cryptocurrencyId: "bitcoin")
+        .environmentObject(viewModel)
 }
 

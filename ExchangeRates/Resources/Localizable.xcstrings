@@ -112,6 +112,9 @@
     "%@ copied to clipboard" : {
 
     },
+    "%lld" : {
+
+    },
     "%lld." : {
 
     },
@@ -249,6 +252,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "7日間チャート"
+          }
+        }
+      }
+    },
+    "24h_high" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "24h High"
+          }
+        }
+      }
+    },
+    "24h_low" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "24h Low"
           }
         }
       }
@@ -715,7 +740,39 @@
       }
     },
     "All" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הכל"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて"
+          }
+        }
+      }
     },
     "App Settings" : {
 
@@ -1055,6 +1112,12 @@
         }
       }
     },
+    "Connected" : {
+
+    },
+    "Connection Status:" : {
+
+    },
     "Copied!" : {
 
     },
@@ -1282,6 +1345,9 @@
           }
         }
       }
+    },
+    "Cryptocurrency not found" : {
+
     },
     "currencies_tab" : {
       "extractionState" : "manual",
@@ -1660,6 +1726,9 @@
         }
       }
     },
+    "Disconnected" : {
+
+    },
     "edit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1736,6 +1805,9 @@
         }
       }
     },
+    "Enable WebSocket Updates" : {
+
+    },
     "enable_alert" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1770,6 +1842,9 @@
           }
         }
       }
+    },
+    "Enabled Cryptos:" : {
+
     },
     "english" : {
       "extractionState" : "manual",
@@ -2526,6 +2601,77 @@
         }
       }
     },
+    "LIVE" : {
+
+    },
+    "live_only" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live only"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo en vivo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En direct uniquement"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "רק Live"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライブのみ"
+          }
+        }
+      }
+    },
+    "live_updates_connecting" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Connecting..."
+          }
+        }
+      }
+    },
+    "live_updates_disabled" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Live updates disabled"
+          }
+        }
+      }
+    },
+    "live_updates_enabled" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Live"
+          }
+        }
+      }
+    },
     "loading_chart" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2551,6 +2697,17 @@
     },
     "Logs (%lld)" : {
 
+    },
+    "market_cap_rank" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Market Cap Rank"
+          }
+        }
+      }
     },
     "Network Testing" : {
 
@@ -3136,6 +3293,9 @@
           }
         }
       }
+    },
+    "Real-time price updates for selected cryptocurrencies via WebSocket connection to Binance." : {
+
     },
     "Refresh" : {
 
@@ -3831,6 +3991,9 @@
           }
         }
       }
+    },
+    "WebSocket Settings" : {
+
     },
     "west_africa" : {
       "extractionState" : "manual",

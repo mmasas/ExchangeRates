@@ -74,11 +74,13 @@ class BinanceCryptoService: CryptoProvider {
         let coinGeckoService = CoinGeckoCryptoService.shared
         let coinGeckoCryptos = try? await coinGeckoService.fetchCryptoPrices(ids: coinGeckoIds)
         
-        // Create a map of coinGeckoId -> image URL
+        // Create maps of coinGeckoId -> CoinGecko data
         var imageURLMap: [String: String] = [:]
+        var coinGeckoDataMap: [String: Cryptocurrency] = [:]
         if let coinGeckoCryptos = coinGeckoCryptos {
             for coinGeckoCrypto in coinGeckoCryptos {
                 imageURLMap[coinGeckoCrypto.id] = coinGeckoCrypto.image
+                coinGeckoDataMap[coinGeckoCrypto.id] = coinGeckoCrypto
             }
             LogManager.shared.log("Fetched \(imageURLMap.count) image URLs from CoinGecko", level: .info, source: "BinanceCryptoService")
         } else {
@@ -105,8 +107,9 @@ class BinanceCryptoService: CryptoProvider {
             // Get name from binancePairsDict
             let name = MainCryptoHelper.getName(for: symbol)?.capitalized ?? coinGeckoId.capitalized
             
-            // Get image URL from CoinGecko API response (correct URL with internal ID)
+            // Get image URL and additional data from CoinGecko API response (correct URL with internal ID)
             let imageURL = imageURLMap[coinGeckoId] ?? ""
+            let coinGeckoData = coinGeckoDataMap[coinGeckoId]
             
             // Create Cryptocurrency object
             let crypto = Cryptocurrency(
@@ -117,7 +120,10 @@ class BinanceCryptoService: CryptoProvider {
                 currentPrice: price,
                 priceChangePercentage24h: priceChange24h,
                 lastUpdated: ticker?.closeTime.map { String($0) },
-                sparklineIn7d: sparklinePrices.map { SparklineIn7d(price: $0) }
+                sparklineIn7d: sparklinePrices.map { SparklineIn7d(price: $0) },
+                marketCapRank: coinGeckoData?.marketCapRank,
+                high24h: coinGeckoData?.high24h,
+                low24h: coinGeckoData?.low24h
             )
             
             cryptocurrencies.append(crypto)
@@ -164,7 +170,10 @@ class BinanceCryptoService: CryptoProvider {
             currentPrice: price,
             priceChangePercentage24h: priceChange24h,
             lastUpdated: ticker.closeTime.map { String($0) },
-            sparklineIn7d: sparklinePrices.map { SparklineIn7d(price: $0) }
+            sparklineIn7d: sparklinePrices.map { SparklineIn7d(price: $0) },
+            marketCapRank: coinGeckoCrypto?.marketCapRank,
+            high24h: coinGeckoCrypto?.high24h,
+            low24h: coinGeckoCrypto?.low24h
         )
     }
     

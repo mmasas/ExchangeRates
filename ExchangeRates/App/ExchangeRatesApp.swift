@@ -65,6 +65,20 @@ struct ExchangeRatesApp: App {
                 // Reschedule background task when app enters background
                 scheduleBackgroundTaskIfAvailable()
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                // Disconnect WebSocket when app goes to background (but keep subscriptions for reconnection)
+                BinanceWebSocketService.shared.disconnect(clearSubscriptions: false)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                // Reconnect WebSocket when app becomes active (only if enabled)
+                let websocketManager = WebSocketManager.shared
+                if websocketManager.isWebSocketEnabled {
+                    let symbols = MainCryptoHelper.getWebSocketSymbols()
+                    if !symbols.isEmpty {
+                        BinanceWebSocketService.shared.connect(symbols: symbols)
+                    }
+                }
+            }
         }
     }
     

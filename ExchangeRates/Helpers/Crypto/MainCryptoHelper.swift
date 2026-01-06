@@ -143,6 +143,43 @@ class MainCryptoHelper {
         return mainCryptos.joined(separator: ",")
     }
     
+    // MARK: - WebSocket Configuration
+    
+    /// Cryptocurrencies that should use WebSocket for real-time updates
+    /// These are typically the most popular/traded cryptocurrencies
+    static let websocketEnabledCryptos: [String] = [
+        "bitcoin",           // BTC
+        "ethereum",          // ETH
+        "binancecoin",       // BNB
+        "ripple",            // XRP
+       // "usd-coin",          // USDC
+        "solana",            // SOL
+        "cardano",           // ADA
+        "dogecoin",          // DOGE
+        "chainlink",         // LINK
+        "litecoin",          // LTC
+        "avalanche-2",       // AVAX
+        "shiba-inu",         // SHIB
+        "the-open-network",  // TON
+        "uniswap",           // UNI
+        "polkadot",          // DOT
+        "pepe",              // PEPE
+        "aave",              // AAVE
+        "near",              // NEAR
+        "internet-computer", // ICP
+        "aptos"              // APT
+    ]
+     
+    /// Check if a crypto should use WebSocket updates
+    static func shouldUseWebSocket(_ id: String) -> Bool {
+        return websocketEnabledCryptos.contains(id)
+    }
+    
+    /// Get Binance symbols for WebSocket-enabled cryptos
+    static func getWebSocketSymbols() -> [String] {
+        return websocketEnabledCryptos.compactMap { coinGeckoToBinanceSymbol[$0] }
+    }
+    
     // MARK: - Binance Pairs
     
     /// Dictionary mapping Binance trading pair symbols to cryptocurrency names

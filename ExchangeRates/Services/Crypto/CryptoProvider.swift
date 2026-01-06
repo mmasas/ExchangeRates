@@ -27,3 +27,5 @@ protocol CryptoProvider {
     func fetchMarketChart(id: String, days: Int) async throws -> [ChartDataPoint]
 }
 
+
+

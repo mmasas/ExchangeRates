@@ -10,6 +10,8 @@ import SwiftUI
 struct CryptoView: View {
     @StateObject private var viewModel = CryptoViewModel()
     @StateObject private var networkMonitor = NetworkMonitor.shared
+    @StateObject private var websocketService = BinanceWebSocketService.shared
+    @ObservedObject private var websocketManager = WebSocketManager.shared
     @State private var isSearchActive = false
     @FocusState private var isSearchFocused: Bool
     
@@ -36,42 +38,46 @@ struct CryptoView: View {
                     List {
                         if viewModel.isLoading && viewModel.cryptocurrencies.isEmpty {
                             // Show skeleton rows when loading and no data exists
-                            ForEach(0..<10, id: \.self) { _ in
-                                CryptoRowSkeleton()
-                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                    .listRowSeparator(.hidden)
-                                    .listRowBackground(Color.clear)
+                            Section {
+                                ForEach(0..<10, id: \.self) { _ in
+                                    CryptoRowSkeleton()
+                                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                        .listRowSeparator(.hidden)
+                                        .listRowBackground(Color.clear)
+                                }
                             }
                         } else {
                             // Show actual cryptocurrency data
-                            ForEach(Array(viewModel.filteredCryptocurrencies.enumerated()), id: \.element.id) { index, crypto in
-                                CryptoRow(
-                                    cryptocurrency: crypto,
-                                    sparklinePrices: crypto.sparklinePrices
-                                )
-                                .environmentObject(viewModel)
-                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                .listRowSeparator(.hidden)
-                                .listRowBackground(Color.clear)
-                                .onAppear {
-                                    // Trigger prefetch when reaching the threshold row (only when not searching)
-                                    if viewModel.searchText.isEmpty && index == prefetchThreshold && viewModel.hasMorePages {
-                                        viewModel.prefetchNextPage()
+                            Section {
+                                ForEach(Array(viewModel.filteredCryptocurrencies.enumerated()), id: \.element.id) { index, crypto in
+                                    CryptoRow(
+                                        cryptocurrency: crypto,
+                                        sparklinePrices: crypto.sparklinePrices
+                                    )
+                                    .environmentObject(viewModel)
+                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
+                                    .onAppear {
+                                        // Trigger prefetch when reaching the threshold row (only when not searching)
+                                        if viewModel.searchText.isEmpty && index == prefetchThreshold && viewModel.hasMorePages {
+                                            viewModel.prefetchNextPage()
+                                        }
                                     }
                                 }
-                            }
-                            
-                            // Show loading indicator at bottom when loading next page
-                            if viewModel.isLoadingNextPage {
-                                HStack {
-                                    Spacer()
-                                    ProgressView()
-                                        .padding(.vertical, 16)
-                                    Spacer()
+                                
+                                // Show loading indicator at bottom when loading next page
+                                if viewModel.isLoadingNextPage {
+                                    HStack {
+                                        Spacer()
+                                        ProgressView()
+                                            .padding(.vertical, 16)
+                                        Spacer()
+                                    }
+                                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
                                 }
-                                .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                                .listRowSeparator(.hidden)
-                                .listRowBackground(Color.clear)
                             }
                         }
                     }
@@ -94,36 +100,47 @@ struct CryptoView: View {
                     }
                     
                     // Header content
-                    HStack {
-                        // Search button (leading side)
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                isSearchActive.toggle()
-                                if isSearchActive {
-                                    isSearchFocused = true
-                                } else {
-                                    viewModel.searchText = ""
-                                    isSearchFocused = false
+                    VStack(spacing: 8) {
+                        HStack {
+                            // Search button (leading side)
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.25)) {
+                                    isSearchActive.toggle()
+                                    if isSearchActive {
+                                        isSearchFocused = true
+                                    } else {
+                                        viewModel.searchText = ""
+                                        isSearchFocused = false
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: isSearchActive ? "xmark" : "magnifyingglass")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 20))
                             }
-                        } label: {
-                            Image(systemName: isSearchActive ? "xmark" : "magnifyingglass")
-                                .foregroundColor(.primary)
-                                .font(.system(size: 20))
-                        }
-                        .frame(width: 44, height: 44)
-                        
-                        Spacer()
-                        
-                        Text(String(localized: "crypto_title"))
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.primary)
-                        
-                        Spacer()
-                        
-                        // Empty spacer to balance the header
-                        Color.clear
                             .frame(width: 44, height: 44)
+                            
+                            Spacer()
+                            
+                            Text(String(localized: "crypto_title"))
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.primary)
+                            
+                            Spacer()
+                            
+                            // WebSocket status indicator (only shown when Live only filter is active)
+                            if !isSearchActive && viewModel.showLiveOnly {
+                                WebSocketStatusView(
+                                    isConnected: websocketService.isConnected,
+                                    enabledCryptosCount: MainCryptoHelper.websocketEnabledCryptos.count,
+                                    isWebSocketEnabled: websocketManager.isWebSocketEnabled
+                                )
+                            } else {
+                                // Empty spacer to balance the header when indicator is not shown
+                                Color.clear
+                                    .frame(width: 44, height: 44)
+                            }
+                        }
                     }
                     .padding(.top, 8)
                     .padding(.bottom, isSearchActive ? 8 : 12)
@@ -155,6 +172,26 @@ struct CryptoView: View {
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
                         .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
+                    
+                    // Filter toggle bar (fixed below header, only when search is not active)
+                    if !isSearchActive {
+                        VStack(spacing: 0) {
+                            Divider()
+                            
+                            HStack {
+                                Picker("", selection: $viewModel.showLiveOnly) {
+                                    Text(String(localized: "All", defaultValue: "All"))
+                                        .tag(false)
+                                    Text(String(localized: "live_only", defaultValue: "Live only"))
+                                        .tag(true)
+                                }
+                                .pickerStyle(.segmented)
+                                .padding(.vertical, 8)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 8)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity)
