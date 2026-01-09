@@ -139,6 +139,16 @@
     "0.0000" : {
 
     },
+    "1 %@ = %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "1 %1$@ = %2$@ %3$@"
+          }
+        }
+      }
+    },
     "1_day_chart" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1128,6 +1138,23 @@
     "Clear" : {
 
     },
+    "close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "סגור"
+          }
+        }
+      }
+    },
     "Color Scheme" : {
 
     },
@@ -1675,6 +1702,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通貨コンバーター"
+          }
+        }
+      }
+    },
+    "currency_converter_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Currency Converter"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "המרת מטבעות"
           }
         }
       }
@@ -3782,6 +3826,23 @@
         }
       }
     },
+    "search_currency" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search currency..."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "חיפוש מטבע..."
+          }
+        }
+      }
+    },
     "select_crypto" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3994,6 +4055,23 @@
     },
     "Simulate Offline Mode" : {
 
+    },
+    "source_currency" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מ-"
+          }
+        }
+      }
     },
     "spanish" : {
       "extractionState" : "manual",

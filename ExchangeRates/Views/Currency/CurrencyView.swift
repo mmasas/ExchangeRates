@@ -14,6 +14,7 @@ struct CurrencyView: View {
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
+    @State private var showConverter = false
     
     private let cacheManager = DataCacheManager.shared
     
@@ -77,9 +78,15 @@ struct CurrencyView: View {
                     
                     // Header content
                     HStack {
-                        // Empty spacer to balance the header (matching CryptoView structure)
-                        Color.clear
-                            .frame(width: 44, height: 44)
+                        // Converter button
+                        Button {
+                            showConverter = true
+                        } label: {
+                            Image(systemName: "arrow.left.arrow.right")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 20))
+                        }
+                        .frame(width: 44, height: 44)
                         
                         Spacer()
                         
@@ -111,6 +118,10 @@ struct CurrencyView: View {
                 default:
                     EmptyView()
                 }
+            }
+            .sheet(isPresented: $showConverter) {
+                StandaloneConverterView(exchangeRates: viewModel.allExchangeRates)
+                    .presentationDragIndicator(.visible)
             }
         }
     }
