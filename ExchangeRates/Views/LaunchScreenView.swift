@@ -25,8 +25,8 @@ struct LaunchScreenView: View {
             
             // Currency symbols orbiting around center
             ForEach(0..<symbolCount, id: \.self) { index in
-                let radius: CGFloat = index == 0 ? 160 : 130 // Shekel symbol needs more distance
-                let angleOffset: Double = index == 0 ? -0.3 : 0 // Shekel symbol shifted upward
+                let radius: CGFloat = (index == 0 || index == 3) ? 160 : 130 // Shekel and Pound symbols need more distance
+                let angleOffset: Double = index == 0 ? -0.3 : (index == 3 ? 0.4 : 0) // Shift symbols upward (opposite offsets for opposite sides)
                 let baseAngle = Double(index) * 2 * .pi / Double(symbolCount)
                 let angle = rotationAngle + baseAngle + angleOffset
                 let xOffset = cos(angle) * radius
