@@ -9,15 +9,22 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum CryptoFilterMode: Int, CaseIterable {
+    case all = 0
+    case liveOnly = 1
+    case favorites = 2
+}
+
 class CryptoViewModel: ObservableObject {
     @Published var cryptocurrencies: [Cryptocurrency] = []
     @Published var isLoading: Bool = false
     @Published var isLoadingNextPage: Bool = false
     @Published var errorMessage: String?
     @Published var searchText: String = ""
-    @Published var showLiveOnly: Bool = false
+    @Published var filterMode: CryptoFilterMode = .all
     @Published var isOffline: Bool = false
     @Published var lastUpdateDate: Date?
+    @Published var favoriteCryptoIds: Set<String> = []
     
     // Chart-specific state
     @Published var chartData: [ChartDataPoint] = []
@@ -34,14 +41,22 @@ class CryptoViewModel: ObservableObject {
         return currentPage < totalPages
     }
     
-    /// Filtered cryptocurrencies based on search text and live filter
+    /// Filtered cryptocurrencies based on search text and filter mode
     var filteredCryptocurrencies: [Cryptocurrency] {
         var filtered = cryptocurrencies
         
-        // Apply live filter if enabled
-        if showLiveOnly {
+        // Apply filter mode
+        switch filterMode {
+        case .all:
+            // Show all cryptocurrencies
+            break
+        case .liveOnly:
             filtered = filtered.filter { crypto in
                 MainCryptoHelper.shouldUseWebSocket(crypto.id) || customCryptoManager.isCustomCrypto(crypto.id)
+            }
+        case .favorites:
+            filtered = filtered.filter { crypto in
+                favoriteCryptoIds.contains(crypto.id)
             }
         }
         
@@ -56,6 +71,11 @@ class CryptoViewModel: ObservableObject {
         return filtered
     }
     
+    /// Favorite cryptocurrencies
+    var favoriteCryptocurrencies: [Cryptocurrency] {
+        return cryptocurrencies.filter { favoriteCryptoIds.contains($0.id) }
+    }
+    
     private var currentTask: Task<Void, Never>?
     private var prefetchTask: Task<Void, Never>?
     private var chartTask: Task<Void, Never>?
@@ -64,6 +84,7 @@ class CryptoViewModel: ObservableObject {
     private let webSocketService = BinanceWebSocketService.shared
     private let websocketManager = WebSocketManager.shared
     private let customCryptoManager = CustomCryptoManager.shared
+    private let favoriteCryptoManager = FavoriteCryptoManager.shared
     
     // Cache for chart data: [cryptoId: [timeRange: chartData]]
     private var chartDataCache: [String: [ChartTimeRange: [ChartDataPoint]]] = [:]
@@ -74,8 +95,12 @@ class CryptoViewModel: ObservableObject {
     // Combine cancellables
     private var websocketCancellable: AnyCancellable?
     private var websocketPreferenceCancellable: AnyCancellable?
+    private var favoritesCancellable: AnyCancellable?
     
     init() {
+        // Load favorites
+        favoriteCryptoIds = Set(favoriteCryptoManager.getFavorites())
+        
         // Load from cache first if available (on main actor)
         Task { @MainActor [weak self] in
             guard let self = self else { return }
@@ -97,6 +122,15 @@ class CryptoViewModel: ObservableObject {
         .receive(on: DispatchQueue.main)
         .sink { [weak self] _ in
             self?.handleWebSocketPreferenceChange()
+        }
+        
+        // Subscribe to favorites changes
+        favoritesCancellable = NotificationCenter.default.publisher(
+            for: FavoriteCryptoManager.favoritesDidChangeNotification
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] _ in
+            self?.handleFavoritesChanged()
         }
         
         // Subscribe to custom crypto changes
@@ -121,6 +155,7 @@ class CryptoViewModel: ObservableObject {
     deinit {
         websocketCancellable?.cancel()
         websocketPreferenceCancellable?.cancel()
+        favoritesCancellable?.cancel()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -510,5 +545,14 @@ class CryptoViewModel: ObservableObject {
     /// Get previous price for a crypto (for animation)
     func getPreviousPrice(for cryptoId: String) -> Double? {
         return previousPrices[cryptoId]
+    }
+    
+    // MARK: - Favorites Management
+    
+    /// Handle favorites changed notification
+    @MainActor
+    private func handleFavoritesChanged() {
+        favoriteCryptoIds = Set(favoriteCryptoManager.getFavorites())
+        LogManager.shared.log("Favorites updated: \(favoriteCryptoIds.count) favorites", level: .info, source: "CryptoViewModel")
     }
 }

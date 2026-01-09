@@ -15,6 +15,11 @@ struct SettingsView: View {
         _viewModel = StateObject(wrappedValue: SettingsViewModel(existingCurrencyCodes: existingCurrencyCodes))
     }
     
+    private var appVersion: String {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+        return "\(version) (\(build))"
+    }
     
     var body: some View {
         List {
@@ -197,6 +202,17 @@ struct SettingsView: View {
                     .onDelete(perform: viewModel.removeCrypto)
                 } header: {
                     Text(String(localized: "custom_cryptos", defaultValue: "Custom Cryptocurrencies"))
+                }
+            }
+            
+            // MARK: - App Version
+            Section {
+                HStack {
+                    Text(String(localized: "version", defaultValue: "Version"))
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text(appVersion)
+                        .foregroundColor(.secondary)
                 }
             }
         }

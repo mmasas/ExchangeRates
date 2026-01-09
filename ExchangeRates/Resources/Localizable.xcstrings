@@ -563,6 +563,23 @@
         }
       }
     },
+    "add_to_favorites" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add to Favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הוסף למועדפים"
+          }
+        }
+      }
+    },
     "additional_settings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2334,6 +2351,40 @@
         }
       }
     },
+    "favorites_tab" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מועדפים"
+          }
+        }
+      }
+    },
+    "favorites_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "מועדפים"
+          }
+        }
+      }
+    },
     "Filter" : {
 
     },
@@ -3147,6 +3198,40 @@
         }
       }
     },
+    "no_favorites_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe left on a cryptocurrency to add to favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "החלק שמאלה על מטבע קריפטו כדי להוסיף למועדפים"
+          }
+        }
+      }
+    },
+    "no_favorites_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "אין מועדפים"
+          }
+        }
+      }
+    },
     "not_available" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3536,6 +3621,23 @@
     },
     "Refresh" : {
 
+    },
+    "remove_from_favorites" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove from Favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הסר ממועדפים"
+          }
+        }
+      }
     },
     "reset" : {
       "extractionState" : "manual",
@@ -4190,6 +4292,17 @@
     },
     "User Preferences" : {
 
+    },
+    "version" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version"
+          }
+        }
+      }
     },
     "View Logs" : {
 

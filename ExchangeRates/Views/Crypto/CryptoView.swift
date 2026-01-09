@@ -14,6 +14,7 @@ struct CryptoView: View {
     @ObservedObject private var websocketManager = WebSocketManager.shared
     @State private var isSearchActive = false
     @FocusState private var isSearchFocused: Bool
+    @Environment(\.layoutDirection) private var layoutDirection
     
     private let cacheManager = DataCacheManager.shared
     
@@ -46,6 +47,30 @@ struct CryptoView: View {
                                         .listRowBackground(Color.clear)
                                 }
                             }
+                        } else if viewModel.filterMode == .favorites && viewModel.filteredCryptocurrencies.isEmpty {
+                            // Show empty state when in favorites mode with no favorites
+                            Section {
+                                VStack(spacing: 20) {
+                                    Image(systemName: "star.slash")
+                                        .font(.system(size: 60))
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text(String(localized: "no_favorites_title"))
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
+                                    
+                                    Text(String(localized: "no_favorites_message"))
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 40)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 60)
+                                .listRowInsets(EdgeInsets())
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
                         } else {
                             // Show actual cryptocurrency data
                             Section {
@@ -58,6 +83,19 @@ struct CryptoView: View {
                                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
+                                    .swipeActions(edge: layoutDirection == .rightToLeft ? .leading : .trailing) {
+                                        Button {
+                                            FavoriteCryptoManager.shared.toggleFavorite(crypto.id)
+                                        } label: {
+                                            Label(
+                                                viewModel.favoriteCryptoIds.contains(crypto.id) 
+                                                    ? String(localized: "remove_from_favorites")
+                                                    : String(localized: "add_to_favorites"),
+                                                systemImage: "star.fill"
+                                            )
+                                        }
+                                        .tint(viewModel.favoriteCryptoIds.contains(crypto.id) ? .orange : .yellow)
+                                    }
                                     .onAppear {
                                         // Trigger prefetch when reaching the threshold row (only when not searching)
                                         if viewModel.searchText.isEmpty && index == prefetchThreshold && viewModel.hasMorePages {
@@ -129,7 +167,7 @@ struct CryptoView: View {
                             Spacer()
                             
                             // WebSocket status indicator (only shown when Live only filter is active)
-                            if !isSearchActive && viewModel.showLiveOnly {
+                            if !isSearchActive && viewModel.filterMode == .liveOnly {
                                 WebSocketStatusView(
                                     isConnected: websocketService.isConnected,
                                     enabledCryptosCount: MainCryptoHelper.websocketEnabledCryptos.count,
@@ -180,11 +218,13 @@ struct CryptoView: View {
                             Divider()
                             
                             HStack {
-                                Picker("", selection: $viewModel.showLiveOnly) {
+                                Picker("", selection: $viewModel.filterMode) {
                                     Text(String(localized: "All", defaultValue: "All"))
-                                        .tag(false)
+                                        .tag(CryptoFilterMode.all)
                                     Text(String(localized: "live_only", defaultValue: "Live only"))
-                                        .tag(true)
+                                        .tag(CryptoFilterMode.liveOnly)
+                                    Text(String(localized: "favorites_tab", defaultValue: "Favorites"))
+                                        .tag(CryptoFilterMode.favorites)
                                 }
                                 .pickerStyle(.segmented)
                                 .padding(.vertical, 8)

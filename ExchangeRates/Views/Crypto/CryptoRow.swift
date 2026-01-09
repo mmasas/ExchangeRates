@@ -27,38 +27,53 @@ struct CryptoRow: View {
     
     var body: some View {
         HStack(spacing: 10) {
-            // 1. Crypto logo (RIGHT in RTL)
-            AsyncImage(url: URL(string: cryptocurrency.image)) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                        .frame(width: 40, height: 40)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 40, height: 40)
-                        .clipShape(Circle())
-                case .failure:
-                    // Empty placeholder - just show a gray circle
-                    Circle()
-                        .fill(Color(.systemGray5))
-                        .frame(width: 40, height: 40)
-                @unknown default:
-                    EmptyView()
+            // 1. Crypto logo (RIGHT in RTL) with favorite indicator
+            ZStack(alignment: .topTrailing) {
+                AsyncImage(url: URL(string: cryptocurrency.image)) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(width: 40, height: 40)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
+                            .clipShape(Circle())
+                    case .failure:
+                        // Empty placeholder - just show a gray circle
+                        Circle()
+                            .fill(Color(.systemGray5))
+                            .frame(width: 40, height: 40)
+                    @unknown default:
+                        EmptyView()
+                    }
                 }
-            }
-            .id("\(cryptocurrency.id)-\(cryptocurrency.image)-\(currentProvider.rawValue)") // Force reload when switching providers
-            .onReceive(NotificationCenter.default.publisher(for: CryptoProviderManager.providerChangedNotification)) { _ in
-                currentProvider = CryptoProviderManager.shared.getProvider()
-            }
-            .onAppear {
-                // Check if this crypto uses WebSocket and if WebSocket is enabled
-                isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && websocketManager.isWebSocketEnabled
-            }
-            .onChange(of: websocketManager.isWebSocketEnabled) { _, newValue in
-                // Update WebSocket enabled state when preference changes
-                isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && newValue
+                .id("\(cryptocurrency.id)-\(cryptocurrency.image)-\(currentProvider.rawValue)") // Force reload when switching providers
+                .onReceive(NotificationCenter.default.publisher(for: CryptoProviderManager.providerChangedNotification)) { _ in
+                    currentProvider = CryptoProviderManager.shared.getProvider()
+                }
+                .onAppear {
+                    // Check if this crypto uses WebSocket and if WebSocket is enabled
+                    isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && websocketManager.isWebSocketEnabled
+                }
+                .onChange(of: websocketManager.isWebSocketEnabled) { _, newValue in
+                    // Update WebSocket enabled state when preference changes
+                    isWebSocketEnabled = MainCryptoHelper.shouldUseWebSocket(cryptocurrency.id) && newValue
+                }
+                
+                // Favorite star badge
+                if viewModel.favoriteCryptoIds.contains(cryptocurrency.id) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 12))
+                        .foregroundColor(.yellow)
+                        .background(
+                            Circle()
+                                .fill(Color(.systemBackground))
+                                .frame(width: 16, height: 16)
+                        )
+                        .offset(x: 2, y: -2)
+                }
             }
             
             // 2. Name and symbol (truncate if too long)
