@@ -39,10 +39,13 @@ struct StandaloneConverterView: View {
                     VStack(spacing: 16) {
                         // Source Currency Field
                         VStack(alignment: .leading, spacing: 8) {
-                            Text(String(localized: "source_currency", defaultValue: "From"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(.secondary)
-                                .textCase(.uppercase)
+                            HStack {
+                                Text("\(String(localized: "source_currency", defaultValue: "From")) - \(CurrencyFlagHelper.currencyName(for: viewModel.sourceCurrency))")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                            }
+                            .frame(maxWidth: .infinity)
                             
                             HStack(spacing: 12) {
                                 // Currency selector button
@@ -117,10 +120,13 @@ struct StandaloneConverterView: View {
                         
                         // Target Currency Field
                         VStack(alignment: .leading, spacing: 8) {
-                            Text(String(localized: "target_currency", defaultValue: "To"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(.secondary)
-                                .textCase(.uppercase)
+                            HStack {
+                                Text("\(String(localized: "target_currency", defaultValue: "To")) - \(CurrencyFlagHelper.currencyName(for: viewModel.targetCurrency))")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(.secondary)
+                                Spacer()
+                            }
+                            .frame(maxWidth: .infinity)
                             
                             HStack(spacing: 12) {
                                 // Currency selector button

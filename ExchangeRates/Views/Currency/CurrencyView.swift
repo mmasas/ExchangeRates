@@ -15,6 +15,7 @@ struct CurrencyView: View {
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
     @State private var showConverter = false
+    @Environment(\.layoutDirection) private var layoutDirection
     
     private let cacheManager = DataCacheManager.shared
     
@@ -42,20 +43,57 @@ struct CurrencyView: View {
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
                             }
+                        } else if viewModel.filterMode == .favorites && viewModel.filteredExchangeRates.isEmpty {
+                            // Show empty state when in favorites mode with no favorites
+                            Section {
+                                VStack(spacing: 20) {
+                                    Image(systemName: "star.slash")
+                                        .font(.system(size: 60))
+                                        .foregroundColor(.secondary)
+                                    
+                                    Text(String(localized: "no_favorites_title"))
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
+                                    
+                                    Text(String(localized: "no_currency_favorites_message"))
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 40)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 60)
+                                .listRowInsets(EdgeInsets())
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                            }
                         } else {
                             // Show actual data (merged main API + custom currencies) with drag-and-drop
-                            ForEach(viewModel.allExchangeRates) { rate in
+                            ForEach(viewModel.filteredExchangeRates) { rate in
                                 ExchangeRateRow(exchangeRate: rate)
                                     .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
                                     .listRowSeparator(.hidden)
                                     .listRowBackground(Color.clear)
+                                    .swipeActions(edge: layoutDirection == .rightToLeft ? .leading : .trailing) {
+                                        Button {
+                                            FavoriteCurrencyManager.shared.toggleFavorite(rate.key)
+                                        } label: {
+                                            Label(
+                                                viewModel.favoriteCurrencyIds.contains(rate.key)
+                                                    ? String(localized: "remove_from_favorites")
+                                                    : String(localized: "add_to_favorites"),
+                                                systemImage: "star.fill"
+                                            )
+                                        }
+                                        .tint(viewModel.favoriteCurrencyIds.contains(rate.key) ? .orange : .yellow)
+                                    }
                             }
-                            .onMove(perform: { source, destination in
+                            .onMove(perform: viewModel.filterMode == .all ? { source, destination in
                                 // Haptic feedback when move completes
                                 let generator = UIImpactFeedbackGenerator(style: .light)
                                 generator.impactOccurred()
                                 viewModel.updateCurrencyOrder(from: source, to: destination)
-                            })
+                            } : nil)
                         }
                     }
                     .listStyle(.plain)
@@ -106,6 +144,24 @@ struct CurrencyView: View {
                     .padding(.top, 8)
                     .padding(.bottom, 12)
                     .padding(.horizontal, 16)
+                    
+                    // Filter toggle bar
+                    VStack(spacing: 0) {
+                        Divider()
+                        
+                        HStack {
+                            Picker("", selection: $viewModel.filterMode) {
+                                Text(String(localized: "All", defaultValue: "All"))
+                                    .tag(CurrencyFilterMode.all)
+                                Text(String(localized: "favorites_tab", defaultValue: "Favorites"))
+                                    .tag(CurrencyFilterMode.favorites)
+                            }
+                            .pickerStyle(.segmented)
+                            .padding(.vertical, 8)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 8)
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)

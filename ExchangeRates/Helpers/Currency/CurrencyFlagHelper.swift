@@ -146,5 +146,16 @@ struct CurrencyFlagHelper {
         // Fallback to currency code if symbol not found
         return currencyCode
     }
+    
+    /// Get the localized currency name for a currency code
+    /// Returns the currency name (e.g., "US Dollar", "Euro", "Israeli New Shekel")
+    static func currencyName(for currencyCode: String) -> String {
+        let locale = LanguageManager.shared.currentLocale
+        if let name = locale.localizedString(forCurrencyCode: currencyCode) {
+            return name
+        }
+        // Fallback to currency code if name not found
+        return currencyCode
+    }
 }
 

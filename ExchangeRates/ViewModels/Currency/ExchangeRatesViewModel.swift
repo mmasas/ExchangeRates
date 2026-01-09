@@ -10,6 +10,11 @@ import SwiftUI
 import Combine
 import UserNotifications
 
+enum CurrencyFilterMode: Int, CaseIterable {
+    case all = 0
+    case favorites = 1
+}
+
 class ExchangeRatesViewModel: ObservableObject {
     @Published var exchangeRates: [ExchangeRate] = []
     @Published var customExchangeRates: [ExchangeRate] = []
@@ -18,6 +23,8 @@ class ExchangeRatesViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isOffline: Bool = false
     @Published var lastUpdateDate: Date?
+    @Published var filterMode: CurrencyFilterMode = .all
+    @Published var favoriteCurrencyIds: Set<String> = []
     
     private var currentTask: Task<Void, Never>?
     private var customTask: Task<Void, Never>?
@@ -25,6 +32,10 @@ class ExchangeRatesViewModel: ObservableObject {
     private let homeCurrencyManager = HomeCurrencyManager.shared
     private let networkMonitor = NetworkMonitor.shared
     private let cacheManager = DataCacheManager.shared
+    private let favoriteCurrencyManager = FavoriteCurrencyManager.shared
+    
+    // Combine cancellable for favorites
+    private var favoritesCancellable: AnyCancellable?
     
     // Track if initial loads have completed (to avoid syncing with partial data)
     private var mainCurrenciesLoaded = false
@@ -43,7 +54,20 @@ class ExchangeRatesViewModel: ObservableObject {
         return sortedCodes.compactMap { rateMap[$0] }
     }
     
+    /// Filtered exchange rates based on filter mode
+    var filteredExchangeRates: [ExchangeRate] {
+        switch filterMode {
+        case .all:
+            return allExchangeRates
+        case .favorites:
+            return allExchangeRates.filter { favoriteCurrencyIds.contains($0.key) }
+        }
+    }
+    
     init() {
+        // Load favorites
+        favoriteCurrencyIds = Set(favoriteCurrencyManager.getFavorites())
+        
         // Load from cache first if available
         loadFromCache()
         
@@ -62,6 +86,15 @@ class ExchangeRatesViewModel: ObservableObject {
             Task { @MainActor [weak self] in
                 self?.updateOfflineStatus()
             }
+        }
+        
+        // Subscribe to favorites changes
+        favoritesCancellable = NotificationCenter.default.publisher(
+            for: FavoriteCurrencyManager.favoritesDidChangeNotification
+        )
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] _ in
+            self?.handleFavoritesChanged()
         }
         
         loadExchangeRates()
@@ -418,6 +451,19 @@ class ExchangeRatesViewModel: ObservableObject {
                 LogManager.shared.log("Failed to check alerts: \(error.localizedDescription)", level: .warning, source: "ExchangeRatesViewModel")
             }
         }
+    }
+    
+    // MARK: - Favorites Management
+    
+    /// Handle favorites changed notification
+    @MainActor
+    private func handleFavoritesChanged() {
+        favoriteCurrencyIds = Set(favoriteCurrencyManager.getFavorites())
+        LogManager.shared.log("Currency favorites updated: \(favoriteCurrencyIds.count) favorites", level: .info, source: "ExchangeRatesViewModel")
+    }
+    
+    deinit {
+        favoritesCancellable?.cancel()
     }
 }
 

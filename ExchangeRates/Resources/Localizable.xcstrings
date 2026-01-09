@@ -3242,6 +3242,23 @@
         }
       }
     },
+    "no_currency_favorites_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe left on a currency to add to favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "החלק שמאלה על מטבע כדי להוסיף למועדפים"
+          }
+        }
+      }
+    },
     "no_favorites_message" : {
       "extractionState" : "manual",
       "localizations" : {

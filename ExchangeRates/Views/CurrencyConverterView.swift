@@ -53,10 +53,18 @@ struct CurrencyConverterView: View {
                 VStack(spacing: 16) {
                             // Home Currency Input Field
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("\(viewModel.homeCurrencyCode)")
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(.secondary)
-                                    .textCase(.uppercase)
+                                HStack {
+                                    Text("\(viewModel.homeCurrencyCode)")
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                        .textCase(.uppercase)
+                                    
+                                    Spacer()
+                                    
+                                    Text(CurrencyFlagHelper.currencyName(for: viewModel.homeCurrencyCode))
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                }
                                 
                                 HStack(spacing: 12) {
                                     Text(homeCurrencySymbol)
@@ -96,10 +104,18 @@ struct CurrencyConverterView: View {
                             
                             // Foreign Currency Input Field
                             VStack(alignment: .leading, spacing: 8) {
-                                Text(viewModel.exchangeRate.key)
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(.secondary)
-                                    .textCase(.uppercase)
+                                HStack {
+                                    Text(viewModel.exchangeRate.key)
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                        .textCase(.uppercase)
+                                    
+                                    Spacer()
+                                    
+                                    Text(CurrencyFlagHelper.currencyName(for: viewModel.exchangeRate.key))
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(.secondary)
+                                }
                                 
                                 HStack(spacing: 12) {
                                     CurrencyFlagHelper.flagImage(for: viewModel.exchangeRate.key)
