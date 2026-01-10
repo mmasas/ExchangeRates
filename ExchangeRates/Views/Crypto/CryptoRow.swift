@@ -33,18 +33,18 @@ struct CryptoRow: View {
                     switch phase {
                     case .empty:
                         ProgressView()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 42, height: 42)
                     case .success(let image):
                         image
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 42, height: 42)
                             .clipShape(Circle())
                     case .failure:
                         // Empty placeholder - just show a gray circle
                         Circle()
                             .fill(Color(.systemGray5))
-                            .frame(width: 40, height: 40)
+                            .frame(width: 42, height: 42)
                     @unknown default:
                         EmptyView()
                     }

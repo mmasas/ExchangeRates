@@ -106,6 +106,18 @@ struct CurrencyFlagHelper {
         }
     }
     
+    /// Returns a circular flag view with consistent styling
+    /// Use this for a uniform, modern look across the app
+    @ViewBuilder
+    static func circularFlag(for currencyCode: String, size: CGFloat = 36) -> some View {
+        flagImage(for: currencyCode)
+            .resizable()
+            .scaledToFill()
+            .frame(width: size, height: size)
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color.gray.opacity(0.2), lineWidth: 0.5))
+    }
+    
     // Get country name from currency code
     static func countryName(for currencyCode: String) -> String {
         // Check special mappings first

@@ -30,10 +30,7 @@ struct CurrencyConverterView: View {
                 // Flag and currency info at the top
                 VStack(spacing: 16) {
                     // Flag
-                    CurrencyFlagHelper.flagImage(for: viewModel.exchangeRate.key)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
+                    CurrencyFlagHelper.circularFlag(for: viewModel.exchangeRate.key, size: 80)
                     
                     // Currency pair and rate
                     VStack(spacing: 8) {
@@ -118,11 +115,7 @@ struct CurrencyConverterView: View {
                                 }
                                 
                                 HStack(spacing: 12) {
-                                    CurrencyFlagHelper.flagImage(for: viewModel.exchangeRate.key)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 28, height: 28)
-                                        .clipShape(Circle())
+                                    CurrencyFlagHelper.circularFlag(for: viewModel.exchangeRate.key, size: 28)
                                     
                                     TextField("0", text: Binding(
                                         get: { viewModel.foreignAmount },

@@ -54,11 +54,7 @@ struct StandaloneConverterView: View {
                                     showSourcePicker = true
                                 } label: {
                                     HStack(spacing: 8) {
-                                        CurrencyFlagHelper.flagImage(for: viewModel.sourceCurrency)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 28, height: 28)
-                                            .clipShape(Circle())
+                                        CurrencyFlagHelper.circularFlag(for: viewModel.sourceCurrency, size: 28)
                                         
                                         Text(viewModel.sourceCurrency)
                                             .font(.system(size: 16, weight: .semibold))
@@ -135,11 +131,7 @@ struct StandaloneConverterView: View {
                                     showTargetPicker = true
                                 } label: {
                                     HStack(spacing: 8) {
-                                        CurrencyFlagHelper.flagImage(for: viewModel.targetCurrency)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 28, height: 28)
-                                            .clipShape(Circle())
+                                        CurrencyFlagHelper.circularFlag(for: viewModel.targetCurrency, size: 28)
                                         
                                         Text(viewModel.targetCurrency)
                                             .font(.system(size: 16, weight: .semibold))

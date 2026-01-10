@@ -44,11 +44,7 @@ struct CurrencyPickerSheet: View {
                     } label: {
                         HStack(spacing: 12) {
                             // Flag
-                            CurrencyFlagHelper.flagImage(for: currency)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 32, height: 32)
-                                .clipShape(Circle())
+                            CurrencyFlagHelper.circularFlag(for: currency, size: 32)
                             
                             // Currency info
                             VStack(alignment: .leading, spacing: 2) {

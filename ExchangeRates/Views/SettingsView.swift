@@ -105,10 +105,7 @@ struct SettingsView: View {
                 Section {
                     ForEach(viewModel.customCurrencies, id: \.self) { code in
                         HStack {
-                            CurrencyFlagHelper.flagImage(for: code)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
+                            CurrencyFlagHelper.circularFlag(for: code, size: 28)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(code)
                                     .font(.system(size: 16, weight: .medium))
