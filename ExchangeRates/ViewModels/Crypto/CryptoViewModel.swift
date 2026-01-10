@@ -225,6 +225,9 @@ class CryptoViewModel: ObservableObject {
                 connectWebSocketForLiveTracking()
             }
             
+            // Sync data to widget
+            syncToWidget()
+            
             LogManager.shared.log("Loaded \(cryptocurrencies.count) cryptocurrencies (page 1 + custom) with sparklines", level: .success, source: "CryptoViewModel")
         } catch {
             // Don't show error if task was cancelled
@@ -554,5 +557,16 @@ class CryptoViewModel: ObservableObject {
     private func handleFavoritesChanged() {
         favoriteCryptoIds = Set(favoriteCryptoManager.getFavorites())
         LogManager.shared.log("Favorites updated: \(favoriteCryptoIds.count) favorites", level: .info, source: "CryptoViewModel")
+        
+        // Sync to widget when favorites change
+        syncToWidget()
+    }
+    
+    // MARK: - Widget Sync
+    
+    /// Sync cryptocurrency data to widget via App Group
+    @MainActor
+    private func syncToWidget() {
+        WidgetDataSyncService.shared.syncCryptoData(cryptocurrencies)
     }
 }

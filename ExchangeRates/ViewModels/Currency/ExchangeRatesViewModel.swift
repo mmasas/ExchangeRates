@@ -254,6 +254,9 @@ class ExchangeRatesViewModel: ObservableObject {
         // Sync order only after BOTH main and custom currencies are loaded
         syncOrderIfReady()
         
+        // Sync data to widget
+        syncToWidgetIfReady()
+        
         // Check alerts after rates are loaded
         checkAlertsIfReady()
     }
@@ -325,6 +328,9 @@ class ExchangeRatesViewModel: ObservableObject {
         
         // Sync order only after BOTH main and custom currencies are loaded
         syncOrderIfReady()
+        
+        // Sync data to widget
+        syncToWidgetIfReady()
         
         // Check alerts after rates are loaded
         checkAlertsIfReady()
@@ -460,6 +466,26 @@ class ExchangeRatesViewModel: ObservableObject {
     private func handleFavoritesChanged() {
         favoriteCurrencyIds = Set(favoriteCurrencyManager.getFavorites())
         LogManager.shared.log("Currency favorites updated: \(favoriteCurrencyIds.count) favorites", level: .info, source: "ExchangeRatesViewModel")
+        
+        // Sync to widget when favorites change
+        syncToWidgetIfReady()
+    }
+    
+    // MARK: - Widget Sync
+    
+    /// Sync currency data to widget via App Group
+    /// Only syncs when both main and custom currencies are loaded
+    private func syncToWidgetIfReady() {
+        guard mainCurrenciesLoaded && customCurrenciesLoaded else {
+            return
+        }
+        
+        let allRates = exchangeRates + customExchangeRates
+        guard !allRates.isEmpty else { return }
+        
+        Task {
+            await WidgetDataSyncService.shared.syncCurrencyData(allRates)
+        }
     }
     
     deinit {

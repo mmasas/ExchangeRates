@@ -5,6 +5,9 @@
 //  Created by Moshe Masas on 27/12/2025.
 //
 
+// This file is only for the main app, not for app extensions
+#if !WIDGET_EXTENSION
+
 import Foundation
 import BackgroundTasks
 import UserNotifications
@@ -38,6 +41,7 @@ class BackgroundTaskManager {
     private let alertChecker = AlertCheckerService.shared
     private let notificationService = NotificationService.shared
     private let alertManager = CurrencyAlertManager.shared
+    private let widgetSyncService = WidgetDataSyncService.shared
     
     /// Minimum interval between background refreshes (15 minutes is iOS minimum)
     private let minimumRefreshInterval: TimeInterval = 15 * 60
@@ -169,6 +173,7 @@ class BackgroundTaskManager {
         // Create a task to perform the work
         let checkTask = Task {
             do {
+                // 1. Check alerts (existing functionality)
                 let triggeredAlerts = try await alertChecker.checkAlerts()
                 
                 // Send notifications for triggered alerts
@@ -204,6 +209,9 @@ class BackgroundTaskManager {
                 await MainActor.run {
                     updateBadgeCount()
                 }
+                
+                // 2. Sync widget data (new functionality - battery efficient)
+                await self.syncWidgetDataInBackground()
                 
                 return triggeredAlerts.count
             } catch {
@@ -244,4 +252,101 @@ class BackgroundTaskManager {
         // Notify MainTabView to update badge
         NotificationCenter.default.post(name: NSNotification.Name("AlertsUpdated"), object: nil)
     }
+    
+    // MARK: - Widget Sync
+    
+    /// Syncs widget data in background - fetches fresh prices and updates widget
+    /// This is battery efficient because it runs as part of the existing background task
+    private func syncWidgetDataInBackground() async {
+        LogManager.shared.log("Starting widget data sync in background", level: .debug, source: "BackgroundTaskManager")
+        
+        do {
+            // Fetch favorite crypto IDs
+            let favoriteCryptoIds = FavoriteCryptoManager.shared.getFavorites()
+            let favoriteCurrencyIds = FavoriteCurrencyManager.shared.getFavorites()
+            
+            // Only fetch if there are favorites
+            if favoriteCryptoIds.isEmpty && favoriteCurrencyIds.isEmpty {
+                LogManager.shared.log("No favorites to sync for widget", level: .debug, source: "BackgroundTaskManager")
+                return
+            }
+            
+            // Fetch crypto data if needed
+            if !favoriteCryptoIds.isEmpty {
+                let cryptos = try await fetchFavoriteCryptos(ids: favoriteCryptoIds)
+                widgetSyncService.syncCryptoData(cryptos)
+            }
+            
+            // Fetch currency data if needed
+            if !favoriteCurrencyIds.isEmpty {
+                let currencies = try await fetchFavoriteCurrencies(codes: favoriteCurrencyIds)
+                await widgetSyncService.syncCurrencyData(currencies)
+            }
+            
+            // Reload widget timelines
+            widgetSyncService.reloadWidgets()
+            
+            LogManager.shared.log("Widget data sync completed in background", level: .success, source: "BackgroundTaskManager")
+        } catch {
+            LogManager.shared.log("Widget sync failed in background: \(error.localizedDescription)", level: .warning, source: "BackgroundTaskManager")
+        }
+    }
+    
+    /// Fetches cryptocurrency data for widget sync
+    private func fetchFavoriteCryptos(ids: [String]) async throws -> [Cryptocurrency] {
+        let idsString = ids.joined(separator: ",")
+        let urlString = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=\(idsString)&order=market_cap_desc&sparkline=true&price_change_percentage=24h"
+        
+        guard let url = URL(string: urlString) else {
+            throw URLError(.badURL)
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let cryptos = try JSONDecoder().decode([Cryptocurrency].self, from: data)
+        
+        LogManager.shared.log("Fetched \(cryptos.count) cryptos for widget", level: .debug, source: "BackgroundTaskManager")
+        return cryptos
+    }
+    
+    /// Fetches currency exchange rates for widget sync
+    private func fetchFavoriteCurrencies(codes: [String]) async throws -> [ExchangeRate] {
+        let homeCurrency = HomeCurrencyManager.shared.getHomeCurrency()
+        let codesString = codes.joined(separator: ",")
+        let urlString = "https://api.frankfurter.app/latest?from=\(homeCurrency)&to=\(codesString)"
+        
+        guard let url = URL(string: urlString) else {
+            throw URLError(.badURL)
+        }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode(FrankfurterLatestResponse.self, from: data)
+        
+        // Convert to ExchangeRate array
+        // Use response date + current time for ISO8601 format
+        let lastUpdateString = "\(response.date)T00:00:00.000Z"
+        
+        var rates: [ExchangeRate] = []
+        for (code, rate) in response.rates {
+            rates.append(ExchangeRate(
+                key: code,
+                currentExchangeRate: rate,
+                currentChange: 0,
+                unit: 1,
+                lastUpdate: lastUpdateString
+            ))
+        }
+        
+        LogManager.shared.log("Fetched \(rates.count) currencies for widget", level: .debug, source: "BackgroundTaskManager")
+        return rates
+    }
 }
+
+/// Response model for Frankfurter API
+private struct FrankfurterLatestResponse: Codable {
+    let amount: Double
+    let base: String
+    let date: String
+    let rates: [String: Double]
+}
+
+#endif // !WIDGET_EXTENSION

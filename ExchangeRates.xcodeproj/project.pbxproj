@@ -6,8 +6,41 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B1000001300000000000001 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1000002300000000000001 /* WidgetKit.framework */; };
+		B1000003300000000000001 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1000004300000000000001 /* SwiftUI.framework */; };
+		B1000007300000000000001 /* WatchlistWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B1000008300000000000001 /* WatchlistWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B1000005300000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0EFA7D82EFF07CB006C582A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B1000010300000000000001;
+			remoteInfo = WatchlistWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1000006300000000000001 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B1000007300000000000001 /* WatchlistWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A0EFA7E02EFF07CB006C582A /* ExchangeRates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRates.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000002300000000000001 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B1000004300000000000001 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		B1000008300000000000001 /* WatchlistWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WatchlistWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +50,13 @@
 				Info.plist,
 			);
 			target = A0EFA7DF2EFF07CB006C582A /* ExchangeRates */;
+		};
+		B100000A300000000000001 /* Exceptions for "WatchlistWidget" folder in "WatchlistWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B1000010300000000000001 /* WatchlistWidgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,6 +69,19 @@
 			path = ExchangeRates;
 			sourceTree = "<group>";
 		};
+		B100000B300000000000001 /* WatchlistWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B100000A300000000000001 /* Exceptions for "WatchlistWidget" folder in "WatchlistWidgetExtension" target */,
+			);
+			path = WatchlistWidget;
+			sourceTree = "<group>";
+		};
+		B1000017300000000000001 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +92,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B100000C300000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000003300000000000001 /* SwiftUI.framework in Frameworks */,
+				B1000001300000000000001 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +108,9 @@
 			isa = PBXGroup;
 			children = (
 				A0EFA7E22EFF07CB006C582A /* ExchangeRates */,
+				B1000017300000000000001 /* Shared */,
+				B100000B300000000000001 /* WatchlistWidget */,
+				B100000D300000000000001 /* Frameworks */,
 				A0EFA7E12EFF07CB006C582A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +119,18 @@
 			isa = PBXGroup;
 			children = (
 				A0EFA7E02EFF07CB006C582A /* ExchangeRates.app */,
+				B1000008300000000000001 /* WatchlistWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B100000D300000000000001 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002300000000000001 /* WidgetKit.framework */,
+				B1000004300000000000001 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,13 +143,16 @@
 				A0EFA7DC2EFF07CB006C582A /* Sources */,
 				A0EFA7DD2EFF07CB006C582A /* Frameworks */,
 				A0EFA7DE2EFF07CB006C582A /* Resources */,
+				B1000006300000000000001 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B100000E300000000000001 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A0EFA7E22EFF07CB006C582A /* ExchangeRates */,
+				B1000017300000000000001 /* Shared */,
 			);
 			name = ExchangeRates;
 			packageProductDependencies = (
@@ -82,6 +160,29 @@
 			productName = ExchangeRates;
 			productReference = A0EFA7E02EFF07CB006C582A /* ExchangeRates.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B1000010300000000000001 /* WatchlistWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1000011300000000000001 /* Build configuration list for PBXNativeTarget "WatchlistWidgetExtension" */;
+			buildPhases = (
+				B1000012300000000000001 /* Sources */,
+				B100000C300000000000001 /* Frameworks */,
+				B1000013300000000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B100000B300000000000001 /* WatchlistWidget */,
+				B1000017300000000000001 /* Shared */,
+			);
+			name = WatchlistWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = WatchlistWidgetExtension;
+			productReference = B1000008300000000000001 /* WatchlistWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -94,6 +195,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					A0EFA7DF2EFF07CB006C582A = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					B1000010300000000000001 = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
@@ -113,12 +217,20 @@
 			projectRoot = "";
 			targets = (
 				A0EFA7DF2EFF07CB006C582A /* ExchangeRates */,
+				B1000010300000000000001 /* WatchlistWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		A0EFA7DE2EFF07CB006C582A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B1000013300000000000001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +247,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1000012300000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B100000E300000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B1000010300000000000001 /* WatchlistWidgetExtension */;
+			targetProxy = B1000005300000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A0EFA7E92EFF07CD006C582A /* Debug */ = {
@@ -264,6 +391,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ExchangeRates/ExchangeRates.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V3UQ543GW;
@@ -297,6 +425,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ExchangeRates/ExchangeRates.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8V3UQ543GW;
@@ -325,6 +454,68 @@
 			};
 			name = Release;
 		};
+		B1000014300000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WatchlistWidget/WatchlistWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8V3UQ543GW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchlistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Watchlist Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ExchangeRates.ExchangeRates.WatchlistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG WIDGET_EXTENSION";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B1000015300000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WatchlistWidget/WatchlistWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8V3UQ543GW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WatchlistWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Watchlist Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ExchangeRates.ExchangeRates.WatchlistWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = WIDGET_EXTENSION;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -342,6 +533,15 @@
 			buildConfigurations = (
 				A0EFA7EC2EFF07CD006C582A /* Debug */,
 				A0EFA7ED2EFF07CD006C582A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1000011300000000000001 /* Build configuration list for PBXNativeTarget "WatchlistWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1000014300000000000001 /* Debug */,
+				B1000015300000000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

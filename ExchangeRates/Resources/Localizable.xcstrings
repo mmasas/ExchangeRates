@@ -3207,6 +3207,23 @@
         }
       }
     },
+    "no_currency_favorites_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe left on a currency to add to favorites"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "החלק שמאלה על מטבע כדי להוסיף למועדפים"
+          }
+        }
+      }
+    },
     "no_data_for_date" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3238,23 +3255,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自動リセットなし"
-          }
-        }
-      }
-    },
-    "no_currency_favorites_message" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Swipe left on a currency to add to favorites"
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "החלק שמאלה על מטבע כדי להוסיף למועדפים"
           }
         }
       }
@@ -4477,6 +4477,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "西アフリカ"
+          }
+        }
+      }
+    },
+    "widget_type_crypto" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Crypto"
+          }
+        }
+      }
+    },
+    "widget_type_currency" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Currency"
+          }
+        }
+      }
+    },
+    "widget_type_mixed" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Mixed"
           }
         }
       }
