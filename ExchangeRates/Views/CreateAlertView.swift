@@ -9,8 +9,19 @@ import SwiftUI
 
 struct CreateAlertView: View {
     @StateObject private var viewModel: CreateAlertViewModel
+    @ObservedObject private var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
     let onDismiss: () -> Void
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var sectionBackground: Color {
+        theme.usesSystemColors ? Color(.secondarySystemGroupedBackground) : theme.cardBackgroundColor
+    }
+    private var headerColor: Color {
+        theme.usesSystemColors ? .secondary : theme.secondaryTextColor
+    }
     
     init(editingAlert: CurrencyAlert? = nil, onDismiss: @escaping () -> Void = {}) {
         _viewModel = StateObject(wrappedValue: CreateAlertViewModel(editingAlert: editingAlert))
@@ -27,7 +38,9 @@ struct CreateAlertView: View {
                     }
                 } header: {
                     Text(String(localized: "alert_type", defaultValue: "Alert Type"))
+                        .foregroundColor(headerColor)
                 }
+                .listRowBackground(sectionBackground)
                 
                 if viewModel.alertType == .currency {
                     Section {
@@ -51,7 +64,7 @@ struct CreateAlertView: View {
                                         .font(.system(size: 16))
                                     Spacer()
                                 }
-                                .foregroundColor(.blue)
+                                .foregroundColor(theme.accentColor)
                             }
                         }
                         
@@ -66,7 +79,7 @@ struct CreateAlertView: View {
                         if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
                             HStack {
                                 Text(String(localized: "current_rate"))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Spacer()
                                 if viewModel.isLoadingRate {
                                     ProgressView()
@@ -74,24 +87,26 @@ struct CreateAlertView: View {
                                 } else if let rate = viewModel.currentRate {
                                     Text(String(format: "%.4f", rate))
                                         .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(primaryColor)
                                 } else {
                                     Text("—")
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                 }
                             }
                         }
                     } header: {
                         Text(String(localized: "currency_pair"))
+                            .foregroundColor(headerColor)
                     } footer: {
                         if !viewModel.baseCurrency.isEmpty && !viewModel.targetCurrency.isEmpty && viewModel.baseCurrency != viewModel.targetCurrency {
                             if let rate = viewModel.currentRate {
                                 Text("\(viewModel.baseCurrency) → \(viewModel.targetCurrency): \(String(format: "%.4f", rate))")
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                         }
                     }
+                    .listRowBackground(sectionBackground)
                 } else {
                     // Crypto selection
                     Section {
@@ -109,7 +124,7 @@ struct CreateAlertView: View {
                         if viewModel.selectedCrypto != nil {
                             HStack {
                                 Text(String(localized: "current_rate", defaultValue: "Current Price"))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Spacer()
                                 if viewModel.isLoadingRate {
                                     ProgressView()
@@ -118,29 +133,31 @@ struct CreateAlertView: View {
                                     if price >= 1.0 {
                                         Text(String(format: "$%.2f", price))
                                             .font(.system(size: 16, weight: .semibold))
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(primaryColor)
                                     } else {
                                         Text(String(format: "$%.4f", price))
                                             .font(.system(size: 16, weight: .semibold))
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(primaryColor)
                                     }
                                 } else {
                                     Text("—")
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                 }
                             }
                         }
                     } header: {
                         Text(String(localized: "crypto_selection", defaultValue: "Cryptocurrency"))
+                            .foregroundColor(headerColor)
                     } footer: {
                         if let cryptoId = viewModel.selectedCrypto, let price = viewModel.currentRate {
                             if let crypto = viewModel.getCryptoList().first(where: { $0.id == cryptoId }) {
                                 Text("\(crypto.symbol) → USD: \(price >= 1.0 ? String(format: "$%.2f", price) : String(format: "$%.4f", price))")
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                         }
                     }
+                    .listRowBackground(sectionBackground)
                 }
                 
                 Section {
@@ -152,16 +169,20 @@ struct CreateAlertView: View {
                     
                     HStack {
                         Text(String(localized: "target_value"))
+                            .foregroundColor(primaryColor)
                         Spacer()
                         TextField(viewModel.alertType == .crypto ? "$0.00" : "0.0000", text: $viewModel.targetValue)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .environment(\.layoutDirection, .leftToRight)
                             .frame(width: 120)
+                            .foregroundColor(primaryColor)
                     }
                 } header: {
                     Text(String(localized: "alert_condition"))
+                        .foregroundColor(headerColor)
                 }
+                .listRowBackground(sectionBackground)
                 
                 Section {
                     Toggle(String(localized: "enable_alert"), isOn: $viewModel.isEnabled)
@@ -176,7 +197,9 @@ struct CreateAlertView: View {
                     }
                 } header: {
                     Text(String(localized: "additional_settings"))
+                        .foregroundColor(headerColor)
                 }
+                .listRowBackground(sectionBackground)
                 
                 if let error = viewModel.errorMessage {
                     Section {
@@ -184,10 +207,15 @@ struct CreateAlertView: View {
                             .foregroundColor(.red)
                             .font(.caption)
                     }
+                    .listRowBackground(sectionBackground)
                 }
             }
+            .scrollContentBackground(theme.usesSystemColors ? .automatic : .hidden)
+            .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
             .navigationTitle(viewModel.editingAlert != nil ? String(localized: "edit_alert") : String(localized: "new_alert"))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(String(localized: "cancel")) {

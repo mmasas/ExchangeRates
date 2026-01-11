@@ -10,11 +10,20 @@ import SwiftUI
 struct FavoritesView: View {
     @StateObject private var viewModel = CryptoViewModel()
     @ObservedObject private var networkMonitor = NetworkMonitor.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     @StateObject private var websocketService = BinanceWebSocketService.shared
     @ObservedObject private var websocketManager = WebSocketManager.shared
     @Environment(\.layoutDirection) private var layoutDirection
     
     private let cacheManager = DataCacheManager.shared
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor }
+    private var headerBackground: AnyShapeStyle {
+        theme.usesSystemColors ? AnyShapeStyle(.ultraThinMaterial) : AnyShapeStyle(theme.secondaryBackgroundColor)
+    }
     
     var body: some View {
         NavigationStack {
@@ -24,15 +33,15 @@ struct FavoritesView: View {
                     VStack(spacing: 20) {
                         Image(systemName: "star.slash")
                             .font(.system(size: 60))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         
                         Text(String(localized: "no_favorites_title"))
                             .font(.headline)
-                            .foregroundColor(.primary)
+                            .foregroundColor(primaryColor)
                         
                         Text(String(localized: "no_favorites_message"))
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                     }
@@ -88,7 +97,7 @@ struct FavoritesView: View {
                             
                             Text(String(localized: "favorites_title"))
                                 .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                             
                             Spacer()
                         }
@@ -98,10 +107,10 @@ struct FavoritesView: View {
                     .padding(.horizontal, 16)
                 }
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+                .background(headerBackground)
                 .animation(.default, value: networkMonitor.isConnected)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(backgroundColor)
         }
     }
 }

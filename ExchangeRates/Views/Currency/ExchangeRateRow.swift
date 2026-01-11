@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ExchangeRateRow: View {
     let exchangeRate: ExchangeRate
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var showConverter = false
     @State private var isPressed = false
+    
+    private var theme: AppTheme { themeManager.currentTheme }
     
     private var homeCurrency: String {
         HomeCurrencyManager.shared.getHomeCurrency()
@@ -27,7 +30,7 @@ struct ExchangeRateRow: View {
                 // Currency code
                 Text("\(exchangeRate.key) / \(homeCurrency)")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.primary)
+                    .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                 
                 Spacer()
                 
@@ -36,7 +39,7 @@ struct ExchangeRateRow: View {
                     // Exchange rate
                     Text(exchangeRate.formattedRate)
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.primary)
+                        .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                     
                     // Percentage change with arrow
                     HStack(spacing: 4) {
@@ -50,12 +53,12 @@ struct ExchangeRateRow: View {
                     // Timestamp
                     Text(exchangeRate.relativeTimeString)
                         .font(.system(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                 }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .background(Color(.systemBackground))
+            .background(theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor)
             .cornerRadius(12)
             .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
         }

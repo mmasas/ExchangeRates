@@ -15,10 +15,16 @@ struct InteractiveChartView: View {
     let isOffline: Bool
     let errorMessage: String?
     
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var animationProgress: CGFloat = 0
     @State private var dragOffset: CGFloat = 0
     @State private var selectedPoint: ChartDataPoint?
     @State private var tapLocation: CGPoint = .zero
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var labelBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
     
     private var chartColor: Color {
         isPositive ? .green : .red
@@ -53,7 +59,7 @@ struct InteractiveChartView: View {
                         .scaleEffect(1.2)
                     Text(String(localized: "loading_chart", defaultValue: "Loading chart..."))
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                 }
                 .frame(height: 220)
                 .frame(maxWidth: .infinity)
@@ -65,7 +71,7 @@ struct InteractiveChartView: View {
                         .foregroundColor(.orange)
                     Text(String(localized: "chart_offline_unavailable", defaultValue: "Chart is not available offline"))
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                         .multilineTextAlignment(.center)
                 }
                 .frame(height: 220)
@@ -78,7 +84,7 @@ struct InteractiveChartView: View {
                         .foregroundColor(.orange)
                     Text(errorMessage)
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
@@ -89,10 +95,10 @@ struct InteractiveChartView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "chart.line.downtrend.xyaxis")
                         .font(.system(size: 32))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                     Text(String(localized: "no_chart_data", defaultValue: "No chart data available"))
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                         .multilineTextAlignment(.center)
                 }
                 .frame(height: 220)
@@ -128,10 +134,10 @@ struct InteractiveChartView: View {
                                     Spacer()
                                     Text(formatPrice(maxPrice))
                                         .font(.system(size: 12, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                         .padding(.horizontal, 6)
                                         .padding(.vertical, 4)
-                                        .background(Color(.systemBackground).opacity(0.8))
+                                        .background(labelBackground.opacity(0.9))
                                         .cornerRadius(4)
                                 }
                                 
@@ -141,10 +147,10 @@ struct InteractiveChartView: View {
                                     Spacer()
                                     Text(formatPrice(minPrice))
                                         .font(.system(size: 12, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                         .padding(.horizontal, 6)
                                         .padding(.vertical, 4)
-                                        .background(Color(.systemBackground).opacity(0.8))
+                                        .background(labelBackground.opacity(0.9))
                                         .cornerRadius(4)
                                 }
                             }
@@ -156,17 +162,17 @@ struct InteractiveChartView: View {
                             VStack(spacing: 4) {
                                 Text(selectedPoint.formattedPrice)
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                                 Text(selectedPoint.formattedDate(for: timeRange))
                                     .font(.system(size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color(.systemBackground))
-                                    .shadow(color: Color.primary.opacity(0.2), radius: 4, x: 0, y: 2)
+                                    .fill(labelBackground)
+                                    .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                             )
                             .position(tooltipPosition(in: geometry.size))
                         }
@@ -197,7 +203,7 @@ struct InteractiveChartView: View {
                     ForEach(Array(xAxisLabels.enumerated()), id: \.offset) { index, label in
                         Text(label)
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         
                         if index < xAxisLabels.count - 1 {
                             Spacer()

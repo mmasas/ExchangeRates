@@ -9,12 +9,19 @@ import SwiftUI
 
 struct CurrencyConverterView: View {
     @StateObject private var viewModel: CurrencyConverterViewModel
+    @ObservedObject private var themeManager = ThemeManager.shared
     @FocusState private var focusedField: Field?
     @State private var showHistoricalRate = false
     
     enum Field {
         case home, foreign
     }
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var cardBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor }
     
     init(exchangeRate: ExchangeRate) {
         _viewModel = StateObject(wrappedValue: CurrencyConverterViewModel(exchangeRate: exchangeRate))
@@ -36,11 +43,11 @@ struct CurrencyConverterView: View {
                     VStack(spacing: 8) {
                         Text("\(viewModel.exchangeRate.key) / \(viewModel.homeCurrencyCode)")
                             .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.primary)
+                            .foregroundColor(primaryColor)
                         
                         Text(String(format: String(localized: "rate_label", defaultValue: "Rate: %@"), viewModel.exchangeRate.formattedRate))
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                     }
                 }
                 .padding(.top, 24)
@@ -53,20 +60,20 @@ struct CurrencyConverterView: View {
                                 HStack {
                                     Text("\(viewModel.homeCurrencyCode)")
                                         .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                         .textCase(.uppercase)
                                     
                                     Spacer()
                                     
                                     Text(CurrencyFlagHelper.currencyName(for: viewModel.homeCurrencyCode))
                                         .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                 }
                                 
                                 HStack(spacing: 12) {
                                     Text(homeCurrencySymbol)
                                         .font(.system(size: 28, weight: .semibold))
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(primaryColor)
                                     
                                     TextField("0", text: Binding(
                                         get: { viewModel.homeAmount },
@@ -74,7 +81,7 @@ struct CurrencyConverterView: View {
                                     ))
                                         .keyboardType(.decimalPad)
                                         .font(.system(size: 36, weight: .bold))
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(primaryColor)
                                         .focused($focusedField, equals: .home)
                                         .environment(\.layoutDirection, .leftToRight)
                                         .multilineTextAlignment(.leading)
@@ -83,10 +90,10 @@ struct CurrencyConverterView: View {
                                 .padding(.vertical, 18)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color(.systemBackground))
+                                        .fill(cardBackground)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 16)
-                                                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                                .stroke(secondaryColor.opacity(0.3), lineWidth: 1)
                                         )
                                         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                                 )
@@ -95,7 +102,7 @@ struct CurrencyConverterView: View {
                             // Arrow indicator
                             Image(systemName: "arrow.up.arrow.down")
                                 .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.secondary.opacity(0.7))
+                                .foregroundColor(secondaryColor.opacity(0.7))
                                 .padding(.vertical, 4)
                                 .frame(maxWidth: .infinity)
                             
@@ -104,14 +111,14 @@ struct CurrencyConverterView: View {
                                 HStack {
                                     Text(viewModel.exchangeRate.key)
                                         .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                         .textCase(.uppercase)
                                     
                                     Spacer()
                                     
                                     Text(CurrencyFlagHelper.currencyName(for: viewModel.exchangeRate.key))
                                         .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(secondaryColor)
                                 }
                                 
                                 HStack(spacing: 12) {
@@ -123,7 +130,7 @@ struct CurrencyConverterView: View {
                                     ))
                                         .keyboardType(.decimalPad)
                                         .font(.system(size: 36, weight: .bold))
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(primaryColor)
                                         .focused($focusedField, equals: .foreign)
                                         .environment(\.layoutDirection, .leftToRight)
                                         .multilineTextAlignment(.leading)
@@ -132,10 +139,10 @@ struct CurrencyConverterView: View {
                                 .padding(.vertical, 18)
                                 .background(
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color(.systemBackground))
+                                        .fill(cardBackground)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 16)
-                                                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                                .stroke(secondaryColor.opacity(0.3), lineWidth: 1)
                                         )
                                         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                                 )
@@ -154,12 +161,12 @@ struct CurrencyConverterView: View {
                         Text(String(localized: "view_historical_rate", defaultValue: "View Historical Rate"))
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundColor(.blue)
+                    .foregroundColor(theme.accentColor)
                     .padding(.vertical, 12)
                     .padding(.horizontal, 20)
                     .background(
                         Capsule()
-                            .fill(Color.blue.opacity(0.1))
+                            .fill(theme.accentColor.opacity(0.1))
                     )
                 }
                 .padding(.top, 32)
@@ -171,8 +178,10 @@ struct CurrencyConverterView: View {
         .onTapGesture {
             focusedField = nil
         }
-        .background(Color(.systemGroupedBackground))
+        .background(backgroundColor)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
         .toolbar {
             // Done button above keyboard
             ToolbarItemGroup(placement: .keyboard) {

@@ -9,19 +9,10 @@ import SwiftUI
 import UIKit
 
 struct MainTabView: View {
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var badgeCount: Int = 0
     @State private var selectedTab: Int = 0
-    
-    init() {
-        // Configure tab bar with more transparent blur effect
-        let appearance = UITabBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-        appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.3)
-        
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-    }
+    @State private var tabViewId = UUID()
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -58,13 +49,37 @@ struct MainTabView: View {
             }
             .tag(3)
         }
-        .tint(.blue)
+        .id(tabViewId)
+        .tint(themeManager.currentTheme.usesSystemColors ? .blue : themeManager.currentTheme.accentColor)
         .onAppear {
             updateBadgeCount()
+            updateTabBarAppearance()
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("AlertsUpdated"))) { _ in
             updateBadgeCount()
         }
+        .onChange(of: themeManager.currentTheme) { _, _ in
+            updateTabBarAppearance()
+            // Force TabView to rebuild with new appearance
+            tabViewId = UUID()
+        }
+    }
+    
+    private func updateTabBarAppearance() {
+        let theme = themeManager.currentTheme
+        let appearance = UITabBarAppearance()
+        
+        if theme.usesSystemColors {
+            appearance.configureWithTransparentBackground()
+            appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+            appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.3)
+        } else {
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(theme.secondaryBackgroundColor)
+        }
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
     }
     
     private func updateBadgeCount() {

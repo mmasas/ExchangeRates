@@ -9,6 +9,11 @@ import SwiftUI
 
 struct OfflineIndicatorView: View {
     let lastUpdateDate: Date?
+    @ObservedObject private var themeManager = ThemeManager.shared
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
     
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -48,22 +53,22 @@ struct OfflineIndicatorView: View {
             
             Text(String(localized: "offline_mode", defaultValue: "Offline"))
                 .font(.system(size: 14, weight: .medium))
-                .foregroundColor(.primary)
+                .foregroundColor(primaryColor)
             
             if lastUpdateDate != nil {
                 Text("•")
                     .font(.system(size: 14))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
                 
                 Text(relativeTimeString)
                     .font(.system(size: 13))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
+        .background(theme.usesSystemColors ? AnyShapeStyle(.ultraThinMaterial) : AnyShapeStyle(theme.secondaryBackgroundColor))
     }
 }
 

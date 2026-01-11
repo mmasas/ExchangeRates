@@ -10,6 +10,7 @@ import Combine
 
 struct SettingsView: View {
     @StateObject private var viewModel: SettingsViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(existingCurrencyCodes: [String] = []) {
         _viewModel = StateObject(wrappedValue: SettingsViewModel(existingCurrencyCodes: existingCurrencyCodes))
@@ -21,9 +22,17 @@ struct SettingsView: View {
         return "\(version) (\(build))"
     }
     
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var sectionBackground: Color {
+        theme.usesSystemColors ? Color(.secondarySystemGroupedBackground) : theme.cardBackgroundColor
+    }
+    private var headerColor: Color {
+        theme.usesSystemColors ? .secondary : theme.secondaryTextColor
+    }
+    
     var body: some View {
         List {
-            // MARK: - General Settings
+            // MARK: - Language
             Section {
                 Picker(String(localized: "language"), selection: $viewModel.language) {
                     ForEach(AppLanguage.allCases, id: \.self) { language in
@@ -31,15 +40,17 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                
-                Picker(String(localized: "color_scheme"), selection: $viewModel.colorScheme) {
-                    ForEach(ColorSchemeOption.allCases, id: \.self) { option in
-                        Text(option.displayName).tag(option)
-                    }
-                }
-                .pickerStyle(.menu)
             } header: {
-                Label(String(localized: "general_settings", defaultValue: "General"), systemImage: "gearshape.fill")
+                Label(String(localized: "language"), systemImage: "globe")
+                    .foregroundColor(headerColor)
+            }
+            .listRowBackground(sectionBackground)
+            
+            // MARK: - Themes
+            Section {
+                ThemePickerView()
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
             }
             
             // MARK: - Currency Management
@@ -53,11 +64,13 @@ struct SettingsView: View {
                 .pickerStyle(.menu)
             } header: {
                 Label(String(localized: "currency_management", defaultValue: "Currency Management"), systemImage: "banknote.fill")
+                    .foregroundColor(headerColor)
             } footer: {
                 Text(String(localized: "home_currency_footer"))
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
             }
+            .listRowBackground(sectionBackground)
             
             Section {
                 if viewModel.isLoading {
@@ -99,7 +112,9 @@ struct SettingsView: View {
                 }
             } header: {
                 Text(String(localized: "add_new_currency"))
+                    .foregroundColor(headerColor)
             }
+            .listRowBackground(sectionBackground)
             
             if !viewModel.customCurrencies.isEmpty {
                 Section {
@@ -109,9 +124,10 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(code)
                                     .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                 Text(CurrencyFlagHelper.countryName(for: code))
                                     .font(.system(size: 14))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                             }
                             Spacer()
                         }
@@ -119,7 +135,9 @@ struct SettingsView: View {
                     .onDelete(perform: viewModel.removeCurrency)
                 } header: {
                     Text(String(localized: "custom_currencies"))
+                        .foregroundColor(headerColor)
                 }
+                .listRowBackground(sectionBackground)
             }
             
             Section {
@@ -134,6 +152,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .listRowBackground(sectionBackground)
             
             // MARK: - Cryptocurrency Management
             Section {
@@ -176,11 +195,13 @@ struct SettingsView: View {
                 }
             } header: {
                 Label(String(localized: "cryptocurrency_management", defaultValue: "Cryptocurrency Management"), systemImage: "bitcoinsign.circle.fill")
+                    .foregroundColor(headerColor)
             } footer: {
                 Text(String(localized: "custom_crypto_footer", defaultValue: "Add cryptocurrencies for live tracking. These will be included in your crypto list with real-time price updates."))
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
             }
+            .listRowBackground(sectionBackground)
             
             if !viewModel.customCryptos.isEmpty {
                 Section {
@@ -189,9 +210,10 @@ struct SettingsView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(viewModel.getCryptoDisplayName(for: cryptoId))
                                     .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                 Text(cryptoId)
                                     .font(.system(size: 14))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                             }
                             Spacer()
                         }
@@ -199,23 +221,30 @@ struct SettingsView: View {
                     .onDelete(perform: viewModel.removeCrypto)
                 } header: {
                     Text(String(localized: "custom_cryptos", defaultValue: "Custom Cryptocurrencies"))
+                        .foregroundColor(headerColor)
                 }
+                .listRowBackground(sectionBackground)
             }
             
             // MARK: - App Version
             Section {
                 HStack {
                     Text(String(localized: "version", defaultValue: "Version"))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                     Spacer()
                     Text(appVersion)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                 }
             }
+            .listRowBackground(sectionBackground)
         }
         .listStyle(.insetGrouped)
+        .scrollContentBackground(theme.usesSystemColors ? .automatic : .hidden)
+        .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
         .navigationTitle(String(localized: "settings"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
         .onAppear {
             viewModel.loadData()
         }
@@ -245,16 +274,6 @@ class SettingsViewModel: ObservableObject {
             HomeCurrencyManager.shared.setHomeCurrency(homeCurrency)
         }
     }
-    @Published var colorScheme: ColorSchemeOption {
-        didSet {
-            ColorSchemeManager.shared.setColorScheme(colorScheme)
-            // Notify the app to update color scheme
-            NotificationCenter.default.post(
-                name: NSNotification.Name("ColorSchemeChanged"),
-                object: nil
-            )
-        }
-    }
     @Published var language: AppLanguage {
         didSet {
             // Only show alert if language actually changed (not during initial load)
@@ -271,7 +290,6 @@ class SettingsViewModel: ObservableObject {
     
     private let currencyManager = CustomCurrencyManager.shared
     private let cryptoManager = CustomCryptoManager.shared
-    private let colorSchemeManager = ColorSchemeManager.shared
     private let homeCurrencyManager = HomeCurrencyManager.shared
     private let orderManager = CurrencyOrderManager.shared
     private let existingCurrencyCodes: [String]
@@ -283,7 +301,6 @@ class SettingsViewModel: ObservableObject {
     
     init(existingCurrencyCodes: [String] = []) {
         self.existingCurrencyCodes = existingCurrencyCodes
-        self.colorScheme = ColorSchemeManager.shared.getColorScheme()
         self.homeCurrency = HomeCurrencyManager.shared.getHomeCurrency()
         self.language = LanguageManager.shared.getLanguage()
     }
@@ -293,7 +310,6 @@ class SettingsViewModel: ObservableObject {
         updateAvailableCurrencies()
         customCryptos = cryptoManager.getCustomCryptos()
         updateAvailableCryptos()
-        colorScheme = colorSchemeManager.getColorScheme()
         homeCurrency = homeCurrencyManager.getHomeCurrency()
         language = LanguageManager.shared.getLanguage()
         // Mark initial load as complete after a short delay

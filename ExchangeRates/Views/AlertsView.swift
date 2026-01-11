@@ -9,8 +9,17 @@ import SwiftUI
 
 struct AlertsView: View {
     @StateObject private var viewModel = AlertsViewModel()
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var showingCreateAlert = false
     @State private var editingAlert: CurrencyAlert?
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var sectionBackground: Color {
+        theme.usesSystemColors ? Color(.secondarySystemGroupedBackground) : theme.cardBackgroundColor
+    }
+    private var headerColor: Color {
+        theme.usesSystemColors ? .secondary : theme.secondaryTextColor
+    }
     
     var body: some View {
         List {
@@ -19,23 +28,24 @@ struct AlertsView: View {
                     VStack(spacing: 16) {
                         Image(systemName: "bell.slash")
                             .font(.system(size: 48))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                         Text(String(localized: "no_alerts_configured"))
                             .font(.headline)
-                            .foregroundColor(.primary)
+                            .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                         Text(String(localized: "add_alert_to_start"))
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 40)
                 }
+                .listRowBackground(sectionBackground)
             } else {
                 // Currency Alerts Section
                 if !viewModel.currencyAlerts.isEmpty {
                     Section {
                         ForEach(viewModel.currencyAlerts) { alert in
-                            AlertRow(alert: alert) {
+                            AlertRow(alert: alert, theme: theme) {
                                 editingAlert = alert
                                 showingCreateAlert = true
                             } onToggle: {
@@ -48,14 +58,16 @@ struct AlertsView: View {
                         }
                     } header: {
                         Text(String(localized: "currency_alerts_section", defaultValue: "Currency Alerts"))
+                            .foregroundColor(headerColor)
                     }
+                    .listRowBackground(sectionBackground)
                 }
                 
                 // Crypto Alerts Section
                 if !viewModel.cryptoAlerts.isEmpty {
                     Section {
                         ForEach(viewModel.cryptoAlerts) { alert in
-                            AlertRow(alert: alert) {
+                            AlertRow(alert: alert, theme: theme) {
                                 editingAlert = alert
                                 showingCreateAlert = true
                             } onToggle: {
@@ -68,13 +80,19 @@ struct AlertsView: View {
                         }
                     } header: {
                         Text(String(localized: "crypto_alerts_section", defaultValue: "Crypto Alerts"))
+                            .foregroundColor(headerColor)
                     }
+                    .listRowBackground(sectionBackground)
                 }
             }
         }
         .listStyle(.insetGrouped)
+        .scrollContentBackground(theme.usesSystemColors ? .automatic : .hidden)
+        .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
         .navigationTitle(String(localized: "alerts_title"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -134,10 +152,19 @@ struct AlertsView: View {
 
 struct AlertRow: View {
     let alert: CurrencyAlert
+    let theme: AppTheme
     let onEdit: () -> Void
     let onToggle: () -> Void
     let onReset: () -> Void
     let onDelete: () -> Void
+    
+    private var primaryColor: Color {
+        theme.usesSystemColors ? .primary : theme.primaryTextColor
+    }
+    
+    private var secondaryColor: Color {
+        theme.usesSystemColors ? .secondary : theme.secondaryTextColor
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -154,24 +181,24 @@ struct AlertRow: View {
                             if let symbol = alert.cryptoSymbol {
                                 Text(symbol)
                                     .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                             } else if let cryptoId = alert.cryptoId {
                                 Text(cryptoId.capitalized)
                                     .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                             }
                         }
                         
                         Image(systemName: "arrow.right")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         
                         // USD target
                         HStack(spacing: 4) {
                             CurrencyFlagHelper.circularFlag(for: "USD", size: 24)
                             Text("USD")
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                         }
                     } else {
                         // Currency display
@@ -180,19 +207,19 @@ struct AlertRow: View {
                             CurrencyFlagHelper.circularFlag(for: alert.baseCurrency, size: 24)
                             Text(alert.baseCurrency)
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                         }
                         
                         Image(systemName: "arrow.right")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         
                         // Target currency
                         HStack(spacing: 4) {
                             CurrencyFlagHelper.circularFlag(for: alert.targetCurrency, size: 24)
                             Text(alert.targetCurrency)
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                         }
                     }
                 }
@@ -210,7 +237,7 @@ struct AlertRow: View {
             
             // Divider
             Rectangle()
-                .fill(Color.secondary.opacity(0.2))
+                .fill(secondaryColor.opacity(0.2))
                 .frame(height: 1)
             
             // Bottom section: Condition + Status
@@ -221,11 +248,11 @@ struct AlertRow: View {
                     HStack(spacing: 6) {
                         Text(conditionText)
                             .font(.system(size: 14))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         
                         Text(formatValue(alert.targetValue))
                             .font(.system(size: 17, weight: .bold, design: .rounded))
-                            .foregroundColor(.primary)
+                            .foregroundColor(primaryColor)
                     }
                     
                     // Triggered info
@@ -262,7 +289,7 @@ struct AlertRow: View {
                             Text(String(format: String(localized: "auto_reset_after_hours", defaultValue: "Auto reset: %lld hours"), autoReset))
                                 .font(.system(size: 11))
                         }
-                        .foregroundColor(.secondary)
+                        .foregroundColor(secondaryColor)
                     }
                 }
                 

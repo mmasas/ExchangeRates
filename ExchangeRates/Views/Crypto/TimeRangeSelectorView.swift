@@ -9,7 +9,16 @@ import SwiftUI
 
 struct TimeRangeSelectorView: View {
     @Binding var selectedRange: ChartTimeRange
+    @ObservedObject private var themeManager = ThemeManager.shared
     let onRangeSelected: (ChartTimeRange) -> Void
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var unselectedColor: Color {
+        theme.usesSystemColors ? .secondary : theme.secondaryTextColor
+    }
+    private var dividerColor: Color {
+        theme.usesSystemColors ? .secondary.opacity(0.3) : theme.secondaryTextColor.opacity(0.3)
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -22,7 +31,7 @@ struct TimeRangeSelectorView: View {
                 }) {
                     Text(range.displayLabel)
                         .font(.system(size: 14, weight: selectedRange == range ? .semibold : .regular))
-                        .foregroundColor(selectedRange == range ? .green : .secondary)
+                        .foregroundColor(selectedRange == range ? .green : unselectedColor)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(
@@ -43,7 +52,7 @@ struct TimeRangeSelectorView: View {
                 if range != ChartTimeRange.allCases.last {
                     Text("|")
                         .font(.system(size: 14))
-                        .foregroundColor(.secondary.opacity(0.3))
+                        .foregroundColor(dividerColor)
                         .padding(.horizontal, 4)
                 }
             }

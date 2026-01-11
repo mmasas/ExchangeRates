@@ -12,10 +12,17 @@ struct CryptoDetailView: View {
     
     @Environment(\.dismiss) private var dismiss
     @StateObject private var networkMonitor = NetworkMonitor.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var isWebSocketEnabled: Bool = false
     @State private var previousPrice: Double?
     @ObservedObject private var websocketManager = WebSocketManager.shared
     @EnvironmentObject var viewModel: CryptoViewModel
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var cardBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor }
     
     // Get current cryptocurrency from viewModel (updates when WebSocket updates price)
     private var cryptocurrency: Cryptocurrency? {
@@ -68,11 +75,11 @@ struct CryptoDetailView: View {
                             VStack(spacing: 4) {
                                 Text(crypto.name)
                                     .font(.system(size: 28, weight: .bold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                                 
                                 Text(crypto.displaySymbol)
                                     .font(.system(size: 18, weight: .medium))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                         }
                         .padding(.top, 24)
@@ -85,6 +92,7 @@ struct CryptoDetailView: View {
                                     previousPrice: previousPrice
                                 )
                                 .font(.system(size: 44, weight: .bold))
+                                .foregroundColor(primaryColor)
                                 
                                 if isWebSocketEnabled {
                                     LiveIndicatorView()
@@ -98,22 +106,22 @@ struct CryptoDetailView: View {
                                     .font(.system(size: 18, weight: .semibold))
                                 Text("(24h)")
                                     .font(.system(size: 14))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                             .foregroundColor(crypto.isPositiveChange ? .green : .red)
                         }
                         .padding(.vertical, 16)
                         .frame(maxWidth: .infinity)
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(16)
-                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
                         .padding(.horizontal, 16)
                         
                         // Chart section
                         VStack(alignment: .leading, spacing: 12) {
                             Text(viewModel.selectedTimeRange.chartTitle)
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                                 .padding(.horizontal, 4)
                             
                             // Time range selector
@@ -135,9 +143,9 @@ struct CryptoDetailView: View {
                             )
                         }
                         .padding(16)
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(16)
-                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
                         .padding(.horizontal, 16)
                         
                         // Market data section under the chart
@@ -145,17 +153,17 @@ struct CryptoDetailView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text(String(localized: "market_cap_rank", defaultValue: "Market Cap Rank"))
                                     .font(.system(size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Text(crypto.marketCapRank.map { "#\($0)" } ?? String(localized: "not_available", defaultValue: "N/A"))
                                     .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
                             VStack(alignment: .center, spacing: 6) {
                                 Text(String(localized: "24h_low", defaultValue: "24h Low"))
                                     .font(.system(size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Text(crypto.formattedLow24h)
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(.red)
@@ -165,7 +173,7 @@ struct CryptoDetailView: View {
                             VStack(alignment: .trailing, spacing: 6) {
                                 Text(String(localized: "24h_high", defaultValue: "24h High"))
                                     .font(.system(size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Text(crypto.formattedHigh24h)
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(.green)
@@ -173,9 +181,9 @@ struct CryptoDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .trailing)
                         }
                         .padding(16)
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(16)
-                        .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 2)
+                        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
                         .padding(.horizontal, 16)
                         
                         // Last updated
@@ -187,14 +195,14 @@ struct CryptoDetailView: View {
                                 Text(dateFormatter.string(from: date))
                             }
                             .font(.system(size: 14))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                             .padding(.top, 4)
                         }
                         
                         Spacer(minLength: 32)
                     }
                 }
-                .background(Color(.systemGroupedBackground))
+                .background(backgroundColor)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     // Check if this crypto uses WebSocket and if WebSocket is enabled
@@ -220,7 +228,7 @@ struct CryptoDetailView: View {
             } else {
                 // Fallback if cryptocurrency not found
                 Text("Cryptocurrency not found")
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
             }
         }
     }

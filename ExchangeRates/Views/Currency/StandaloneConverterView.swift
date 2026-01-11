@@ -10,6 +10,7 @@ import SwiftUI
 struct StandaloneConverterView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: StandaloneConverterViewModel
+    @ObservedObject private var themeManager = ThemeManager.shared
     @FocusState private var focusedField: Field?
     
     @State private var showSourcePicker = false
@@ -18,6 +19,12 @@ struct StandaloneConverterView: View {
     enum Field {
         case source, target
     }
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var cardBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor }
     
     init(exchangeRates: [ExchangeRate]) {
         _viewModel = StateObject(wrappedValue: StandaloneConverterViewModel(exchangeRates: exchangeRates))
@@ -31,7 +38,7 @@ struct StandaloneConverterView: View {
                     VStack(spacing: 8) {
                         Text("1 \(viewModel.sourceCurrency) = \(viewModel.formattedCrossRate) \(viewModel.targetCurrency)")
                             .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                     }
                     .padding(.top, 16)
                     
@@ -42,7 +49,7 @@ struct StandaloneConverterView: View {
                             HStack {
                                 Text("\(String(localized: "source_currency", defaultValue: "From")) - \(CurrencyFlagHelper.currencyName(for: viewModel.sourceCurrency))")
                                     .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Spacer()
                             }
                             .frame(maxWidth: .infinity)
@@ -58,17 +65,17 @@ struct StandaloneConverterView: View {
                                         
                                         Text(viewModel.sourceCurrency)
                                             .font(.system(size: 16, weight: .semibold))
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(primaryColor)
                                         
                                         Image(systemName: "chevron.down")
                                             .font(.system(size: 12, weight: .medium))
-                                            .foregroundColor(.secondary)
+                                            .foregroundColor(secondaryColor)
                                     }
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 8)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .fill(Color(.systemGray5))
+                                            .fill(theme.usesSystemColors ? Color(.systemGray5) : theme.secondaryBackgroundColor)
                                     )
                                 }
                                 
@@ -79,7 +86,7 @@ struct StandaloneConverterView: View {
                                 ))
                                 .keyboardType(.decimalPad)
                                 .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                                 .focused($focusedField, equals: .source)
                                 .environment(\.layoutDirection, .leftToRight)
                                 .multilineTextAlignment(.trailing)
@@ -88,10 +95,10 @@ struct StandaloneConverterView: View {
                             .padding(.vertical, 14)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color(.systemBackground))
+                                    .fill(cardBackground)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
-                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                            .stroke(secondaryColor.opacity(0.3), lineWidth: 1)
                                     )
                                     .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                             )
@@ -105,10 +112,10 @@ struct StandaloneConverterView: View {
                         } label: {
                             Image(systemName: "arrow.up.arrow.down.circle.fill")
                                 .font(.system(size: 36))
-                                .foregroundColor(.blue)
+                                .foregroundColor(theme.accentColor)
                                 .background(
                                     Circle()
-                                        .fill(Color(.systemBackground))
+                                        .fill(cardBackground)
                                         .frame(width: 32, height: 32)
                                 )
                         }
@@ -119,7 +126,7 @@ struct StandaloneConverterView: View {
                             HStack {
                                 Text("\(String(localized: "target_currency", defaultValue: "To")) - \(CurrencyFlagHelper.currencyName(for: viewModel.targetCurrency))")
                                     .font(.system(size: 13, weight: .medium))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                 Spacer()
                             }
                             .frame(maxWidth: .infinity)
@@ -135,17 +142,17 @@ struct StandaloneConverterView: View {
                                         
                                         Text(viewModel.targetCurrency)
                                             .font(.system(size: 16, weight: .semibold))
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(primaryColor)
                                         
                                         Image(systemName: "chevron.down")
                                             .font(.system(size: 12, weight: .medium))
-                                            .foregroundColor(.secondary)
+                                            .foregroundColor(secondaryColor)
                                     }
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 8)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .fill(Color(.systemGray5))
+                                            .fill(theme.usesSystemColors ? Color(.systemGray5) : theme.secondaryBackgroundColor)
                                     )
                                 }
                                 
@@ -156,7 +163,7 @@ struct StandaloneConverterView: View {
                                 ))
                                 .keyboardType(.decimalPad)
                                 .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                                 .focused($focusedField, equals: .target)
                                 .environment(\.layoutDirection, .leftToRight)
                                 .multilineTextAlignment(.trailing)
@@ -165,10 +172,10 @@ struct StandaloneConverterView: View {
                             .padding(.vertical, 14)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color(.systemBackground))
+                                    .fill(cardBackground)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
-                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                            .stroke(secondaryColor.opacity(0.3), lineWidth: 1)
                                     )
                                     .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
                             )
@@ -182,9 +189,11 @@ struct StandaloneConverterView: View {
             .onTapGesture {
                 focusedField = nil
             }
-            .background(Color(.systemGroupedBackground))
+            .background(backgroundColor)
             .navigationTitle(String(localized: "currency_converter_title", defaultValue: "Currency Converter"))
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "close", defaultValue: "Close")) {

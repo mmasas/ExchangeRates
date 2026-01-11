@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct ExchangeRateRowSkeleton: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var cardBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
+    
     var body: some View {
         HStack(spacing: 16) {
             // Flag placeholder
@@ -42,9 +47,9 @@ struct ExchangeRateRowSkeleton: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(Color(.systemBackground))
+        .background(cardBackground)
         .cornerRadius(12)
-        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
         .redacted(reason: .placeholder)
     }
 }

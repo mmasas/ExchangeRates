@@ -11,6 +11,7 @@ import UIKit
 struct CurrencyView: View {
     @StateObject private var viewModel = ExchangeRatesViewModel()
     @ObservedObject private var networkMonitor = NetworkMonitor.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
@@ -19,6 +20,8 @@ struct CurrencyView: View {
     
     private let cacheManager = DataCacheManager.shared
     
+    private var theme: AppTheme { themeManager.currentTheme }
+    
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Group {
@@ -26,9 +29,10 @@ struct CurrencyView: View {
                     VStack {
                         Text(String(localized: "error"))
                             .font(.headline)
+                            .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                         Text(errorMessage)
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                             .multilineTextAlignment(.center)
                             .padding()
                     }
@@ -49,15 +53,15 @@ struct CurrencyView: View {
                                 VStack(spacing: 20) {
                                     Image(systemName: "star.slash")
                                         .font(.system(size: 60))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                                     
                                     Text(String(localized: "no_favorites_title"))
                                         .font(.headline)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                     
                                     Text(String(localized: "no_currency_favorites_message"))
                                         .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 40)
                                 }
@@ -121,7 +125,7 @@ struct CurrencyView: View {
                             showConverter = true
                         } label: {
                             Image(systemName: "arrow.left.arrow.right")
-                                .foregroundColor(.primary)
+                                .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                 .font(.system(size: 20))
                         }
                         .frame(width: 44, height: 44)
@@ -130,7 +134,7 @@ struct CurrencyView: View {
                         
                         Text(String(localized: "exchange_rates_title"))
                             .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.primary)
+                            .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                             .onTapGesture {
                                 handleTitleTap()
                             }
@@ -157,6 +161,7 @@ struct CurrencyView: View {
                                     .tag(CurrencyFilterMode.favorites)
                             }
                             .pickerStyle(.segmented)
+                            .colorScheme(theme.isDark ? .dark : .light)
                             .padding(.vertical, 8)
                         }
                         .padding(.horizontal, 16)
@@ -164,10 +169,10 @@ struct CurrencyView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+                .background(theme.usesSystemColors ? AnyShapeStyle(.ultraThinMaterial) : AnyShapeStyle(theme.secondaryBackgroundColor))
                 .animation(.default, value: networkMonitor.isConnected)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
             .navigationDestination(for: String.self) { destination in
                 switch destination {
                 case "debug":

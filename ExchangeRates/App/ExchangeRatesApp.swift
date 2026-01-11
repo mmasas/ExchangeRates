@@ -12,9 +12,10 @@ import UIKit
 @main
 struct ExchangeRatesApp: App {
     @ObservedObject private var languageManager = LanguageManager.shared
-    @State private var colorScheme: ColorScheme? = ColorSchemeManager.shared.getColorScheme().colorScheme
+    @StateObject private var themeManager = ThemeManager.shared
     @State private var showLaunchScreen = true
     @State private var currentLocale: Locale = LanguageManager.shared.currentLocale
+    @State private var currentColorScheme: ColorScheme? = ThemeManager.shared.currentTheme.colorScheme
     
     init() {
         // Initialize notification service early to set up delegate
@@ -29,22 +30,25 @@ struct ExchangeRatesApp: App {
             ZStack {
                 if showLaunchScreen {
                     LaunchScreenView()
-                        .preferredColorScheme(colorScheme)
+                        .preferredColorScheme(currentColorScheme)
                         .environment(\.locale, currentLocale)
+                        .environmentObject(themeManager)
                         .transition(.opacity)
                         .zIndex(1)
                 } else {
                     MainTabView()
-                        .preferredColorScheme(colorScheme)
+                        .preferredColorScheme(currentColorScheme)
                         .environment(\.locale, currentLocale)
-                        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("ColorSchemeChanged"))) { _ in
-                            colorScheme = ColorSchemeManager.shared.getColorScheme().colorScheme
-                        }
+                        .environmentObject(themeManager)
                         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("LanguageChanged"))) { _ in
                             // Update locale when language changes
                             currentLocale = LanguageManager.shared.currentLocale
                         }
                 }
+            }
+            .onChange(of: themeManager.currentTheme) { _, newTheme in
+                // Update color scheme when theme changes - this affects status bar
+                currentColorScheme = newTheme.colorScheme
             }
             .onAppear {
                 // Show launch screen for 1.8 seconds, then fade to main content

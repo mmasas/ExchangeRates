@@ -11,8 +11,12 @@ struct PriceChangeAnimationView: View {
     let price: Double
     let previousPrice: Double?
     
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var flashColor: Color = .clear
     @State private var scale: CGFloat = 1.0
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var priceColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
     
     private func formatPrice(_ price: Double) -> String {
         if price >= 1.0 {
@@ -25,7 +29,7 @@ struct PriceChangeAnimationView: View {
     var body: some View {
         Text(formatPrice(price))
             .font(.system(size: 15, weight: .semibold))
-            .foregroundColor(.primary)
+            .foregroundColor(priceColor)
             .background(
                 Rectangle()
                     .fill(flashColor)

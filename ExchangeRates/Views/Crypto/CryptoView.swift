@@ -12,11 +12,14 @@ struct CryptoView: View {
     @ObservedObject private var networkMonitor = NetworkMonitor.shared
     @StateObject private var websocketService = BinanceWebSocketService.shared
     @ObservedObject private var websocketManager = WebSocketManager.shared
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var isSearchActive = false
     @FocusState private var isSearchFocused: Bool
     @Environment(\.layoutDirection) private var layoutDirection
     
     private let cacheManager = DataCacheManager.shared
+    
+    private var theme: AppTheme { themeManager.currentTheme }
     
     /// The row index at which to trigger prefetching of the next page
     private let prefetchThreshold = 35
@@ -28,9 +31,10 @@ struct CryptoView: View {
                     VStack {
                         Text(String(localized: "error"))
                             .font(.headline)
+                            .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                         Text(errorMessage)
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                             .multilineTextAlignment(.center)
                             .padding()
                     }
@@ -53,15 +57,15 @@ struct CryptoView: View {
                                 VStack(spacing: 20) {
                                     Image(systemName: "star.slash")
                                         .font(.system(size: 60))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                                     
                                     Text(String(localized: "no_favorites_title"))
                                         .font(.headline)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                     
                                     Text(String(localized: "no_favorites_message"))
                                         .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 40)
                                 }
@@ -153,7 +157,7 @@ struct CryptoView: View {
                                 }
                             } label: {
                                 Image(systemName: isSearchActive ? "xmark" : "magnifyingglass")
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                     .font(.system(size: 20))
                             }
                             .frame(width: 44, height: 44)
@@ -162,7 +166,8 @@ struct CryptoView: View {
                             
                             Text(String(localized: "crypto_title"))
                                 .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
+                                .lineLimit(1)
                             
                             Spacer()
                             
@@ -179,8 +184,9 @@ struct CryptoView: View {
                                     .frame(width: 44, height: 44)
                             }
                         }
+                        .frame(minHeight: 44)
                     }
-                    .padding(.top, 8)
+                    .padding(.top, 12)
                     .padding(.bottom, isSearchActive ? 8 : 12)
                     .padding(.horizontal, 16)
                     
@@ -188,10 +194,11 @@ struct CryptoView: View {
                     if isSearchActive {
                         HStack {
                             Image(systemName: "magnifyingglass")
-                                .foregroundColor(.secondary)
+                                .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                             
                             TextField(String(localized: "search_crypto"), text: $viewModel.searchText)
                                 .textFieldStyle(.plain)
+                                .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                                 .focused($isSearchFocused)
                             
                             if !viewModel.searchText.isEmpty {
@@ -199,13 +206,13 @@ struct CryptoView: View {
                                     viewModel.searchText = ""
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                                 }
                             }
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Color(.systemGray5))
+                        .background(theme.usesSystemColors ? Color(.systemGray5) : theme.cardBackgroundColor)
                         .cornerRadius(10)
                         .padding(.horizontal, 16)
                         .padding(.bottom, 12)
@@ -227,6 +234,7 @@ struct CryptoView: View {
                                         .tag(CryptoFilterMode.favorites)
                                 }
                                 .pickerStyle(.segmented)
+                                .colorScheme(theme.isDark ? .dark : .light)
                                 .padding(.vertical, 8)
                             }
                             .padding(.horizontal, 16)
@@ -235,11 +243,11 @@ struct CryptoView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+                .background(theme.usesSystemColors ? AnyShapeStyle(.ultraThinMaterial) : AnyShapeStyle(theme.secondaryBackgroundColor))
                 .animation(.easeInOut(duration: 0.25), value: isSearchActive)
                 .animation(.default, value: networkMonitor.isConnected)
             }
-            .background(Color(.systemGroupedBackground))
+            .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
         }
     }
 }

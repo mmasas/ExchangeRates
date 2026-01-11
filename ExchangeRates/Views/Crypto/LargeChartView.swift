@@ -11,7 +11,12 @@ struct LargeChartView: View {
     let prices: [Double]?
     let isPositive: Bool
     
+    @ObservedObject private var themeManager = ThemeManager.shared
     @State private var animationProgress: CGFloat = 0
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var labelBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
     
     private var chartColor: Color {
         isPositive ? .green : .red
@@ -69,10 +74,10 @@ struct LargeChartView: View {
                                 Spacer()
                                 Text(formatPrice(maxPrice))
                                     .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 4)
-                                    .background(Color(.systemBackground).opacity(0.8))
+                                    .background(labelBackground.opacity(0.9))
                                     .cornerRadius(4)
                             }
                             
@@ -82,10 +87,10 @@ struct LargeChartView: View {
                                 Spacer()
                                 Text(formatPrice(minPrice))
                                     .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 4)
-                                    .background(Color(.systemBackground).opacity(0.8))
+                                    .background(labelBackground.opacity(0.9))
                                     .cornerRadius(4)
                             }
                         }
@@ -99,7 +104,7 @@ struct LargeChartView: View {
                         if index == 0 || index == 3 || index == 6 {
                             Text(label)
                                 .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                             
                             if index < 6 {
                                 Spacer()
@@ -120,11 +125,11 @@ struct LargeChartView: View {
             VStack(spacing: 12) {
                 Image(systemName: "chart.line.uptrend.xyaxis")
                     .font(.system(size: 40))
-                    .foregroundColor(.secondary.opacity(0.5))
+                    .foregroundColor(secondaryColor.opacity(0.5))
                 
                 Text(String(localized: "no_chart_data"))
                     .font(.system(size: 14))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }

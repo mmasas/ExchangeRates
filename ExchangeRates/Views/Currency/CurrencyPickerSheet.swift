@@ -9,11 +9,18 @@ import SwiftUI
 
 struct CurrencyPickerSheet: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var themeManager = ThemeManager.shared
     @Binding var selectedCurrency: String
     let availableCurrencies: [String]
     let title: String
     
     @State private var searchText = ""
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.backgroundColor }
+    private var rowBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
     
     private var filteredCurrencies: [String] {
         if searchText.isEmpty {
@@ -50,11 +57,11 @@ struct CurrencyPickerSheet: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(currency)
                                     .font(.system(size: 17, weight: .semibold))
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(primaryColor)
                                 
                                 Text(CurrencyFlagHelper.countryName(for: currency))
                                     .font(.system(size: 13))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(secondaryColor)
                             }
                             
                             Spacer()
@@ -62,19 +69,24 @@ struct CurrencyPickerSheet: View {
                             // Checkmark for selected currency
                             if currency == selectedCurrency {
                                 Image(systemName: "checkmark")
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(theme.accentColor)
                                     .font(.system(size: 17, weight: .semibold))
                             }
                         }
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .listRowBackground(rowBackground)
                 }
             }
             .listStyle(.plain)
+            .scrollContentBackground(theme.usesSystemColors ? .automatic : .hidden)
+            .background(backgroundColor)
             .searchable(text: $searchText, prompt: String(localized: "search_currency", defaultValue: "Search currency..."))
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "cancel")) {

@@ -12,6 +12,12 @@ struct WebSocketStatusView: View {
     let enabledCryptosCount: Int
     let isWebSocketEnabled: Bool
     
+    @ObservedObject private var themeManager = ThemeManager.shared
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGray6) : theme.cardBackgroundColor }
+    
     var body: some View {
         HStack(spacing: 6) {
             Circle()
@@ -23,16 +29,16 @@ struct WebSocketStatusView: View {
                      String(localized: "live_updates_enabled", defaultValue: "Live") :
                      String(localized: "live_updates_connecting", defaultValue: "Connecting..."))
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
             } else {
                 Text(String(localized: "live_updates_disabled", defaultValue: "Live updates disabled"))
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(secondaryColor)
             }
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(Color(.systemGray6))
+        .background(backgroundColor)
         .cornerRadius(8)
     }
 }

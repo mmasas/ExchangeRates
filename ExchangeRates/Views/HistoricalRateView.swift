@@ -9,7 +9,14 @@ import SwiftUI
 
 struct HistoricalRateView: View {
     @StateObject private var viewModel: HistoricalRateViewModel
+    @ObservedObject private var themeManager = ThemeManager.shared
     @FocusState private var isFocused: Bool
+    
+    private var theme: AppTheme { themeManager.currentTheme }
+    private var primaryColor: Color { theme.usesSystemColors ? .primary : theme.primaryTextColor }
+    private var secondaryColor: Color { theme.usesSystemColors ? .secondary : theme.secondaryTextColor }
+    private var cardBackground: Color { theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor }
+    private var backgroundColor: Color { theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor }
     
     init(baseCurrency: String, targetCurrency: String) {
         _viewModel = StateObject(wrappedValue: HistoricalRateViewModel(
@@ -34,13 +41,13 @@ struct HistoricalRateView: View {
                         CurrencyFlagHelper.circularFlag(for: viewModel.baseCurrency, size: 48)
                         Text("→")
                             .font(.system(size: 24))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(secondaryColor)
                         CurrencyFlagHelper.circularFlag(for: viewModel.targetCurrency, size: 48)
                     }
                     
                     Text("\(viewModel.baseCurrency) → \(viewModel.targetCurrency)")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.primary)
+                        .foregroundColor(primaryColor)
                     
                     if viewModel.baseCurrency != viewModel.targetCurrency {
                         Button(action: {
@@ -52,10 +59,10 @@ struct HistoricalRateView: View {
                                 Text(String(localized: "swap_order"))
                                     .font(.system(size: 14))
                             }
-                            .foregroundColor(.blue)
+                            .foregroundColor(theme.accentColor)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(Color.blue.opacity(0.1))
+                            .background(theme.accentColor.opacity(0.1))
                             .cornerRadius(8)
                         }
                     }
@@ -91,21 +98,21 @@ struct HistoricalRateView: View {
                         VStack(spacing: 12) {
                             Text(String(localized: "historical_rate_result", defaultValue: "Historical Rate"))
                                 .font(.system(size: 14))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                             
                             Text(rate.formattedRate)
                                 .font(.system(size: 48, weight: .bold))
-                                .foregroundColor(.primary)
+                                .foregroundColor(primaryColor)
                             
                             Text(dateFormatter.string(from: viewModel.selectedDate))
                                 .font(.system(size: 16))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(12)
-                        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
+                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
                     } else if let error = viewModel.errorMessage {
                         VStack(spacing: 8) {
                             Image(systemName: "exclamationmark.triangle")
@@ -113,26 +120,26 @@ struct HistoricalRateView: View {
                                 .foregroundColor(.orange)
                             Text(error)
                                 .font(.system(size: 14))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                                 .multilineTextAlignment(.center)
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(12)
                     } else {
                         VStack(spacing: 8) {
                             Image(systemName: "calendar.badge.clock")
                                 .font(.system(size: 32))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                             Text(String(localized: "select_date_to_view_rate", defaultValue: "Select a date to view the historical rate"))
                                 .font(.system(size: 14))
-                                .foregroundColor(.secondary)
+                                .foregroundColor(secondaryColor)
                                 .multilineTextAlignment(.center)
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(.systemBackground))
+                        .background(cardBackground)
                         .cornerRadius(12)
                     }
                 }
@@ -144,7 +151,7 @@ struct HistoricalRateView: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .background(
-            Color(.systemGroupedBackground)
+            backgroundColor
                 .onTapGesture {
                     // Dismiss keyboard when tapping background
                     isFocused = false
@@ -153,6 +160,8 @@ struct HistoricalRateView: View {
         )
         .navigationTitle(String(localized: "historical_rate_title", defaultValue: "Historical Rate"))
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
+        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()

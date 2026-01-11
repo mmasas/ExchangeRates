@@ -17,7 +17,10 @@ struct CryptoRow: View {
     @State private var currentProvider: CryptoProviderType = CryptoProviderManager.shared.getProvider()
     @State private var isWebSocketEnabled: Bool = false
     @ObservedObject private var websocketManager = WebSocketManager.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     @EnvironmentObject var viewModel: CryptoViewModel
+    
+    private var theme: AppTheme { themeManager.currentTheme }
     
     init(cryptocurrency: Cryptocurrency, sparklinePrices: [Double]? = nil, isLoadingSparkline: Bool = false) {
         self.cryptocurrency = cryptocurrency
@@ -69,7 +72,7 @@ struct CryptoRow: View {
                         .foregroundColor(.yellow)
                         .background(
                             Circle()
-                                .fill(Color(.systemBackground))
+                                .fill(theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor)
                                 .frame(width: 16, height: 16)
                         )
                         .offset(x: 2, y: -2)
@@ -80,12 +83,12 @@ struct CryptoRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(cryptocurrency.name)
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(.primary)
+                    .foregroundColor(theme.usesSystemColors ? .primary : theme.primaryTextColor)
                     .lineLimit(1)
                     .truncationMode(.tail)
                 Text(cryptocurrency.displaySymbol)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
             }
             .frame(minWidth: 60, maxWidth: 110, alignment: .leading)
             
@@ -118,16 +121,16 @@ struct CryptoRow: View {
                 } else if !cryptocurrency.relativeTimeString.isEmpty {
                     Text(cryptocurrency.relativeTimeString)
                         .font(.system(size: 12))
-                        .foregroundColor(.secondary)
+                        .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
                 }
             }
             .frame(minWidth: 80, alignment: .trailing)
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 16)
         .padding(.vertical, 12)
-        .background(Color(.systemBackground))
+        .background(theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor)
         .cornerRadius(12)
-        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
         .scaleEffect(isPressed ? 1.02 : 1.0)
         .animation(.easeInOut(duration: 0.15), value: isPressed)
         .onLongPressGesture(minimumDuration: 0.3, pressing: { pressing in
