@@ -19,6 +19,9 @@ struct WatchlistWidgetIntent: WidgetConfigurationIntent {
     @Parameter(title: LocalizedStringResource("widget_items_count", defaultValue: "Number of Items"), default: .auto)
     var itemsCount: WatchlistItemsCount
     
+    @Parameter(title: LocalizedStringResource("widget_layout", defaultValue: "Layout"), default: .singleColumn)
+    var layout: WatchlistLayoutOption
+    
     /// Get the widget type from the display type parameter
     var widgetType: WatchlistWidgetType {
         switch displayType {
@@ -29,6 +32,11 @@ struct WatchlistWidgetIntent: WidgetConfigurationIntent {
         case .mixed:
             return .mixed
         }
+    }
+    
+    /// Get the layout setting as Shared WatchlistLayout
+    var sharedLayout: WatchlistLayout {
+        layout.sharedLayout
     }
     
     /// Get the max items count
@@ -83,6 +91,37 @@ enum WatchlistDisplayType: String, AppEnum {
                 subtitle: LocalizedStringResource("widget_type_mixed_subtitle", defaultValue: "Show both crypto and currencies")
             )
         ]
+    }
+}
+
+/// Layout options for the widget (AppEnum wrapper for configuration)
+enum WatchlistLayoutOption: String, AppEnum {
+    case singleColumn = "singleColumn"
+    case twoColumns = "twoColumns"
+    
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        TypeDisplayRepresentation(name: LocalizedStringResource("widget_layout", defaultValue: "Layout"))
+    }
+    
+    static var caseDisplayRepresentations: [WatchlistLayoutOption: DisplayRepresentation] {
+        [
+            .singleColumn: DisplayRepresentation(
+                title: LocalizedStringResource("widget_layout_single", defaultValue: "Single Column")
+            ),
+            .twoColumns: DisplayRepresentation(
+                title: LocalizedStringResource("widget_layout_two", defaultValue: "2 Columns")
+            )
+        ]
+    }
+    
+    /// Convert to Shared WatchlistLayout
+    var sharedLayout: WatchlistLayout {
+        switch self {
+        case .singleColumn:
+            return .singleColumn
+        case .twoColumns:
+            return .twoColumns
+        }
     }
 }
 

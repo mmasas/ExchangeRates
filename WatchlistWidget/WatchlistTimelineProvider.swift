@@ -23,9 +23,17 @@ struct WatchlistTimelineProvider: AppIntentTimelineProvider {
     // MARK: - Snapshot
     
     func snapshot(for configuration: WatchlistWidgetIntent, in context: Context) async -> WatchlistEntry {
-        // For preview/gallery, return placeholder
+        // For preview/gallery, return placeholder with layout from configuration
         if context.isPreview {
-            return WatchlistEntry.placeholder(widgetType: configuration.widgetType)
+            let layout = configuration.sharedLayout
+            let placeholder = WatchlistEntry.placeholder(widgetType: configuration.widgetType)
+            return WatchlistEntry(
+                date: placeholder.date,
+                items: placeholder.items,
+                widgetType: placeholder.widgetType,
+                layout: layout,
+                isPlaceholder: true
+            )
         }
         
         // Return actual data for widget
@@ -47,6 +55,7 @@ struct WatchlistTimelineProvider: AppIntentTimelineProvider {
     
     private func getEntry(for configuration: WatchlistWidgetIntent, context: Context) async -> WatchlistEntry {
         let widgetType = configuration.widgetType
+        let layout = configuration.sharedLayout
         let maxItems = configuration.maxItems ?? maxItemsForFamily(context.family)
         
         // Clamp to valid range based on widget size
@@ -57,13 +66,20 @@ struct WatchlistTimelineProvider: AppIntentTimelineProvider {
         
         // If no items, return empty entry
         if items.isEmpty {
-            return WatchlistEntry.empty(widgetType: widgetType)
+            return WatchlistEntry(
+                date: Date(),
+                items: [],
+                widgetType: widgetType,
+                layout: layout,
+                isPlaceholder: false
+            )
         }
         
         return WatchlistEntry(
             date: Date(),
             items: items,
-            widgetType: widgetType
+            widgetType: widgetType,
+            layout: layout
         )
     }
     

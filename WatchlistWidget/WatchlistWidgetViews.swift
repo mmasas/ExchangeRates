@@ -8,6 +8,17 @@
 import SwiftUI
 import WidgetKit
 
+// MARK: - Array Extension
+
+extension Array {
+    /// Split array into chunks of specified size
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        }
+    }
+}
+
 // MARK: - Main Entry View
 
 struct WatchlistWidgetEntryView: View {
@@ -18,11 +29,11 @@ struct WatchlistWidgetEntryView: View {
     var body: some View {
         switch family {
         case .systemMedium:
-            MediumWidgetView(entry: entry)
+            MediumWidgetView(entry: entry, layout: entry.layout)
         case .systemLarge:
-            LargeWidgetView(entry: entry)
+            LargeWidgetView(entry: entry, layout: entry.layout)
         default:
-            MediumWidgetView(entry: entry)
+            MediumWidgetView(entry: entry, layout: entry.layout)
         }
     }
 }
@@ -31,6 +42,7 @@ struct WatchlistWidgetEntryView: View {
 
 struct MediumWidgetView: View {
     let entry: WatchlistEntry
+    let layout: WatchlistLayout
     
     var body: some View {
         VStack(spacing: 0) {
@@ -45,13 +57,36 @@ struct MediumWidgetView: View {
                 EmptyStateView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                VStack(spacing: 4) {
-                    ForEach(entry.items.prefix(3)) { item in
-                        WatchlistRowView(item: item, isCompact: true)
+                if layout == .twoColumns {
+                    // 2-column layout using VStack of HStacks
+                    let items = Array(entry.items.prefix(4)) // Show up to 4 items in 2x2 grid
+                    let rows = items.chunked(into: 2) // Split into pairs for rows
+                    VStack(spacing: 4) {
+                        ForEach(Array(rows.enumerated()), id: \.offset) { rowIndex, rowItems in
+                            HStack(spacing: 8) {
+                                ForEach(rowItems) { item in
+                                    WatchlistRowView(item: item, isCompact: true)
+                                }
+                                
+                                // Fill remaining space if odd number of items in last row
+                                if rowItems.count == 1 {
+                                    Spacer()
+                                }
+                            }
+                        }
                     }
+                    .padding(.horizontal, 8)
+                    .padding(.bottom, 12)
+                } else {
+                    // Single column layout
+                    VStack(spacing: 4) {
+                        ForEach(entry.items.prefix(3)) { item in
+                            WatchlistRowView(item: item, isCompact: true)
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.bottom, 12)
                 }
-                .padding(.horizontal, 12)
-                .padding(.bottom, 12)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -62,15 +97,16 @@ struct MediumWidgetView: View {
 
 struct LargeWidgetView: View {
     let entry: WatchlistEntry
+    let layout: WatchlistLayout
     
-    /// Use compact mode when showing more than 6 items
+    /// Use compact mode when showing more than 6 items (only for single column)
     private var isCompactMode: Bool {
-        entry.items.count > 6
+        layout == .singleColumn && entry.items.count > 6
     }
     
     /// Maximum items to display
     private var maxDisplayItems: Int {
-        10
+        layout == .twoColumns ? 10 : 10 // Can show more items in 2-column layout
     }
     
     var body: some View {
@@ -90,18 +126,48 @@ struct LargeWidgetView: View {
                 EmptyStateView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                VStack(spacing: isCompactMode ? 0 : 2) {
-                    ForEach(Array(entry.items.prefix(maxDisplayItems).enumerated()), id: \.element.id) { index, item in
-                        WatchlistRowView(item: item, isCompact: isCompactMode)
-                        
-                        if index < min(entry.items.count, maxDisplayItems) - 1 {
-                            Divider()
-                                .padding(.horizontal, 8)
+                if layout == .twoColumns {
+                    // 2-column layout using VStack of HStacks for better row control
+                    let items = Array(entry.items.prefix(maxDisplayItems))
+                    let rows = items.chunked(into: 2) // Split into pairs for rows
+                    VStack(spacing: 0) {
+                        ForEach(Array(rows.enumerated()), id: \.offset) { rowIndex, rowItems in
+                            HStack(spacing: 8) {
+                                ForEach(rowItems) { item in
+                                    WatchlistRowView(item: item, isCompact: true)
+                                }
+                                
+                                // Fill remaining space if odd number of items in last row
+                                if rowItems.count == 1 {
+                                    Spacer()
+                                }
+                            }
+                            .padding(.horizontal, 8)
+                            
+                            // Add divider between rows (not after last row)
+                            if rowIndex < rows.count - 1 {
+                                Divider()
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 2)
+                            }
                         }
                     }
+                    .padding(.vertical, 4)
+                } else {
+                    // Single column layout
+                    VStack(spacing: isCompactMode ? 0 : 2) {
+                        ForEach(Array(entry.items.prefix(maxDisplayItems).enumerated()), id: \.element.id) { index, item in
+                            WatchlistRowView(item: item, isCompact: isCompactMode)
+                            
+                            if index < min(entry.items.count, maxDisplayItems) - 1 {
+                                Divider()
+                                    .padding(.horizontal, 8)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, isCompactMode ? 4 : 8)
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, isCompactMode ? 4 : 8)
             }
             
             Spacer(minLength: 0)
@@ -166,9 +232,11 @@ struct WatchlistRowView: View {
             }
             .frame(minWidth: 40, alignment: .leading)
             
-            // Sparkline
-            WidgetSparklineView(prices: item.sparklineData, isPositive: item.isPositiveChange)
-                .frame(width: isCompact ? 40 : 50, height: isCompact ? 16 : 20)
+            // Sparkline (only for crypto items)
+            if item.type == .crypto {
+                WidgetSparklineView(prices: item.sparklineData, isPositive: item.isPositiveChange)
+                    .frame(width: isCompact ? 40 : 50, height: isCompact ? 16 : 20)
+            }
             
             Spacer(minLength: 4)
             

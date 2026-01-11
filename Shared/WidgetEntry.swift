@@ -31,6 +31,13 @@ enum WatchlistWidgetType: String, Codable, CaseIterable {
     }
 }
 
+// MARK: - Widget Layout
+
+enum WatchlistLayout: String, Codable {
+    case singleColumn = "singleColumn"
+    case twoColumns = "twoColumns"
+}
+
 // MARK: - Item Type
 
 enum WatchlistItemType: String, Codable {
@@ -92,12 +99,14 @@ struct WatchlistEntry: TimelineEntry {
     let date: Date
     let items: [WatchlistItem]
     let widgetType: WatchlistWidgetType
+    let layout: WatchlistLayout
     let isPlaceholder: Bool
     
-    init(date: Date, items: [WatchlistItem], widgetType: WatchlistWidgetType, isPlaceholder: Bool = false) {
+    init(date: Date, items: [WatchlistItem], widgetType: WatchlistWidgetType, layout: WatchlistLayout = .singleColumn, isPlaceholder: Bool = false) {
         self.date = date
         self.items = items
         self.widgetType = widgetType
+        self.layout = layout
         self.isPlaceholder = isPlaceholder
     }
     
@@ -176,6 +185,7 @@ struct WatchlistEntry: TimelineEntry {
             date: Date(),
             items: placeholderItems,
             widgetType: widgetType,
+            layout: .singleColumn,
             isPlaceholder: true
         )
     }
@@ -186,6 +196,7 @@ struct WatchlistEntry: TimelineEntry {
             date: Date(),
             items: [],
             widgetType: widgetType,
+            layout: .singleColumn,
             isPlaceholder: false
         )
     }
