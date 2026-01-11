@@ -130,7 +130,7 @@ struct CryptoRow: View {
         .padding(.vertical, 12)
         .background(theme.usesSystemColors ? Color(.systemBackground) : theme.cardBackgroundColor)
         .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+        .shadow(color: Color.primary.opacity(0.1), radius: 4, x: 0, y: 2)
         .scaleEffect(isPressed ? 1.02 : 1.0)
         .animation(.easeInOut(duration: 0.15), value: isPressed)
         .onLongPressGesture(minimumDuration: 0.3, pressing: { pressing in

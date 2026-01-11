@@ -192,8 +192,7 @@ struct StandaloneConverterView: View {
             .background(backgroundColor)
             .navigationTitle(String(localized: "currency_converter_title", defaultValue: "Currency Converter"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "close", defaultValue: "Close")) {

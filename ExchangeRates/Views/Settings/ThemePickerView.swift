@@ -14,21 +14,6 @@ struct ThemePickerView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Header
-            HStack {
-                Text(String(localized: "themes", defaultValue: "THEMES"))
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
-                    .tracking(0.5)
-                
-                Image(systemName: "paintbrush.fill")
-                    .font(.system(size: 12))
-                    .foregroundColor(theme.usesSystemColors ? .secondary : theme.secondaryTextColor)
-                
-                Spacer()
-            }
-            .padding(.horizontal, 4)
-            
             // Theme cards container
             RoundedRectangle(cornerRadius: 16)
                 .fill(theme.usesSystemColors ? Color(.secondarySystemBackground) : theme.cardBackgroundColor)

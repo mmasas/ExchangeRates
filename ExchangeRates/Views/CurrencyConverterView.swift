@@ -180,8 +180,7 @@ struct CurrencyConverterView: View {
         }
         .background(backgroundColor)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             // Done button above keyboard
             ToolbarItemGroup(placement: .keyboard) {

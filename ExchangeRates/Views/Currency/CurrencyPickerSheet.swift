@@ -85,8 +85,7 @@ struct CurrencyPickerSheet: View {
             .searchable(text: $searchText, prompt: String(localized: "search_currency", defaultValue: "Search currency..."))
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "cancel")) {

@@ -91,8 +91,7 @@ struct AlertsView: View {
         .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
         .navigationTitle(String(localized: "alerts_title"))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {

@@ -51,6 +51,9 @@ struct SettingsView: View {
                 ThemePickerView()
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
+            } header: {
+                Label(String(localized: "themes"), systemImage: "paintpalette.fill")
+                    .foregroundColor(headerColor)
             }
             
             // MARK: - Currency Management
@@ -243,8 +246,7 @@ struct SettingsView: View {
         .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
         .navigationTitle(String(localized: "settings"))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .onAppear {
             viewModel.loadData()
         }

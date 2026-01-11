@@ -214,8 +214,7 @@ struct CreateAlertView: View {
             .background(theme.usesSystemColors ? Color(.systemGroupedBackground) : theme.backgroundColor)
             .navigationTitle(viewModel.editingAlert != nil ? String(localized: "edit_alert") : String(localized: "new_alert"))
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-            .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(String(localized: "cancel")) {

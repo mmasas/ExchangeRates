@@ -160,8 +160,7 @@ struct HistoricalRateView: View {
         )
         .navigationTitle(String(localized: "historical_rate_title", defaultValue: "Historical Rate"))
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(theme.usesSystemColors ? .automatic : .visible, for: .navigationBar)
-        .toolbarBackground(theme.usesSystemColors ? Color.clear : theme.secondaryBackgroundColor, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
