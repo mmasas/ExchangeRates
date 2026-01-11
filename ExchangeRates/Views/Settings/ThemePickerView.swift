@@ -20,26 +20,43 @@ struct ThemePickerView: View {
                 .frame(height: 160)
                 .overlay(
                     ZStack {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(AppTheme.allCases) { themeOption in
-                                    ThemeCardView(
-                                        theme: themeOption,
-                                        isSelected: themeManager.currentTheme == themeOption,
-                                        currentTheme: theme,
-                                        isDisabled: themeManager.isChangingTheme
-                                    ) {
-                                        withAnimation(.easeInOut(duration: 0.2)) {
-                                            themeManager.setTheme(themeOption)
+                        ScrollViewReader { proxy in
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(AppTheme.allCases) { themeOption in
+                                        ThemeCardView(
+                                            theme: themeOption,
+                                            isSelected: themeManager.currentTheme == themeOption,
+                                            currentTheme: theme,
+                                            isDisabled: themeManager.isChangingTheme
+                                        ) {
+                                            withAnimation(.easeInOut(duration: 0.2)) {
+                                                themeManager.setTheme(themeOption)
+                                            }
                                         }
+                                        .id(themeOption.id)
+                                    }
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 16)
+                            }
+                            .opacity(themeManager.isChangingTheme ? 0.5 : 1.0)
+                            .allowsHitTesting(!themeManager.isChangingTheme)
+                            .onAppear {
+                                // Scroll to selected theme when view appears
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        proxy.scrollTo(themeManager.currentTheme.id, anchor: .center)
                                     }
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 16)
+                            .onChange(of: themeManager.currentTheme) { _, newTheme in
+                                // Scroll to selected theme when it changes
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    proxy.scrollTo(newTheme.id, anchor: .center)
+                                }
+                            }
                         }
-                        .opacity(themeManager.isChangingTheme ? 0.5 : 1.0)
-                        .allowsHitTesting(!themeManager.isChangingTheme)
                         
                         // Progress indicator overlay
                         if themeManager.isChangingTheme {
