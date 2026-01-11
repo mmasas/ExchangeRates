@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CryptoView: View {
     @StateObject private var viewModel = CryptoViewModel()
-    @StateObject private var networkMonitor = NetworkMonitor.shared
+    @ObservedObject private var networkMonitor = NetworkMonitor.shared
     @StateObject private var websocketService = BinanceWebSocketService.shared
     @ObservedObject private var websocketManager = WebSocketManager.shared
     @State private var isSearchActive = false
@@ -237,6 +237,7 @@ struct CryptoView: View {
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
                 .animation(.easeInOut(duration: 0.25), value: isSearchActive)
+                .animation(.default, value: networkMonitor.isConnected)
             }
             .background(Color(.systemGroupedBackground))
         }

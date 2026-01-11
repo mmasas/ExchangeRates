@@ -148,6 +148,18 @@ class CryptoViewModel: ObservableObject {
             object: nil
         )
         
+        // Listen for network status changes
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("NetworkStatusChanged"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor [weak self] in
+                self?.updateOfflineStatus()
+            }
+        }
+        
         // Load fresh data (will use cache if offline)
         loadCryptocurrencies()
     }

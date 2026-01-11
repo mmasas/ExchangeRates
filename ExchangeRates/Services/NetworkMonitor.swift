@@ -70,7 +70,13 @@ class NetworkMonitor: ObservableObject {
     private func updateConnectionStatus() {
         // If simulating offline, force disconnected state
         // Otherwise use actual network status
-        isConnected = simulateOffline ? false : actualConnectionStatus
+        let newStatus = simulateOffline ? false : actualConnectionStatus
+        
+        if isConnected != newStatus {
+            LogManager.shared.log("Network status changing from \(isConnected) to \(newStatus) (Simulated: \(simulateOffline))", level: .info, source: "NetworkMonitor")
+            objectWillChange.send()
+            isConnected = newStatus
+        }
     }
 }
 

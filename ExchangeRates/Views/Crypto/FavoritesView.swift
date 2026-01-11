@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavoritesView: View {
     @StateObject private var viewModel = CryptoViewModel()
-    @StateObject private var networkMonitor = NetworkMonitor.shared
+    @ObservedObject private var networkMonitor = NetworkMonitor.shared
     @StateObject private var websocketService = BinanceWebSocketService.shared
     @ObservedObject private var websocketManager = WebSocketManager.shared
     @Environment(\.layoutDirection) private var layoutDirection
@@ -99,6 +99,7 @@ struct FavoritesView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
+                .animation(.default, value: networkMonitor.isConnected)
             }
             .background(Color(.systemGroupedBackground))
         }

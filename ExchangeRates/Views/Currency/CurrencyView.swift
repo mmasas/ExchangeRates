@@ -10,7 +10,7 @@ import UIKit
 
 struct CurrencyView: View {
     @StateObject private var viewModel = ExchangeRatesViewModel()
-    @StateObject private var networkMonitor = NetworkMonitor.shared
+    @ObservedObject private var networkMonitor = NetworkMonitor.shared
     @State private var tapCount = 0
     @State private var lastTapTime = Date()
     @State private var navigationPath = NavigationPath()
@@ -165,6 +165,7 @@ struct CurrencyView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
+                .animation(.default, value: networkMonitor.isConnected)
             }
             .background(Color(.systemGroupedBackground))
             .navigationDestination(for: String.self) { destination in
